@@ -7,7 +7,7 @@ module Formalist
 
       attr_reader :name
 
-      def initialize(name, &block)
+      def initialize(name, form: nil, &block)
         @name = name
         yield(self)
       end
