@@ -1,15 +1,15 @@
 RSpec.describe Formalist::Form do
   subject(:form) {
     Class.new(Formalist::Form) do
-      field :title, type: :text
-      field :description, type: :text
+      field :title, type: "string"
+      field :rating, type: "int"
     end.new
   }
 
   it "outputs an AST" do
-    expect(form.(title: "The Martian", description:  "A science fiction novel by Andy Weir.")).to eq [
-      [:field, [:title, :text, "The Martian", []]],
-      [:field, [:description, :text, "A science fiction novel by Andy Weir.", []]]
+    expect(form.(title: "Aurora", rating:  10)).to eq [
+      [:field, [:title, "string", "Aurora", []]],
+      [:field, [:rating, "int", 10, []]]
     ]
   end
 end
