@@ -1,12 +1,54 @@
 RSpec.describe Formalist::OutputCompiler do
   subject(:compiler) { Formalist::OutputCompiler.new }
 
-  it "works" do
-    ast = [
-      [:field, [:title, "string", "Aurora", []]],
-      [:field, [:rating, "int", "10", []]],
-    ]
+  let(:form) {
+    Class.new(Formalist::Form) do
+      field :title, type: "string"
+      field :rating, type: "int"
 
-    expect(compiler.call(ast)).to eq(title: "Aurora", rating: 10)
+      many :reviews do |review|
+        review.field :description, type: "string"
+        review.field :rating, type: "int"
+      end
+
+      attr :meta do |meta|
+        meta.section "Metadata" do |section|
+          section.group do |group|
+            group.field :pages, type: "int"
+            group.field :publisher, type: "string"
+          end
+        end
+      end
+    end.new
+  }
+
+  let(:input) {
+    {
+      title: "Aurora",
+      rating: 10,
+      reviews: [
+        {
+          description: "Wonderful",
+          rating: 10,
+        },
+        {
+          description: "Enchanting",
+          rating: 9,
+        }
+      ],
+      meta: {
+        pages: 321,
+        publisher: "Orbit",
+      },
+    }
+  }
+
+  let(:ast) { form.call(input) }
+
+  it "works" do
+    require "pp"
+    pp ast
+
+    expect(compiler.call(ast)).to eq input
   end
 end
