@@ -3,10 +3,10 @@ RSpec.describe Formalist::OutputCompiler do
 
   it "works" do
     ast = [
-      [:field, [:title, :text, "The Martian", []]],
-      [:field, [:description, :text, "A science fiction novel by Andy Weir.", []]]
+      [:field, [:title, "string", "Aurora", []]],
+      [:field, [:rating, "int", "10", []]],
     ]
 
-    expect(compiler.call(ast)).to eq(title: "The Martian", description:  "A science fiction novel by Andy Weir.")
+    expect(compiler.call(ast)).to eq(title: "Aurora", rating: 10)
   end
 end
