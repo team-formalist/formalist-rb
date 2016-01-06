@@ -12,7 +12,7 @@ module Formalist
     end
 
     def call(input, validate: true)
-      error_messages = validate ? schema.(input).messages : {}
+      error_messages = validate && schema ? schema.(input).messages : {}
 
       form_ast = self.class.elements.map { |el| el.(input, error_messages) }
     end
