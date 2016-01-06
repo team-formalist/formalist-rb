@@ -14,8 +14,8 @@ module Formalist
         yield(self)
       end
 
-      def call(input)
-        [:section, [name, elements.map { |el| el.(input) }, config.to_a]]
+      def call(input, errors)
+        [:section, [name, elements.map { |el| el.(input, errors) }, config.to_a]]
       end
     end
   end

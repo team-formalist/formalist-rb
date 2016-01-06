@@ -12,7 +12,7 @@ module Formalist
         yield(self)
       end
 
-      def call(input)
+      def call(input, errors)
         [:group, [elements.map { |el| el.(input) }, config.to_a]]
       end
     end

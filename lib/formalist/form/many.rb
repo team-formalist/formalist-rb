@@ -21,9 +21,21 @@ module Formalist
         yield(self)
       end
 
-      def call(input)
+      def call(input, errors)
+        # errors looks like this:
+        # {:links=>
+        #   [[{:links=>
+        #       [[{:url=>[["url must be filled"], ""]}],
+        #        {:name=>"personal", :url=>""}]}],
+        #    [{:name=>"company", :url=>"http://icelab.com.au"},
+        #     {:name=>"personal", :url=>""}]]}
+
+        error_messages = errors.fetch(name, [])[0].to_a.map { |hsh| hsh[name] }
+
         children = input[name].to_a.map { |child_input|
-          elements.map { |el| el.(child_input) }
+          child_error_messages = error_messages.detect { |msg| msg[1] == child_input }[0][0]
+
+          elements.map { |el| el.(child_input, child_error_messages) }
         }
 
         [:many, [name, children, config.to_a]]

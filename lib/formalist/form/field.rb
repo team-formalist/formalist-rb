@@ -26,8 +26,12 @@ module Formalist
         @config = config
       end
 
-      def call(input)
-        [:field, [name, type, Dry::Data[type].(input[name]), config.to_a]]
+      def call(input, errors)
+        # errors looks like this
+        # {:field_name => [["pages is missing", "another error message"], nil]}
+        error_messages = errors[name].to_a[0].to_a
+
+        [:field, [name, type, Dry::Data[type].(input[name]), error_messages, config.to_a]]
       end
     end
   end

@@ -12,8 +12,18 @@ module Formalist
         yield(self)
       end
 
-      def call(input)
-        [:attr, [name, elements.map { |el| el.(input[name] || {}) }]]
+      def call(input, errors)
+        # Errors, if the attr hash is present and its members have errors:
+        # {:meta=>[[{:pages=>[["pages is missing"], nil]}], {}]}
+
+        # Errors, if the attr hash hasn't been provided
+        # {:meta=>[["meta is missing"], nil]}
+
+        nested_input = input.fetch(name, {})
+        nested_errors = errors.fetch(name, []).dig(0, 0)
+        nested_errors = {} unless nested_errors.is_a?(Hash) # ignore errors if they are for a missing attr
+
+        [:attr, [name, elements.map { |el| el.(nested_input, nested_errors) }]]
       end
     end
   end
