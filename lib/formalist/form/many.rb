@@ -30,7 +30,9 @@ module Formalist
         #    [{:name=>"company", :url=>"http://icelab.com.au"},
         #     {:name=>"personal", :url=>""}]]}
 
-        error_messages = errors.fetch(name, [])[0].to_a.map { |hsh| hsh[name] }
+        errors = errors.fetch(name, [])[0]
+        local_errors = errors[0].is_a?(Hash) ? [] : errors
+        child_errors = errors[0].is_a?(Hash) ? errors[0] : {}
 
         children = input[name].to_a.map { |child_input|
           child_error_messages = error_messages.detect { |msg| msg[1] == child_input }[0][0]
@@ -38,7 +40,7 @@ module Formalist
           elements.map { |el| el.(child_input, child_error_messages) }
         }
 
-        [:many, [name, children, config.to_a]]
+        [:many, [name, children, local_errors, config.to_a]]
       end
     end
   end

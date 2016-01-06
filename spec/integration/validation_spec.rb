@@ -76,4 +76,27 @@ RSpec.describe "Form validation" do
       ]]
     ]
   end
+
+  it "includes validation errors on container elements (attr and many)" do
+    input = {}
+
+    expect(form.call(input)).to eq [
+      [:field, [:title, "string", nil, ["title is missing"], []]],
+      [:field, [:rating, "int", nil, ["rating is missing", "rating must be greater than or equal to 1", "rating must be less than or equal to 10"], []]],
+      [:many, [:reviews, [], ["reviews is missing"],
+        [
+          [:allow_create, true],
+          [:allow_update, true],
+          [:allow_destroy, true],
+          [:allow_reorder, true]
+        ]
+      ]],
+      [:attr, [:meta,
+        [
+          [:field, [:pages, "int", nil, [], []]]
+        ],
+        ["meta is missing"]
+      ]]
+    ]
+  end
 end

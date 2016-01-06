@@ -19,11 +19,13 @@ module Formalist
         # Errors, if the attr hash hasn't been provided
         # {:meta=>[["meta is missing"], nil]}
 
-        nested_input = input.fetch(name, {})
-        nested_errors = errors.fetch(name, []).dig(0, 0)
-        nested_errors = {} unless nested_errors.is_a?(Hash) # ignore errors if they are for a missing attr
+        input = input.fetch(name, {})
 
-        [:attr, [name, elements.map { |el| el.(nested_input, nested_errors) }]]
+        errors = errors.fetch(name, [])[0]
+        local_errors = errors[0].is_a?(Hash) ? [] : errors
+        child_errors = errors[0].is_a?(Hash) ? errors[0] : {}
+
+        [:attr, [name, elements.map { |el| el.(input, child_errors) }, local_errors]]
       end
     end
   end
