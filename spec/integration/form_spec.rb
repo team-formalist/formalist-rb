@@ -8,8 +8,8 @@ RSpec.describe Formalist::Form do
 
   it "outputs an AST" do
     expect(form.(title: "Aurora", rating:  10)).to eq [
-      [:field, [:title, "string", "Aurora", []]],
-      [:field, [:rating, "int", 10, []]]
+      [:field, [:title, "string", "Aurora", [], []]],
+      [:field, [:rating, "int", 10, [], []]]
     ]
   end
 end
