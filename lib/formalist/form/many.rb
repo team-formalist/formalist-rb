@@ -22,20 +22,23 @@ module Formalist
       end
 
       def call(input, errors)
-        # errors looks like this:
+        # child errors looks like this:
         # {:links=>
         #   [[{:links=>
         #       [[{:url=>[["url must be filled"], ""]}],
         #        {:name=>"personal", :url=>""}]}],
         #    [{:name=>"company", :url=>"http://icelab.com.au"},
         #     {:name=>"personal", :url=>""}]]}
+        #
+        # or local errors:
+        # {:links=>[["links is missing"], nil]}
 
         errors = errors.fetch(name, [])[0] || []
-        local_errors = errors[0].is_a?(Hash) ? [] : errors
-        child_errors = errors[0].is_a?(Hash) ? errors[0] : {}
+        local_errors = errors[0].is_a?(String) ? errors : []
+        child_errors = errors[0].is_a?(Hash) ? errors : {}
 
         children = input[name].to_a.map { |child_input|
-          local_child_errors = child_errors.detect { |msg| msg[1] == child_input }.to_a.dig(0, 0).to_h
+          local_child_errors = child_errors.map { |error| error[name] }.detect { |error| error[1] == child_input }.to_a.dig(0, 0) || {}
 
           elements.map { |el| el.(child_input, local_child_errors) }
         }
