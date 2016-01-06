@@ -21,7 +21,7 @@ module Formalist
 
         input = input.fetch(name, {})
 
-        errors = errors.fetch(name, [])[0]
+        errors = errors.fetch(name, [])[0].to_a
         local_errors = errors[0].is_a?(Hash) ? [] : errors
         child_errors = errors[0].is_a?(Hash) ? errors[0] : {}
 

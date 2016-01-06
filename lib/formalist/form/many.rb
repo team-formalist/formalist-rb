@@ -30,14 +30,14 @@ module Formalist
         #    [{:name=>"company", :url=>"http://icelab.com.au"},
         #     {:name=>"personal", :url=>""}]]}
 
-        errors = errors.fetch(name, [])[0]
+        errors = errors.fetch(name, [])[0] || []
         local_errors = errors[0].is_a?(Hash) ? [] : errors
         child_errors = errors[0].is_a?(Hash) ? errors[0] : {}
 
         children = input[name].to_a.map { |child_input|
-          child_error_messages = error_messages.detect { |msg| msg[1] == child_input }[0][0]
+          local_child_errors = child_errors.detect { |msg| msg[1] == child_input }.to_a.dig(0, 0).to_h
 
-          elements.map { |el| el.(child_input, child_errors) }
+          elements.map { |el| el.(child_input, local_child_errors) }
         }
 
         [:many, [name, children, local_errors, config.to_a]]
