@@ -13,7 +13,7 @@ module Formalist
       end
 
       def call(input, errors)
-        [:group, [elements.map { |el| el.(input) }, config.to_a]]
+        [:group, [elements.map { |el| el.(input, errors) }, config.to_a]]
       end
     end
   end
