@@ -62,6 +62,7 @@ RSpec.describe "Form validation" do
             [:field, [:rating, "int", 1, [], []]]
           ]
         ],
+        [],
         [
           [:allow_create, true],
           [:allow_update, true],
@@ -72,7 +73,8 @@ RSpec.describe "Form validation" do
       [:attr, [:meta,
         [
           [:field, [:pages, "int", nil, ["pages must be filled"], []]]
-        ]
+        ],
+        []
       ]]
     ]
   end
