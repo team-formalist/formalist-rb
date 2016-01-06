@@ -23,13 +23,13 @@ module Formalist
     end
 
     def visit_attr(data)
-      name, elements = data
+      name, elements, _errors = data
 
       {name => elements.map { |node| visit(node) }.inject(:merge) }
     end
 
     def visit_field(data)
-      name, type, value = data
+      name, type, value, _errors = data
 
       {name => coerce(value, type: type)}
     end
@@ -41,7 +41,7 @@ module Formalist
     end
 
     def visit_many(data)
-      name, elements, _config = data
+      name, elements, _errors, _config = data
 
       {name => elements.map { |item| item.map { |node| visit(node) }.inject(:merge) }}
     end
