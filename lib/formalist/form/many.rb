@@ -37,7 +37,7 @@ module Formalist
         children = input[name].to_a.map { |child_input|
           child_error_messages = error_messages.detect { |msg| msg[1] == child_input }[0][0]
 
-          elements.map { |el| el.(child_input, child_error_messages) }
+          elements.map { |el| el.(child_input, child_errors) }
         }
 
         [:many, [name, children, local_errors, config.to_a]]
