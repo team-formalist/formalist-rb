@@ -15,8 +15,11 @@ Gem::Specification.new do |spec|
   spec.files = Dir["README.md", "LICENSE.md", "Gemfile*", "Rakefile", "lib/**/*", "spec/**/*"]
   spec.require_paths = ["lib"]
 
+  spec.add_runtime_dependency "dry-configurable"
+  spec.add_runtime_dependency "dry-container"
   spec.add_runtime_dependency "dry-data", ">= 0.4.2"
   spec.add_runtime_dependency "dry-validation"
+  spec.add_runtime_dependency "inflecto"
 
   spec.add_development_dependency "bundler", "~> 1.10"
   spec.add_development_dependency "byebug"

@@ -1,15 +1,22 @@
 RSpec.describe Formalist::Form do
   subject(:form) {
     Class.new(Formalist::Form) do
-      field :title, type: "string"
-      field :rating, type: "int"
+      component do |c|
+        c.field :title, type: "string"
+        c.field :rating, type: "int"
+      end
     end.new
   }
 
   it "outputs an AST" do
     expect(form.(title: "Aurora", rating:  10).to_ary).to eq [
-      [:field, [:title, "string", "Aurora", [], []]],
-      [:field, [:rating, "int", 10, [], []]]
+      [:component, [
+        [
+          [:field, [:title, "string", "Aurora", [], []]],
+          [:field, [:rating, "int", 10, [], []]]
+        ],
+        []
+      ]],
     ]
   end
 end

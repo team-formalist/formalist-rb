@@ -1,7 +1,7 @@
 module Formalist
   class Form
     class Result
-      class Section
+      class Component
         attr_reader :definition, :input, :errors
         attr_reader :children
 
@@ -13,7 +13,7 @@ module Formalist
         end
 
         def to_ary
-          [:section, [definition.name, children.map(&:to_ary), definition.config.to_a]]
+          [:component, [children.map(&:to_ary), definition.config.to_a]]
         end
       end
     end
