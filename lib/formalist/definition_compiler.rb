@@ -1,4 +1,5 @@
 require "formalist/form/definition/attr"
+require "formalist/form/definition/component"
 require "formalist/form/definition/field"
 require "formalist/form/definition/group"
 require "formalist/form/definition/many"
@@ -26,6 +27,13 @@ module Formalist
     def visit_attr(attrs)
       name, children = attrs
       Form::Definition::Attr.new(name, call(children))
+    end
+
+    def visit_component(attrs)
+      display, config, children = attrs
+
+      component = Form::Definition::Component.new(config, call(children))
+      display_adapters[display].call(component)
     end
 
     def visit_field(attrs)

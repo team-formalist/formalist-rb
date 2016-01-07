@@ -7,6 +7,10 @@ module Formalist
         elements << [:attr, [name, define_children(&block)]]
       end
 
+      def component(display: "default", **config, &block)
+        elements << [:component, [display, config, define_children(&block)]]
+      end
+
       def field(name, type:, display: "default", **config)
         elements << [:field, [name, type, display, config.to_a]]
       end
