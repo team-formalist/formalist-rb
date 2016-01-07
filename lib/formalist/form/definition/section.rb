@@ -1,19 +1,17 @@
-require "formalist/form/definition"
 require "formalist/form/result/section"
 
 module Formalist
   class Form
     module Definition
       class Section
-        include Definition.with_builders(:attr, :field, :group, :many, :section)
-
         attr_reader :name
         attr_reader :config
+        attr_reader :children
 
-        def initialize(name, **config, &block)
+        def initialize(name, config = {}, children = [])
           @name = name
           @config = config
-          yield(self)
+          @children = children
         end
 
         def call(input, errors)

@@ -20,7 +20,7 @@ module Formalist
           local_errors = errors[0].is_a?(Hash) ? [] : errors
           child_errors = errors[0].is_a?(Hash) ? errors[0] : {}
 
-          [:attr, [definition.name, definition.elements.map { |el| el.(input, child_errors).to_ary }, local_errors]]
+          [:attr, [definition.name, definition.children.map { |el| el.(input, child_errors).to_ary }, local_errors]]
         end
       end
     end

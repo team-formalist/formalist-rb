@@ -1,17 +1,14 @@
-require "formalist/form/definition"
 require "formalist/form/result/group"
 
 module Formalist
   class Form
     module Definition
       class Group
-        include Definition.with_builders(:attr, :field, :many)
+        attr_reader :config, :children
 
-        attr_reader :config
-
-        def initialize(**config, &block)
+        def initialize(config = {}, children)
           @config = config
-          yield(self)
+          @children = children
         end
 
         def call(input, errors)

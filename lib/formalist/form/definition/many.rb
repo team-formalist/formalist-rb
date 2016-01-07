@@ -1,4 +1,3 @@
-require "formalist/form/definition"
 require "formalist/form/result/many"
 
 module Formalist
@@ -12,15 +11,14 @@ module Formalist
           allow_reorder: true
         }.freeze
 
-        include Definition.with_builders(:attr, :group, :field)
-
         attr_reader :name
         attr_reader :config
+        attr_reader :children
 
-        def initialize(name, **config, &block)
+        def initialize(name, config = {}, children = [])
           @name = name
           @config = DEFAULT_CONFIG.merge(config)
-          yield(self)
+          @children = children
         end
 
         def call(input, errors)

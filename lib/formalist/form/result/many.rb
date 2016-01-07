@@ -3,24 +3,24 @@ module Formalist
     class Result
       class Many
         attr_reader :definition, :input, :errors
-        attr_reader :elements
+        attr_reader :children
 
         def initialize(definition, input, errors)
           @definition = definition
           @input = input.fetch(definition.name, [])
           @errors = errors.fetch(definition.name, [])[0] || []
-          @elements = build_elements
+          @children = build_children
         end
 
         def to_ary
           local_errors = errors[0].is_a?(String) ? errors : []
 
-          [:many, [definition.name, elements.map { |el_list| el_list.map(&:to_ary) }, local_errors, definition.config.to_a]]
+          [:many, [definition.name, children.map { |el_list| el_list.map(&:to_ary) }, local_errors, definition.config.to_a]]
         end
 
         private
 
-        def build_elements
+        def build_children
           # child errors looks like this:
           # {:links=>
           #   [[{:links=>
@@ -37,7 +37,7 @@ module Formalist
           input.map { |child_input|
             local_child_errors = child_errors.map { |error| error[definition.name] }.detect { |error| error[1] == child_input }.to_a.dig(0, 0) || {}
 
-            definition.elements.map { |el| el.(child_input, local_child_errors) }
+            definition.children.map { |el| el.(child_input, local_child_errors) }
           }
         end
       end

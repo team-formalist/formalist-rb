@@ -1,17 +1,14 @@
-require "formalist/form/definition"
 require "formalist/form/result/attr"
 
 module Formalist
   class Form
     module Definition
       class Attr
-        include Definition.with_builders(:group, :section, :field)
+        attr_reader :name, :children
 
-        attr_reader :name
-
-        def initialize(name, form: nil, &block)
+        def initialize(name, children)
           @name = name
-          yield(self)
+          @children = children
         end
 
         def call(input, errors)

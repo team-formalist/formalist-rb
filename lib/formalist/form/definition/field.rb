@@ -20,7 +20,7 @@ module Formalist
         attr_reader :type
         attr_reader :config
 
-        def initialize(name, type, **config)
+        def initialize(name, type, config = {})
           raise ArgumentError, "type +#{type}+ not supported" unless TYPES.include?(type)
 
           @name = name
