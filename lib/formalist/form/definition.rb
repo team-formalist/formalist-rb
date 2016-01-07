@@ -12,7 +12,7 @@ module Formalist
       end
 
       def field(name, type:, display: "default", **config)
-        elements << [:field, [name, type, display, config.to_a]]
+        elements << [:field, [name, type, display, config]]
       end
 
       def group(**config, &block)
