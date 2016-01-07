@@ -43,7 +43,7 @@ RSpec.describe Formalist::OutputCompiler do
     }
   }
 
-  let(:ast) { form.call(input) }
+  let(:ast) { form.call(input).to_ary }
 
   it "works" do
     require "pp"
