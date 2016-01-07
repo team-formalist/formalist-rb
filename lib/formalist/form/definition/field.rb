@@ -28,6 +28,10 @@ module Formalist
           @config = config
         end
 
+        def with(new_config = {})
+          self.class.new(name, type, config.merge(new_config))
+        end
+
         def call(input, errors)
           Result::Field.new(self, input, errors)
         end

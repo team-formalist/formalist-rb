@@ -18,9 +18,21 @@ module Formalist
           elements << Attr.new(name, form: form, &block)
         end
 
-        def field(name, type:, **config)
-          elements << Field.new(name, type, config)
+        # This is where we want to pass it through (an optional) display object
+        def field(name, type:, display: "default", **config)
+          # 1. if there is a `display` provided, find it from a local registry of display objects
+          # 2. then pass the `config` through that display object. it'll populate it with more stuff as it requires (including its own "display_variant" name)
+          # 3. then pass the fleshed-out config to the field as we do below
+          field = Field.new(name, type, config)
+          elements << display_adapters[display].call(field)
         end
+
+        # TODO: add a "component" element for wrapping up multiple fields in a custom display adapter
+        # We want to _require_ a display object for this
+        # def component(display:, **config, &block)
+        #   component = Component.new(type, config, &block)
+        #   elements << display_adapters[display].call(component)
+        # end
 
         def group(**config, &block)
           elements << Group.new(config, &block)
