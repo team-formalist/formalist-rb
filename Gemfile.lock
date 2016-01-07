@@ -6,6 +6,7 @@ PATH
       dry-container
       dry-data (>= 0.4.2)
       dry-validation
+      inflecto
 
 GEM
   remote: https://rubygems.org/

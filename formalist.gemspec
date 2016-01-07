@@ -19,6 +19,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "dry-container"
   spec.add_runtime_dependency "dry-data", ">= 0.4.2"
   spec.add_runtime_dependency "dry-validation"
+  spec.add_runtime_dependency "inflecto"
 
   spec.add_development_dependency "bundler", "~> 1.10"
   spec.add_development_dependency "byebug"
