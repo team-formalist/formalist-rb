@@ -3,11 +3,13 @@ module Formalist
     class Result
       class Attr
         attr_reader :definition, :input, :errors
+        attr_reader :children
 
         def initialize(definition, input, errors)
           @definition = definition
           @input = input.fetch(definition.name, {})
           @errors = errors.fetch(definition.name, [])[0] || []
+          @children = build_children
         end
 
         def to_ary
@@ -18,9 +20,14 @@ module Formalist
           # {:meta=>[["meta is missing"], nil]}
 
           local_errors = errors[0].is_a?(Hash) ? [] : errors
-          child_errors = errors[0].is_a?(Hash) ? errors[0] : {}
+          [:attr, [definition.name, children.map(&:to_ary), local_errors]]
+        end
 
-          [:attr, [definition.name, definition.children.map { |el| el.(input, child_errors).to_ary }, local_errors]]
+        private
+
+        def build_children
+          child_errors = errors[0].is_a?(Hash) ? errors[0] : {}
+          definition.children.map { |el| el.(input, child_errors) }
         end
       end
     end
