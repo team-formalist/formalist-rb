@@ -1,4 +1,5 @@
 require "formalist/form/definition"
+require "formalist/form/result"
 
 module Formalist
   class Form
@@ -14,7 +15,7 @@ module Formalist
     def call(input, validate: true)
       error_messages = validate && schema ? schema.(input).messages : {}
 
-      form_ast = self.class.elements.map { |el| el.(input, error_messages) }
+      Result.new(self.class.elements.map { |el| el.(input, error_messages) })
     end
   end
 end

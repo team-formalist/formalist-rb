@@ -38,8 +38,8 @@ module Formalist
   end
 end
 
-require "formalist/form/attr"
-require "formalist/form/field"
-require "formalist/form/group"
-require "formalist/form/many"
-require "formalist/form/section"
+require "formalist/form/definition/attr"
+require "formalist/form/definition/field"
+require "formalist/form/definition/group"
+require "formalist/form/definition/many"
+require "formalist/form/definition/section"
