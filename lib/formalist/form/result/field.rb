@@ -6,16 +6,15 @@ module Formalist
 
         def initialize(definition, input, errors)
           @definition = definition
-          @input = input
-          @errors = errors
+          @input = input[definition.name]
+          @errors = errors[definition.name].to_a[0] || []
         end
 
         def to_ary
           # errors looks like this
           # {:field_name => [["pages is missing", "another error message"], nil]}
-          error_messages = errors[definition.name].to_a[0].to_a
 
-          [:field, [definition.name, definition.type, Dry::Data[definition.type].(input[definition.name]), error_messages, definition.config.to_a]]
+          [:field, [definition.name, definition.type, Dry::Data[definition.type].(input), errors, definition.config.to_a]]
         end
       end
     end

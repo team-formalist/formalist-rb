@@ -6,7 +6,7 @@ module Formalist
 
         def initialize(definition, input, errors)
           @definition = definition
-          @input = input
+          @input = input.fetch(definition.name, [])
           @errors = errors.fetch(definition.name, [])[0] || []
         end
 
@@ -25,7 +25,7 @@ module Formalist
           local_errors = errors[0].is_a?(String) ? errors : []
           child_errors = errors[0].is_a?(Hash) ? errors : {}
 
-          children = input[definition.name].to_a.map { |child_input|
+          children = input.map { |child_input|
             local_child_errors = child_errors.map { |error| error[definition.name] }.detect { |error| error[1] == child_input }.to_a.dig(0, 0) || {}
 
             definition.elements.map { |el| el.(child_input, local_child_errors).to_ary }
