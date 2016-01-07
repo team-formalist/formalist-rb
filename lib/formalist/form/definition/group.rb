@@ -6,7 +6,7 @@ module Formalist
       class Group
         attr_reader :config, :children
 
-        def initialize(config = {}, children)
+        def initialize(config = {}, children = [])
           @config = config
           @children = children
         end
