@@ -6,7 +6,8 @@ RSpec::Core::RakeTask.new
 require "rubocop/rake_task"
 RuboCop::RakeTask.new
 
-task default: :ci
+task default: :spec
+# task default: :ci
 
 desc "Run the test suite"
 task ci: %w(rubocop spec)
