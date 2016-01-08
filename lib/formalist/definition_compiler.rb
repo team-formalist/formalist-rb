@@ -39,7 +39,10 @@ module Formalist
     def visit_field(attrs)
       name, type, display, config = attrs
 
-      field = Form::Definition::Field.new(name, type, config)
+      safe_config = config.dup
+      safe_config.delete(:display_variant)
+
+      field = Form::Definition::Field.new(name, type: type, display_variant: display, **safe_config)
       display_adapters[display].call(field)
     end
 
