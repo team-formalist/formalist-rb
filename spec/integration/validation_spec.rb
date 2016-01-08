@@ -47,17 +47,17 @@ RSpec.describe "Form validation" do
     }
 
     expect(form.call(input).to_ary).to eq [
-      [:field, [:title, "string", nil, ["title is missing"], [[:display_variant, "default"]]]],
-      [:field, [:rating, "int", nil, ["rating is missing", "rating must be greater than or equal to 1", "rating must be less than or equal to 10"], [[:display_variant, "default"]]]],
+      [:field, [:title, "string", "default", nil, ["title is missing"], []]],
+      [:field, [:rating, "int", "default", nil, ["rating is missing", "rating must be greater than or equal to 1", "rating must be less than or equal to 10"], []]],
       [:many, [:reviews,
         [
           [
-            [:field, [:summary, "string", "Great", [], [[:display_variant, "default"]]]],
-            [:field, [:rating, "int", 0, ["rating must be greater than or equal to 1"], [[:display_variant, "default"]]]]
+            [:field, [:summary, "string", "default", "Great", [], []]],
+            [:field, [:rating, "int", "default", 0, ["rating must be greater than or equal to 1"], []]]
           ],
           [
-            [:field, [:summary, "string", "", ["summary must be filled"], [[:display_variant, "default"]]]],
-            [:field, [:rating, "int", 1, [], [[:display_variant, "default"]]]]
+            [:field, [:summary, "string", "default", "", ["summary must be filled"], []]],
+            [:field, [:rating, "int", "default", 1, [], []]]
           ]
         ],
         [],
@@ -70,7 +70,7 @@ RSpec.describe "Form validation" do
       ]],
       [:attr, [:meta,
         [
-          [:field, [:pages, "int", nil, ["pages must be filled"], [[:display_variant, "default"]]]]
+          [:field, [:pages, "int", "default", nil, ["pages must be filled"], []]]
         ],
         []
       ]]
@@ -81,8 +81,8 @@ RSpec.describe "Form validation" do
     input = {}
 
     expect(form.call(input).to_ary).to eq [
-      [:field, [:title, "string", nil, ["title is missing"], [[:display_variant, "default"]]]],
-      [:field, [:rating, "int", nil, ["rating is missing", "rating must be greater than or equal to 1", "rating must be less than or equal to 10"], [[:display_variant, "default"]]]],
+      [:field, [:title, "string", "default", nil, ["title is missing"], []]],
+      [:field, [:rating, "int", "default", nil, ["rating is missing", "rating must be greater than or equal to 1", "rating must be less than or equal to 10"], []]],
       [:many, [:reviews, [], ["reviews is missing"],
         [
           [:allow_create, true],
@@ -93,7 +93,7 @@ RSpec.describe "Form validation" do
       ]],
       [:attr, [:meta,
         [
-          [:field, [:pages, "int", nil, [], [[:display_variant, "default"]]]]
+          [:field, [:pages, "int", "default", nil, [], []]]
         ],
         ["meta is missing"]
       ]]

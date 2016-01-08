@@ -10,11 +10,11 @@ RSpec.describe "Display adapters" do
       [:field, [
         :temperature_unit,
         "string",
+        "select",
         nil,
         [],
         [
-          [:option_values, [["c", "c"], ["f", "f"]]],
-          [:display_variant, "select"]
+          [:option_values, [["c", "c"], ["f", "f"]]]
         ]
       ]]
     ]

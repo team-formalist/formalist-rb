@@ -14,9 +14,14 @@ module Formalist
           # errors looks like this
           # {:field_name => [["pages is missing", "another error message"], nil]}
 
-          config = definition.config.merge(display_variant: definition.display_variant)
-
-          [:field, [definition.name, definition.type, Dry::Data[definition.type].(input), errors, config.to_a]]
+          [:field, [
+            definition.name,
+            definition.type,
+            definition.display_variant,
+            Dry::Data[definition.type].(input),
+            errors,
+            definition.config.to_a]
+          ]
         end
       end
     end

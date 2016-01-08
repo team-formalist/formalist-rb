@@ -12,8 +12,8 @@ RSpec.describe Formalist::Form do
     expect(form.(title: "Aurora", rating:  10).to_ary).to eq [
       [:component, [
         [
-          [:field, [:title, "string", "Aurora", [], [[:display_variant, "default"]]]],
-          [:field, [:rating, "int", 10, [], [[:display_variant, "default"]]]]
+          [:field, [:title, "string", "default", "Aurora", [], []]],
+          [:field, [:rating, "int", "default", 10, [], []]]
         ],
         []
       ]],

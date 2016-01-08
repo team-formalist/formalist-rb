@@ -29,7 +29,7 @@ module Formalist
     end
 
     def visit_field(data)
-      name, type, value, _errors = data
+      name, type, display_variant, value, _errors = data
 
       {name => coerce(value, type: type)}
     end

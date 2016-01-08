@@ -21,17 +21,17 @@ module Formalist
         attr_reader :display_variant
         attr_reader :config
 
-        def initialize(name, type:, display_variant:, **config)
+        def initialize(name, type, display_variant, config)
           raise ArgumentError, "type +#{type}+ not supported" unless TYPES.include?(type)
 
           @name = name
           @type = type
-          @config = config
           @display_variant = display_variant
+          @config = config
         end
 
-        def with(**new_config)
-          self.class.new(name, type: type, **config.merge(new_config))
+        def to_display_variant(display_variant, new_config = {})
+          self.class.new(name, type, display_variant, config.merge(new_config))
         end
 
         def call(input, errors)
