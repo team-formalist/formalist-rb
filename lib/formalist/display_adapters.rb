@@ -6,7 +6,7 @@ module Formalist
   class DisplayAdapters
     extend Dry::Container::Mixin
 
-    register "default", Default.new
+    register DEFAULT_DISPLAY_ADAPTER, Default.new
     register "select", Select.new
   end
 end
