@@ -1,4 +1,8 @@
+[travis]: https://travis-ci.org/icelab/formalist
+
 # Formalist
+
+[![Build Status](https://travis-ci.org/icelab/formalist.svg?branch=master)][travis]
 
 ## Installation
 
