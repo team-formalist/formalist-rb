@@ -6,7 +6,7 @@ module Formalist
         float
         int
         string
-      ]
+      ].freeze
 
       def call(field)
         raise ArgumentError, "field type must be one of #{PERMITTED_TYPES.join(', ')}" unless PERMITTED_TYPES.include?(field.type)
