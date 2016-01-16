@@ -11,8 +11,8 @@ module Formalist
           @children = children
         end
 
-        def call(input, errors)
-          Result::Attr.new(self, input, errors)
+        def call(input, rules, errors)
+          Result::Attr.new(self, input, rules, errors)
         end
       end
     end

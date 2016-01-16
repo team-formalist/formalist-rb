@@ -23,8 +23,8 @@ module Formalist
           self.class.new(config.merge(new_config), children)
         end
 
-        def call(input, errors)
-          Result::Component.new(self, input, errors)
+        def call(input, rules, errors)
+          Result::Component.new(self, input, rules, errors)
         end
       end
     end

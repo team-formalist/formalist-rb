@@ -32,8 +32,8 @@ module Formalist
           @children = children
         end
 
-        def call(input, errors)
-          Result::Many.new(self, input, errors)
+        def call(input, rules, errors)
+          Result::Many.new(self, input, rules, errors)
         end
       end
     end

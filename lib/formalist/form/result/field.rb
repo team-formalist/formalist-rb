@@ -2,11 +2,12 @@ module Formalist
   class Form
     class Result
       class Field
-        attr_reader :definition, :input, :errors
+        attr_reader :definition, :input, :rules, :errors
 
         def initialize(definition, input, errors)
           @definition = definition
           @input = input[definition.name]
+          @rules = rules # TODO
           @errors = errors[definition.name].to_a[0] || []
         end
 

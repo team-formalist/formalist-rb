@@ -5,9 +5,10 @@ module Formalist
         attr_reader :definition, :input, :errors
         attr_reader :children
 
-        def initialize(definition, input, errors)
+        def initialize(definition, input, rules, errors)
           @definition = definition
           @input = input.fetch(definition.name, [])
+          @rules = rules # TODO
           @errors = errors.fetch(definition.name, [])[0] || []
           @children = build_children
         end

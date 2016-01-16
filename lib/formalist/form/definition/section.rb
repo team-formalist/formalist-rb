@@ -14,8 +14,8 @@ module Formalist
           @children = children
         end
 
-        def call(input, errors)
-          Result::Section.new(self, input, errors)
+        def call(input, rules, errors)
+          Result::Section.new(self, input, rules, errors)
         end
       end
     end
