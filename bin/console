@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require "pry"
+require "formalist"
+
+Pry.start
