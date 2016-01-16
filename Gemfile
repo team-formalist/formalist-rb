@@ -1,4 +1,4 @@
 source "https://rubygems.org"
 
-# Gem dependencies are specified in call_sheet.gemspec
+# Gem dependencies are specified in formalist.gemspec
 gemspec
