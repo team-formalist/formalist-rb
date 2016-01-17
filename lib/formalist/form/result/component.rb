@@ -5,16 +5,19 @@ module Formalist
         attr_reader :definition, :input, :rules, :errors
         attr_reader :children
 
-        def initialize(definition, input, errors)
+        def initialize(definition, input, rules, errors)
           @definition = definition
           @input = input
-          @rules = rules # TODO
+          @rules = rules
           @errors = errors
-          @children = definition.children.map { |el| el.(input, errors) }
+          @children = definition.children.map { |el| el.(input, rules, errors) }
         end
 
         def to_ary
-          [:component, [children.map(&:to_ary), definition.config.to_a]]
+          [:component, [
+            definition.config.to_a,
+            children.map(&:to_ary),
+          ]]
         end
       end
     end

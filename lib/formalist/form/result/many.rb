@@ -1,22 +1,33 @@
+require "formalist/validation/targeted_rules_compiler"
+
 module Formalist
   class Form
     class Result
       class Many
-        attr_reader :definition, :input, :errors
         attr_reader :children
+        attr_reader :definition, :input, :rules, :errors
 
         def initialize(definition, input, rules, errors)
+          rules_compiler = Validation::TargetedRulesCompiler.new(definition.name)
+
           @definition = definition
           @input = input.fetch(definition.name, [])
-          @rules = rules # TODO
+          @rules = rules_compiler.(rules)
           @errors = errors.fetch(definition.name, [])[0] || []
           @children = build_children
         end
 
         def to_ary
+          local_rules = rules # TODO: how do I extract rules _directly_ applying to the many's container element?
           local_errors = errors[0].is_a?(String) ? errors : []
 
-          [:many, [definition.name, children.map { |el_list| el_list.map(&:to_ary) }, local_errors, definition.config.to_a]]
+          [:many, [
+            definition.name,
+            local_rules,
+            local_errors,
+            definition.config.to_a,
+            children.map { |el_list| el_list.map(&:to_ary) },
+          ]]
         end
 
         private
@@ -38,7 +49,7 @@ module Formalist
           input.map { |child_input|
             local_child_errors = child_errors.map { |error| error[definition.name] }.detect { |error| error[1] == child_input }.to_a.dig(0, 0) || {}
 
-            definition.children.map { |el| el.(child_input, local_child_errors) }
+            definition.children.map { |el| el.(child_input, rules, local_child_errors) }
           }
         end
       end

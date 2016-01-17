@@ -1,13 +1,17 @@
+require "formalist/validation/targeted_rules_compiler"
+
 module Formalist
   class Form
     class Result
       class Field
         attr_reader :definition, :input, :rules, :errors
 
-        def initialize(definition, input, errors)
+        def initialize(definition, input, rules, errors)
+          rules_compiler = Validation::TargetedRulesCompiler.new(definition.name)
+
           @definition = definition
           @input = input[definition.name]
-          @rules = rules # TODO
+          @rules = rules_compiler.(rules)
           @errors = errors[definition.name].to_a[0] || []
         end
 
@@ -20,9 +24,10 @@ module Formalist
             definition.type,
             definition.display_variant,
             Dry::Data[definition.type].(input),
+            rules,
             errors,
-            definition.config.to_a]
-          ]
+            definition.config.to_a,
+          ]]
         end
       end
     end
