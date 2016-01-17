@@ -1,6 +1,6 @@
 module Formalist
   module Validation
-    class FieldRulesCompiler
+    class TargetedRulesCompiler
       IGNORED_PREDICATES = [:key?].freeze
 
       attr_reader :field_name
@@ -31,6 +31,20 @@ module Formalist
         return [] unless name == field_name
 
         visit(predicate)
+      end
+
+      def visit_set(node)
+        name, rules = node
+        return [] unless name == field_name
+
+        rules.flatten(1)
+      end
+
+      def visit_each(node)
+        name, rule = node
+        return [] unless name == field_name
+
+        visit(rule)
       end
 
       def visit_predicate(node)
