@@ -56,11 +56,38 @@ module Formalist
 
       def visit_and(node)
         left, right = node
-        [visit(left), visit(right)].flatten(1)
+        flatten_logical_operation(:and, [visit(left), visit(right)])
+      end
+
+      def visit_or(node)
+        left, right = node
+        flatten_logical_operation(:or, [visit(left), visit(right)])
+      end
+
+      def visit_xor(node)
+        left, right = node
+        flatten_logical_operation(:xor, [visit(left), visit(right)])
+      end
+
+      def visit_implication(node)
+        left, right = node
+        flatten_logical_operation(:implication, [visit(left), visit(right)])
       end
 
       def method_missing(name, *args)
         []
+      end
+
+      def flatten_logical_operation(name, contents)
+        contents = contents.select(&:any?)
+
+        if contents.length == 0
+          []
+        elsif contents.length == 1
+          contents.first
+        else
+          [name, contents]
+        end
       end
     end
   end
