@@ -1,4 +1,4 @@
-require "formalist/validation/targeted_rules_compiler"
+require "formalist/validation/value_rules_compiler"
 
 module Formalist
   class Form
@@ -7,7 +7,7 @@ module Formalist
         attr_reader :definition, :input, :rules, :errors
 
         def initialize(definition, input, rules, errors)
-          rules_compiler = Validation::TargetedRulesCompiler.new(definition.name)
+          rules_compiler = Validation::ValueRulesCompiler.new(definition.name)
 
           @definition = definition
           @input = input[definition.name]
