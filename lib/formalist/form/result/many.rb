@@ -4,8 +4,8 @@ module Formalist
   class Form
     class Result
       class Many
-        attr_reader :children
         attr_reader :definition, :input, :rules, :errors
+        attr_reader :child_template, :children
 
         def initialize(definition, input, rules, errors)
           rules_compiler = Validation::TargetedRulesCompiler.new(definition.name)
@@ -14,6 +14,7 @@ module Formalist
           @input = input.fetch(definition.name, [])
           @rules = rules_compiler.(rules)
           @errors = errors.fetch(definition.name, [])[0] || []
+          @child_template = build_child_template
           @children = build_children
         end
 
@@ -26,11 +27,19 @@ module Formalist
             local_rules,
             local_errors,
             definition.config.to_a,
+            child_template.map(&:to_ary),
             children.map { |el_list| el_list.map(&:to_ary) },
           ]]
         end
 
         private
+
+        def build_child_template
+          template_input = {}
+          template_errors = {}
+
+          definition.children.map { |el| el.(template_input, rules, template_errors)}
+        end
 
         def build_children
           # child errors looks like this:
