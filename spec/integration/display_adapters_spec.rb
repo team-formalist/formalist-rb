@@ -13,6 +13,7 @@ RSpec.describe "Display adapters" do
         "select",
         nil,
         [],
+        [],
         [
           [:option_values, [["c", "c"], ["f", "f"]]]
         ]
@@ -41,8 +42,8 @@ RSpec.describe "Display adapters" do
     end.new
 
     expect(form.({}).to_ary).to eq [
-      [:field, [:name, "string", "custom", nil, [], []]],
-      [:field, [:email, "string", "default", nil, [], []]],
+      [:field, [:name, "string", "custom", nil, [], [], []]],
+      [:field, [:email, "string", "default", nil, [], [], []]],
     ]
   end
 end
