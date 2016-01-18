@@ -34,8 +34,8 @@ module Formalist
           self.class.new(name, type, display_variant, config.merge(new_config))
         end
 
-        def call(input, errors)
-          Result::Field.new(self, input, errors)
+        def call(input, rules, errors)
+          Result::Field.new(self, input, rules, errors)
         end
       end
     end

@@ -32,10 +32,13 @@ module Formalist
       @schema = schema
     end
 
-    def call(input, validate: true)
-      error_messages = validate && schema ? schema.(input).messages : {}
+    def call(input = {}, options = {})
+      validate = options.fetch(:validate, true)
 
-      Result.new(elements.map { |el| el.(input, error_messages) })
+      rules = schema ? schema.rules.map(&:to_ary) : []
+      errors = validate && schema ? schema.(input).messages : {}
+
+      Result.new(elements.map { |el| el.(input, rules, errors) })
     end
   end
 end

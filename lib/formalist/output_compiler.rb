@@ -23,33 +23,33 @@ module Formalist
     end
 
     def visit_attr(data)
-      name, elements, _errors = data
+      name, predicates, errors, children = data
 
-      {name => elements.map { |node| visit(node) }.inject(:merge) }
+      {name => children.map { |node| visit(node) }.inject(:merge) }
     end
 
     def visit_field(data)
-      name, type, display_variant, value, _errors = data
+      name, type, display_variant, value, predicates, errors = data
 
       {name => coerce(value, type: type)}
     end
 
     def visit_group(data)
-      elements, _config = data
+      config, children = data
 
-      elements.map { |node| visit(node) }.inject(:merge)
+      children.map { |node| visit(node) }.inject(:merge)
     end
 
     def visit_many(data)
-      name, elements, _errors, _config = data
+      name, predicates, errors, config, template, children = data
 
-      {name => elements.map { |item| item.map { |node| visit(node) }.inject(:merge) }}
+      {name => children.map { |item| item.map { |node| visit(node) }.inject(:merge) }}
     end
 
     def visit_section(data)
-      _name, elements, _config = data
+      name, config, children = data
 
-      elements.map { |node| visit(node) }.inject(:merge)
+      children.map { |node| visit(node) }.inject(:merge)
     end
 
     private

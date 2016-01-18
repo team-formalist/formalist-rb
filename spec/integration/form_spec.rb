@@ -11,11 +11,11 @@ RSpec.describe Formalist::Form do
   it "outputs an AST" do
     expect(form.(title: "Aurora", rating:  10).to_ary).to eq [
       [:component, [
+        [],
         [
-          [:field, [:title, "string", "default", "Aurora", [], []]],
-          [:field, [:rating, "int", "default", 10, [], []]]
+          [:field, [:title, "string", "default", "Aurora", [], [], []]],
+          [:field, [:rating, "int", "default", 10, [], [], []]]
         ],
-        []
       ]],
     ]
   end
