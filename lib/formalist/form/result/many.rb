@@ -1,20 +1,24 @@
 require "formalist/validation/collection_rules_compiler"
 require "formalist/validation/value_rules_compiler"
+require "formalist/validation/predicate_list_compiler"
+
 
 module Formalist
   class Form
     class Result
       class Many
-        attr_reader :definition, :input, :value_rules, :collection_rules, :errors
+        attr_reader :definition, :input, :value_rules, :value_predicates, :collection_rules, :errors
         attr_reader :child_template, :children
 
         def initialize(definition, input, rules, errors)
           value_rules_compiler = Validation::ValueRulesCompiler.new(definition.name)
+          value_predicates_compiler = Validation::PredicateListCompiler.new
           collection_rules_compiler = Validation::CollectionRulesCompiler.new(definition.name)
 
           @definition = definition
           @input = input.fetch(definition.name, [])
           @value_rules = value_rules_compiler.(rules)
+          @value_predicates = value_predicates_compiler.(@value_rules)
           @collection_rules = collection_rules_compiler.(rules)
           @errors = errors.fetch(definition.name, [])[0] || []
           @child_template = build_child_template
@@ -26,7 +30,7 @@ module Formalist
 
           [:many, [
             definition.name,
-            value_rules,
+            value_predicates,
             local_errors,
             definition.config.to_a,
             child_template.map(&:to_ary),
