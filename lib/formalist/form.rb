@@ -32,7 +32,9 @@ module Formalist
       @schema = schema
     end
 
-    def call(input = {}, validate: true)
+    def call(input = {}, options = {})
+      validate = options.fetch(:validate, true)
+
       rules = schema ? schema.rules.map(&:to_ary) : []
       errors = validate && schema ? schema.(input).messages : {}
 
