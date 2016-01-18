@@ -1,8 +1,6 @@
 module Formalist
   module Validation
     class CollectionRulesCompiler
-      IGNORED_PREDICATES = [:key?].freeze
-
       attr_reader :target_name
 
       def initialize(target_name)
@@ -34,11 +32,8 @@ module Formalist
         visit(rule)
       end
 
-      # I wonder if I need this here....
       def visit_predicate(node)
         name, args = node
-        return [] if IGNORED_PREDICATES.include?(name)
-
         [:predicate, node]
       end
 

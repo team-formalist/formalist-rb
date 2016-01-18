@@ -1,8 +1,6 @@
 module Formalist
   module Validation
     class ValueRulesCompiler
-      IGNORED_PREDICATES = [:key?].freeze
-
       attr_reader :target_name
 
       def initialize(target_name)
@@ -51,8 +49,6 @@ module Formalist
 
       def visit_predicate(node)
         name, args = node
-        return [] if IGNORED_PREDICATES.include?(name)
-
         [:predicate, node]
       end
 
