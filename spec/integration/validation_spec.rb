@@ -8,14 +8,12 @@ RSpec.describe "Form validation" do
       key(:rating) { |rating| rating.gteq?(1) & rating.lteq?(10) }
 
       key(:reviews) do |reviews|
-        reviews.array? do
-          reviews.each do |review|
-            review.hash? do
-              review.key(:summary) { |summary| summary.filled? }
-              review.key(:rating) { |rating| rating.gteq?(1) & rating.lteq?(10) }
-            end
-          end
+        reviews.filled? & \
+        reviews.each do |review|
+          review.key(:summary) { |summary| summary.filled? }
+          review.key(:rating) { |rating| rating.gteq?(1) & rating.lteq?(10) }
         end
+
       end
 
       key(:meta) do |meta|
@@ -40,62 +38,45 @@ RSpec.describe "Form validation" do
     end.new(schema: schema)
   }
 
-  it "includes validation errors in the AST" do
+  it "includes validation rules and errors in the AST" do
     input = {
       reviews: [{summary: "Great", rating: 0}, {summary: "", rating: 1}],
       meta: {pages: nil}
     }
 
     expect(form.call(input).to_ary).to eq [
-      [:field, [:title, "string", "default", nil, ["title is missing"], []]],
-      [:field, [:rating, "int", "default", nil, ["rating is missing", "rating must be greater than or equal to 1", "rating must be less than or equal to 10"], []]],
+      [:field, [:title, "string", "default", nil, [[:predicate, [:filled?, []]]], ["title is missing"], []]],
+      [:field, [:rating, "int", "default", nil, [[:and, [[:predicate, [:gteq?, [1]]], [:predicate, [:lteq?, [10]]]]]], ["rating is missing", "rating must be greater than or equal to 1", "rating must be less than or equal to 10"], []]],
       [:many, [:reviews,
-        [
-          [
-            [:field, [:summary, "string", "default", "Great", [], []]],
-            [:field, [:rating, "int", "default", 0, ["rating must be greater than or equal to 1"], []]]
-          ],
-          [
-            [:field, [:summary, "string", "default", "", ["summary must be filled"], []]],
-            [:field, [:rating, "int", "default", 1, [], []]]
-          ]
-        ],
+        [[:predicate, [:filled?, []]]],
         [],
         [
           [:allow_create, true],
           [:allow_update, true],
           [:allow_destroy, true],
-          [:allow_reorder, true]
-        ]
+          [:allow_reorder, true],
+        ],
+        [
+          [:field, [:summary, "string", "default", nil, [[:predicate, [:filled?, []]]], [], []]],
+          [:field, [:rating, "int", "default", nil, [[:and, [[:predicate, [:gteq?, [1]]], [:predicate, [:lteq?, [10]]]]]], [], []]],
+        ],
+        [
+          [
+            [:field, [:summary, "string", "default", "Great", [[:predicate, [:filled?, []]]], [], []]],
+            [:field, [:rating, "int", "default", 0, [[:and, [[:predicate, [:gteq?, [1]]], [:predicate, [:lteq?, [10]]]]]], ["rating must be greater than or equal to 1"], []]],
+          ],
+          [
+            [:field, [:summary, "string", "default", "", [[:predicate, [:filled?, []]]], ["summary must be filled"], []]],
+            [:field, [:rating, "int", "default", 1, [[:and, [[:predicate, [:gteq?, [1]]], [:predicate, [:lteq?, [10]]]]]], [], []]],
+          ]
+        ],
       ]],
       [:attr, [:meta,
+        [],
+        [],
         [
-          [:field, [:pages, "int", "default", nil, ["pages must be filled"], []]]
+          [:field, [:pages, "int", "default", nil, [[:predicate, [:filled?, []]]], ["pages must be filled"], []]]
         ],
-        []
-      ]]
-    ]
-  end
-
-  it "includes validation errors on container elements (attr and many)" do
-    input = {}
-
-    expect(form.call(input).to_ary).to eq [
-      [:field, [:title, "string", "default", nil, ["title is missing"], []]],
-      [:field, [:rating, "int", "default", nil, ["rating is missing", "rating must be greater than or equal to 1", "rating must be less than or equal to 10"], []]],
-      [:many, [:reviews, [], ["reviews is missing"],
-        [
-          [:allow_create, true],
-          [:allow_update, true],
-          [:allow_destroy, true],
-          [:allow_reorder, true]
-        ]
-      ]],
-      [:attr, [:meta,
-        [
-          [:field, [:pages, "int", "default", nil, [], []]]
-        ],
-        ["meta is missing"]
       ]]
     ]
   end
