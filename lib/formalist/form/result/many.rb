@@ -74,7 +74,7 @@ module Formalist
         #
         # @return [Array] the collection as an array.
         def to_ary
-          local_errors = errors[0].is_a?(String) ? errors : []
+          local_errors = errors.select { |e| e.is_a?(String) }
 
           [:many, [
             definition.name,
@@ -110,7 +110,13 @@ module Formalist
           child_errors = errors[0].is_a?(Hash) ? errors : {}
 
           input.map { |child_input|
-            local_child_errors = child_errors.map { |error| error[definition.name] }.detect { |error| error[1] == child_input }.to_a.dig(0, 0) || {}
+            local_child_errors = child_errors.select { |e|
+              e.is_a?(Hash)
+            }.map { |e|
+              e[definition.name]
+            }.detect { |e|
+              e[1] == child_input
+            }.to_a.dig(0, 0) || {}
 
             definition.children.map { |el| el.(child_input, collection_rules, local_child_errors) }
           }
