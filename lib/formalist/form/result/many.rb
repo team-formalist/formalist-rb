@@ -2,7 +2,6 @@ require "formalist/validation/collection_rules_compiler"
 require "formalist/validation/value_rules_compiler"
 require "formalist/validation/predicate_list_compiler"
 
-
 module Formalist
   class Form
     class Result
@@ -25,6 +24,55 @@ module Formalist
           @children = build_children
         end
 
+        # Converts a collection of "many" repeating elements into an array
+        # format for including in a form's abstract syntax tree.
+        #
+        # The array takes the following format:
+        #
+        # ```
+        # [:many, [params]]
+        # ```
+        #
+        # With the following parameters:
+        #
+        # 1. Collection array name
+        # 1. Collection validation rules (if any)
+        # 1. Collection error messages (if any)
+        # 1. Collection configuration
+        # 1. Child element "template" (i.e. the form elements comprising a
+        #    single entry in the collection of "many" elements, without any
+        #    user data associated)
+        # 1. Child elements, one for each of the entries in the input data (or
+        #    none, if there is no or empty input data)
+        #
+        # @example "locations" collection
+        #   many.to_ary # =>
+        #   # [:many, [
+        #   #   :locations,
+        #   #   [[:predicate, [:min_size?, [3]]]],
+        #   #   ["locations size cannot be less than 3"],
+        #   #   [
+        #   #     [:allow_create, true],
+        #   #     [:allow_update, true],
+        #   #     [:allow_destroy, true],
+        #   #     [:allow_reorder, true]
+        #   #   ],
+        #   #   [
+        #   #     [:field, [:name, "string", "default", nil, [], [], []]],
+        #   #     [:field, [:address, "string", "default", nil, [], [], []]]
+        #   #   [
+        #   #     [
+        #   #       [:field, [:name, "string", "default", "Icelab Canberra", [], [], []]],
+        #   #       [:field, [:address, "string", "default", "Canberra, ACT, Australia", [], [], []]]
+        #   #     ],
+        #   #     [
+        #   #       [:field, [:name, "string", "default", "Icelab Melbourne", [], [], []]],
+        #   #       [:field, [:address, "string", "default", "Melbourne, VIC, Australia", [], [], []]]
+        #   #     ]
+        #   #   ]
+        #   # ]]
+        #
+        # @return [Array] the collection as an array.
         def to_ary
           local_errors = errors[0].is_a?(String) ? errors : []
 

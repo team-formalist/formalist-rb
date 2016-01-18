@@ -23,6 +23,36 @@ module Formalist
           @children = build_children
         end
 
+        # Converts the attribute into an array format for including in a
+        # form's abstract syntax tree.
+        #
+        # The array takes the following format:
+        #
+        # ```
+        # [:attr, [params]]
+        # ```
+        #
+        # With the following parameters:
+        #
+        # 1. Attribute name
+        # 1. Validation rules (if any)
+        # 1. Validation error messages (if any)
+        # 1. Child form elements
+        #
+        # @example "metadata" attr
+        #   attr.to_ary # =>
+        #   # [:attr, [
+        #   #   :metadata,
+        #   #   [
+        #   #     [:predicate, [:hash?, []]],
+        #   #   ],
+        #   #   ["metadata is missing"],
+        #   #   [
+        #   #     ...child elements...
+        #   #   ]
+        #   # ]]
+        #
+        # @return [Array] the attribute as an array.
         def to_ary
           # Errors, if the attr hash is present and its members have errors:
           # {:meta=>[[{:pages=>[["pages is missing"], nil]}], {}]}
