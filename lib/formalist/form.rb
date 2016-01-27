@@ -23,21 +23,12 @@ module Formalist
     # @api private
     attr_reader :elements
 
-    # @api private
-    attr_reader :schema
-
-    def initialize(schema: nil)
+    def initialize
       definition_compiler = DefinitionCompiler.new(self.class.display_adapters)
       @elements = definition_compiler.call(self.class.elements)
-      @schema = schema
     end
 
-    def call(input = {}, options = {})
-      validate = options.fetch(:validate, true)
-
-      rules = schema ? schema.rules.map(&:to_ary) : []
-      errors = validate && schema ? schema.(input).messages : {}
-
+    def call(input = {}, rules: [], errors: {})
       Result.new(elements.map { |el| el.(input, rules, errors) })
     end
   end
