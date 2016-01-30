@@ -29,7 +29,7 @@ module Formalist
         # 1. Child form elements
         #
         # @example "content" section
-        #   section.to_ary # =>
+        #   section.to_ast # =>
         #   # [:section, [
         #   #   :content,
         #   #   [
@@ -41,11 +41,11 @@ module Formalist
         #   # ]]
         #
         # @return [Array] the section as an array.
-        def to_ary
+        def to_ast
           [:section, [
             definition.name,
             definition.config.to_a,
-            children.map(&:to_ary),
+            children.map(&:to_ast),
           ]]
         end
       end

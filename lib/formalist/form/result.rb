@@ -7,8 +7,8 @@ module Formalist
         @elements = elements
       end
 
-      def to_ary
-        elements.map(&:to_ary)
+      def to_ast
+        elements.map(&:to_ast)
       end
     end
   end

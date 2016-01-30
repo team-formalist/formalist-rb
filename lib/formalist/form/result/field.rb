@@ -38,7 +38,7 @@ module Formalist
         # 1. Field configuration
         #
         # @example "email" field
-        #   field.to_ary # =>
+        #   field.to_ast # =>
         #   # [:field, [
         #   #   :email,
         #   #   "string",
@@ -57,7 +57,7 @@ module Formalist
         #   # ]]
         #
         # @return [Array] the field as an array.
-        def to_ary
+        def to_ast
           # errors looks like this
           # {:field_name => [["pages is missing", "another error message"], nil]}
 

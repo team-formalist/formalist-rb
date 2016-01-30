@@ -6,7 +6,7 @@ RSpec.describe "Display adapters" do
   }
 
   it "outputs an AST" do
-    expect(form.({}).to_ary).to eq [
+    expect(form.({}).to_ast).to eq [
       [:field, [
         :temperature_unit,
         "string",
@@ -41,7 +41,7 @@ RSpec.describe "Display adapters" do
       field :email, type: "string"
     end.new
 
-    expect(form.({}).to_ary).to eq [
+    expect(form.({}).to_ast).to eq [
       [:field, [:name, "string", "custom", nil, [], [], []]],
       [:field, [:email, "string", "default", nil, [], [], []]],
     ]

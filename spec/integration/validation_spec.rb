@@ -44,7 +44,7 @@ RSpec.describe "Form validation" do
       meta: {pages: nil}
     }
 
-    expect(form.call(input).to_ary).to eq [
+    expect(form.call(input).to_ast).to eq [
       [:field, [:title, "string", "default", nil, [[:predicate, [:filled?, []]]], ["title is missing"], []]],
       [:field, [:rating, "int", "default", nil, [[:and, [[:predicate, [:gteq?, [1]]], [:predicate, [:lteq?, [10]]]]]], ["rating is missing", "rating must be greater than or equal to 1", "rating must be less than or equal to 10"], []]],
       [:many, [:reviews,
