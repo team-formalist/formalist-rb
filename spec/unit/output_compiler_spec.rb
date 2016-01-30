@@ -1,6 +1,25 @@
 RSpec.describe Formalist::OutputCompiler do
   subject(:compiler) { Formalist::OutputCompiler.new }
 
+  let(:schema) {
+    Class.new(Dry::Validation::Schema) do
+      key(:title, &:str?)
+      key(:rating, &:int?)
+
+      key(:reviews) do |reviews|
+        reviews.each do |review|
+          review.key(:description, &:str?)
+          review.key(:rating, &:int?)
+        end
+      end
+
+      key(:meta) do |meta|
+        meta.key(:pages, &:int?)
+        meta.key(:publisher, &:str?)
+      end
+    end.new
+  }
+
   let(:form) {
     Class.new(Formalist::Form) do
       field :title, type: "string"
@@ -19,7 +38,7 @@ RSpec.describe Formalist::OutputCompiler do
           end
         end
       end
-    end.new
+    end.new(schema)
   }
 
   let(:input) {
@@ -43,7 +62,7 @@ RSpec.describe Formalist::OutputCompiler do
     }
   }
 
-  let(:ast) { form.call(input).to_ast }
+  let(:ast) { form.build(input).to_ast }
 
   it "works" do
     expect(compiler.call(ast)).to eq input

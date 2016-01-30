@@ -21,15 +21,25 @@ module Formalist
     end
 
     # @api private
+    attr_reader :schema
+
+    # @api private
     attr_reader :elements
 
-    def initialize
+    def initialize(schema)
       definition_compiler = DefinitionCompiler.new(self.class.display_adapters)
+
       @elements = definition_compiler.call(self.class.elements)
+      @schema = schema
     end
 
-    def call(input = {}, rules: [], errors: {})
-      Result.new(elements.map { |el| el.(input, rules, errors) })
+    def build(input)
+      Result.new(schema, elements, input)
+    end
+
+    def receive(form_post)
+      input = schema.(form_post).params
+      build(input)
     end
   end
 end
