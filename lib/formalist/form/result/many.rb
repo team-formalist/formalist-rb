@@ -46,7 +46,7 @@ module Formalist
         #    none, if there is no or empty input data)
         #
         # @example "locations" collection
-        #   many.to_ary # =>
+        #   many.to_ast # =>
         #   # [:many, [
         #   #   :locations,
         #   #   [[:predicate, [:min_size?, [3]]]],
@@ -73,7 +73,7 @@ module Formalist
         #   # ]]
         #
         # @return [Array] the collection as an array.
-        def to_ary
+        def to_ast
           local_errors = errors.select { |e| e.is_a?(String) }
 
           [:many, [
@@ -81,8 +81,8 @@ module Formalist
             value_predicates,
             local_errors,
             definition.config.to_a,
-            child_template.map(&:to_ary),
-            children.map { |el_list| el_list.map(&:to_ary) },
+            child_template.map(&:to_ast),
+            children.map { |el_list| el_list.map(&:to_ast) },
           ]]
         end
 

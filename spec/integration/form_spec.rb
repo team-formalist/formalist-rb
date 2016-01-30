@@ -9,7 +9,7 @@ RSpec.describe Formalist::Form do
   }
 
   it "outputs an AST" do
-    expect(form.(title: "Aurora", rating:  10).to_ary).to eq [
+    expect(form.(title: "Aurora", rating:  10).to_ast).to eq [
       [:component, [
         [],
         [

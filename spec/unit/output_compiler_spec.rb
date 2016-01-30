@@ -43,7 +43,7 @@ RSpec.describe Formalist::OutputCompiler do
     }
   }
 
-  let(:ast) { form.call(input).to_ary }
+  let(:ast) { form.call(input).to_ast }
 
   it "works" do
     expect(compiler.call(ast)).to eq input

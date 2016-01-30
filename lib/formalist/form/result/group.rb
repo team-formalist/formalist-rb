@@ -28,7 +28,7 @@ module Formalist
         # 1. Child form elements
         #
         # @example
-        #   group.to_ary # =>
+        #   group.to_ast # =>
         #   # [:group, [
         #   #   [
         #   #     [:some_config_name, :some_config_value]
@@ -39,10 +39,10 @@ module Formalist
         #   # ]]
         #
         # @return [Array] the group as an array.
-        def to_ary
+        def to_ast
           [:group, [
             definition.config.to_a,
-            children.map(&:to_ary),
+            children.map(&:to_ast),
           ]]
         end
       end

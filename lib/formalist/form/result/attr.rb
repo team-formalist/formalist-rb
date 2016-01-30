@@ -40,7 +40,7 @@ module Formalist
         # 1. Child form elements
         #
         # @example "metadata" attr
-        #   attr.to_ary # =>
+        #   attr.to_ast # =>
         #   # [:attr, [
         #   #   :metadata,
         #   #   [
@@ -53,7 +53,7 @@ module Formalist
         #   # ]]
         #
         # @return [Array] the attribute as an array.
-        def to_ary
+        def to_ast
           # Errors, if the attr hash is present and its members have errors:
           # {:meta=>[[{:pages=>[["pages is missing"], nil]}], {}]}
 
@@ -66,7 +66,7 @@ module Formalist
             definition.name,
             value_predicates,
             local_errors,
-            children.map(&:to_ary),
+            children.map(&:to_ast),
           ]]
         end
 
