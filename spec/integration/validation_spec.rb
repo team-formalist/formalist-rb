@@ -16,9 +16,12 @@ RSpec.describe "Form validation" do
 
       end
 
-      key(:meta) do |meta|
-        meta.key(:pages) { |pages| pages.filled? }
-      end
+      # TODO: uncomment/fix the "meta" related sections (here and below) once
+      # we have a clarification on dryrb/dry-validation#58.
+      #
+      # key(:meta) do |meta|
+      #   meta.key(:pages) { |pages| pages.filled? }
+      # end
     end.new
   }
 
@@ -32,10 +35,10 @@ RSpec.describe "Form validation" do
         review.field :rating, type: "int"
       end
 
-      attr :meta do |meta|
-        meta.field :pages, type: "int"
-      end
-    end.new(schema: schema)
+      # attr :meta do |meta|
+      #   meta.field :pages, type: "int"
+      # end
+    end.new(schema)
   }
 
   it "includes validation rules and errors in the AST" do
@@ -44,7 +47,7 @@ RSpec.describe "Form validation" do
       meta: {pages: nil}
     }
 
-    expect(form.call(input).to_ast).to eq [
+    expect(form.build(input).validate.to_ast).to eq [
       [:field, [:title, "string", "default", nil, [[:predicate, [:filled?, []]]], ["title is missing"], []]],
       [:field, [:rating, "int", "default", nil, [[:and, [[:predicate, [:gteq?, [1]]], [:predicate, [:lteq?, [10]]]]]], ["rating is missing", "rating must be greater than or equal to 1", "rating must be less than or equal to 10"], []]],
       [:many, [:reviews,
@@ -71,13 +74,13 @@ RSpec.describe "Form validation" do
           ]
         ],
       ]],
-      [:attr, [:meta,
-        [],
-        [],
-        [
-          [:field, [:pages, "int", "default", nil, [[:predicate, [:filled?, []]]], ["pages must be filled"], []]]
-        ],
-      ]]
+      # [:attr, [:meta,
+      #   [],
+      #   [],
+      #   [
+      #     [:field, [:pages, "int", "default", nil, [[:predicate, [:filled?, []]]], ["pages must be filled"], []]]
+      #   ],
+      # ]]
     ]
   end
 end

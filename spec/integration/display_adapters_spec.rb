@@ -1,12 +1,18 @@
 RSpec.describe "Display adapters" do
-  subject(:form) {
-    Class.new(Formalist::Form) do
-      field :temperature_unit, type: "string", display: "select", option_values: [%w[c c], %w[f f]]
+  let(:schema) {
+    Class.new(Dry::Validation::Schema) do
+      key(:temperature_unit)
     end.new
   }
 
+  subject(:form) {
+    Class.new(Formalist::Form) do
+      field :temperature_unit, type: "string", display: "select", option_values: [%w[c c], %w[f f]]
+    end.new(schema)
+  }
+
   it "outputs an AST" do
-    expect(form.({}).to_ast).to eq [
+    expect(form.build({}).to_ast).to eq [
       [:field, [
         :temperature_unit,
         "string",
@@ -39,9 +45,9 @@ RSpec.describe "Display adapters" do
 
       field :name, type: "string", display: "custom"
       field :email, type: "string"
-    end.new
+    end.new(schema)
 
-    expect(form.({}).to_ast).to eq [
+    expect(form.build({}).to_ast).to eq [
       [:field, [:name, "string", "custom", nil, [], [], []]],
       [:field, [:email, "string", "default", nil, [], [], []]],
     ]
