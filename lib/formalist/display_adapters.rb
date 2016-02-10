@@ -1,6 +1,7 @@
 require "dry-container"
 require "formalist/display_adapters/default"
 require "formalist/display_adapters/select"
+require "formalist/display_adapters/textarea"
 
 module Formalist
   class DisplayAdapters
@@ -8,5 +9,6 @@ module Formalist
 
     register DEFAULT_DISPLAY_ADAPTER, Default.new
     register "select", Select.new
+    register "textarea", Textarea.new
   end
 end
