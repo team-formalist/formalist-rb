@@ -1,15 +1,3 @@
-GIT
-  remote: https://github.com/dryrb/dry-validation
-  revision: 3775ee4d05e9b0f18368197e63f8e103cc43dfc1
-  branch: master
-  specs:
-    dry-validation (0.6.0)
-      dry-configurable (~> 0.1, >= 0.1.3)
-      dry-container (~> 0.2, >= 0.2.8)
-      dry-data (~> 0.5, >= 0.5.0)
-      dry-equalizer (~> 0.2)
-      dry-logic (~> 0.1, >= 0.1.4)
-
 PATH
   remote: .
   specs:
@@ -17,7 +5,7 @@ PATH
       dry-configurable
       dry-container
       dry-data (>= 0.4.2)
-      dry-validation
+      dry-validation (~> 0.6.0)
       inflecto
 
 GEM
@@ -47,6 +35,12 @@ GEM
     dry-logic (0.1.4)
       dry-container (~> 0.2, >= 0.2.6)
       dry-equalizer (~> 0.2)
+    dry-validation (0.6.0)
+      dry-configurable (~> 0.1, >= 0.1.3)
+      dry-container (~> 0.2, >= 0.2.8)
+      dry-data (~> 0.5, >= 0.5.0)
+      dry-equalizer (~> 0.2)
+      dry-logic (~> 0.1, >= 0.1.2)
     inflecto (0.0.2)
     json (1.8.3)
     kleisli (0.2.7)
@@ -95,7 +89,6 @@ PLATFORMS
 DEPENDENCIES
   bundler (~> 1.10)
   byebug
-  dry-validation!
   formalist!
   pry
   rake (~> 10.4.2)
