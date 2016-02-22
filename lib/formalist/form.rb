@@ -38,7 +38,7 @@ module Formalist
     end
 
     def receive(form_post)
-      input = schema.(form_post).params
+      input = schema.(form_post).output
       build(input)
     end
   end

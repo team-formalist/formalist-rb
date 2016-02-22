@@ -97,25 +97,21 @@ module Formalist
 
         def build_children
           # child errors looks like this:
-          # {:links=>
-          #   [[{:links=>
-          #       [[{:url=>[["url must be filled"], ""]}],
-          #        {:name=>"personal", :url=>""}]}],
-          #    [{:name=>"company", :url=>"http://icelab.com.au"},
-          #     {:name=>"personal", :url=>""}]]}
+          # [
+          #   {:rating=>[["rating must be greater than or equal to 1"], 0]},
+          #   {:summary=>"Great", :rating=>0},
+          #   {:summary=>[["summary must be filled"], ""]},
+          #   {:summary=>"", :rating=>1}
+          # ]
           #
           # or local errors:
           # {:links=>[["links is missing"], nil]}
 
-          child_errors = errors[0].is_a?(Hash) ? errors : {}
+          child_errors = errors.each_slice(2).to_a
 
           input.map { |child_input|
             local_child_errors = child_errors.select { |e|
-              e.is_a?(Hash)
-            }.map { |e|
-              e[definition.name]
-            }.detect { |e|
-              e && e[1] == child_input
+              e[1] == child_input
             }.to_a.dig(0, 0) || {}
 
             definition.children.map { |el| el.(child_input, collection_rules, local_child_errors) }
