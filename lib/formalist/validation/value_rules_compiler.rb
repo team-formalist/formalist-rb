@@ -26,6 +26,10 @@ module Formalist
 
       def visit_val(node)
         name, predicate = node
+
+        # Support names that show as keypaths, e.g. [:reviews, :rating]
+        name = name.last if name.is_a?(Array)
+
         return [] unless name == target_name
 
         # Skip the "val" prefix

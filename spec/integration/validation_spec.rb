@@ -19,9 +19,9 @@ RSpec.describe "Form validation" do
       # TODO: uncomment/fix the "meta" related sections (here and below) once
       # we have a clarification on dryrb/dry-validation#58.
       #
-      key(:meta) do |meta|
-        meta.key(:pages) { |pages| pages.filled? }
-      end
+      # key(:meta) do |meta|
+      #   meta.key(:pages) { |pages| pages.filled? }
+      # end
     end.new
   }
 
@@ -35,9 +35,9 @@ RSpec.describe "Form validation" do
         review.field :rating, type: "int"
       end
 
-      attr :meta do |meta|
-        meta.field :pages, type: "int"
-      end
+      # attr :meta do |meta|
+      #   meta.field :pages, type: "int"
+      # end
     end.new(schema)
   }
 
@@ -74,13 +74,13 @@ RSpec.describe "Form validation" do
           ]
         ],
       ]],
-      [:attr, [:meta,
-        [],
-        [],
-        [
-          [:field, [:pages, "int", "default", nil, [[:predicate, [:filled?, []]]], ["pages must be filled"], []]]
-        ],
-      ]]
+      # [:attr, [:meta,
+      #   [],
+      #   [],
+      #   [
+      #     [:field, [:pages, "int", "default", nil, [[:predicate, [:filled?, []]]], ["pages must be filled"], []]]
+      #   ],
+      # ]]
     ]
   end
 end
