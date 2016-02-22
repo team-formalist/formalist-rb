@@ -1,5 +1,7 @@
 require "dry-configurable"
+require "json"
 require "formalist/definition_compiler"
+require "formalist/output_compiler"
 require "formalist/display_adapters"
 require "formalist/form/definition"
 require "formalist/form/result"
@@ -38,6 +40,8 @@ module Formalist
     end
 
     def receive(form_post)
+      form_post = Formalist::OutputCompiler.new.call(JSON.parse(form_post))
+
       input = schema.(form_post).output
       build(input)
     end
