@@ -13,7 +13,7 @@ GIT
 PATH
   remote: .
   specs:
-    formalist (0.1.0)
+    formalist (0.2.0)
       dry-configurable
       dry-container
       dry-data (>= 0.4.2)
