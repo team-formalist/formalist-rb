@@ -23,7 +23,7 @@ module Formalist
       end
 
       def output
-        validation.output
+        validation.params
       end
 
       def success?

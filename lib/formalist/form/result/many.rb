@@ -115,7 +115,7 @@ module Formalist
             }.map { |e|
               e[definition.name]
             }.detect { |e|
-              e[1] == child_input
+              e && e[1] == child_input
             }.to_a.dig(0, 0) || {}
 
             definition.children.map { |el| el.(child_input, collection_rules, local_child_errors) }
