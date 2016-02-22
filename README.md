@@ -6,13 +6,16 @@
 
 ## Installation
 
-Add this line to your application’s `Gemfile`:
+Add these lines to your application’s `Gemfile`:
 
 ```ruby
+gem "dry-validation", git: "https://github.com/dryrb/dry-validation", ref: "6447302f3b53766b29f29230831890a5cc3822e0"
 gem "formalist"
 ```
 
-Run `bundle` to install the gem.
+The dry-validation dependency is a temporary lock to a version that offers the AST/error message structures we expect. You should be able to remove this after future releases of formalist and dry-validation.
+
+Run `bundle` to install the gems.
 
 ## Contributing
 
