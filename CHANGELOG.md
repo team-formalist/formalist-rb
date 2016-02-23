@@ -1,3 +1,7 @@
+# 0.2.2 / 2015-02-23
+
+Remove local type coercion using dry-data. We rely on a `Dry::Validation::Schema` to do this now. The form definition API has not yet changed, though. We still require field types to be specified, but there is no longer any restriction over what is entered. We'll remove this in a future release, once we can infer types from the schema.
+
 # 0.2.1 / 2015-02-23
 
 Fix issue where form could not be built with input data with native data types (it presuming input would be HTML form-style input everywhere).

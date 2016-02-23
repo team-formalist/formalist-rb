@@ -65,7 +65,7 @@ module Formalist
             definition.name,
             definition.type,
             definition.display_variant,
-            Dry::Data[definition.type].(input),
+            input,
             predicates,
             errors,
             definition.config.to_a,

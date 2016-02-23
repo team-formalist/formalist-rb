@@ -1,4 +1,3 @@
-require "dry-data"
 require "formalist/form/result/component"
 
 module Formalist

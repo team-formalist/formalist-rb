@@ -44,19 +44,19 @@ RSpec.describe Formalist::OutputCompiler do
   let(:input) {
     {
       title: "Aurora",
-      rating: 10,
+      rating: "10",
       reviews: [
         {
           description: "Wonderful",
-          rating: 10,
+          rating: "10",
         },
         {
           description: "Enchanting",
-          rating: 9,
+          rating: "9",
         }
       ],
       meta: {
-        pages: 321,
+        pages: "321",
         publisher: "Orbit",
       },
     }

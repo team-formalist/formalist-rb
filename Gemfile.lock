@@ -13,10 +13,9 @@ GIT
 PATH
   remote: .
   specs:
-    formalist (0.2.1)
+    formalist (0.2.2)
       dry-configurable
       dry-container
-      dry-data (>= 0.4.2)
       dry-validation (~> 0.6.0)
       inflecto
 
