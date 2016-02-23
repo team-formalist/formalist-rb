@@ -1,17 +1,5 @@
-require "dry-data"
-
 module Formalist
   class OutputCompiler
-    FORM_TYPES = %w[
-      bool
-      date
-      date_time
-      decimal
-      float
-      int
-      time
-    ].freeze
-
     def call(ast)
       ast.map { |node| visit(node) }.inject(:merge)
     end
@@ -29,9 +17,9 @@ module Formalist
     end
 
     def visit_field(data)
-      name, type, display_variant, value, predicates, errors = data
+      name, _type, _display_variant, value, _predicates, _errors = data
 
-      {name => coerce(value, type: type)}
+      {name => value.to_s}
     end
 
     def visit_group(data)
@@ -50,16 +38,6 @@ module Formalist
       name, config, children = data
 
       children.map { |node| visit(node) }.inject(:merge)
-    end
-
-    private
-
-    def coerce(value, type:)
-      if FORM_TYPES.include?(type)
-        Dry::Data["form.#{type}"].(value)
-      else
-        Dry::Data[type].(value)
-      end
     end
   end
 end
