@@ -1,5 +1,7 @@
-require "dry-configurable"
 require "json"
+require "dry-configurable"
+require "dry-validation"
+require "dry/validation/schema/form"
 require "formalist/definition_compiler"
 require "formalist/output_compiler"
 require "formalist/display_adapters"
@@ -40,9 +42,10 @@ module Formalist
     end
 
     def receive(form_post)
-      form_post = Formalist::OutputCompiler.new.call(JSON.parse(form_post))
+      form_data = Formalist::OutputCompiler.new.call(JSON.parse(form_post))
+      form_schema = Dry::Validation::Schema::Form.new(schema.class.rules)
 
-      input = schema.(form_post).output
+      input = form_schema.(form_data).output
       build(input)
     end
   end
