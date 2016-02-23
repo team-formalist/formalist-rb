@@ -1,3 +1,9 @@
+# 0.2.1 / 2015-02-23
+
+Fix issue where form could not be built with input data with native data types (it presuming input would be HTML form-style input everywhere).
+
+Add default (empty) input data argument for `Form#build`. This allows you simply to call `MyForm.build` for creating a "new" form (i.e. one without any existing input data).
+
 # 0.2.0 / 2015-02-22
 
 Require a dry-validation schema for each form. The schema should completely represent the form's expected data structure.
