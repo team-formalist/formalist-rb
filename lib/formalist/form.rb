@@ -37,7 +37,7 @@ module Formalist
       @schema = schema
     end
 
-    def build(input)
+    def build(input = {})
       Result.new(schema, elements, input)
     end
 
