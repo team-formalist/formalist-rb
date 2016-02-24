@@ -15,7 +15,7 @@ module Formalist
           @input = input[definition.name]
           @rules = rules_compiler.(rules)
           @predicates = predicates_compiler.(@rules)
-          @errors = errors[definition.name].to_a[0] || []
+          @errors = errors[definition.name] || []
         end
 
         # Converts the field into an array format for including in a form's
