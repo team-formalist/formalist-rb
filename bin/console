@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require "pry"
+require "byebug"
 require "formalist"
 
 Pry.start
