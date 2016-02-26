@@ -1,5 +1,3 @@
-require "formalist/form/validated_result"
-
 module Formalist
   class Form
     class Result
@@ -16,10 +14,10 @@ module Formalist
       attr_reader :validation
 
       def initialize(schema, elements, input)
-        @input = input
         @schema = schema
         @elements = elements
-        @validation = schema.(input)
+        @input = input
+        @validation = schema.(@input)
       end
 
       def output
@@ -39,7 +37,17 @@ module Formalist
       end
 
       def validate
-        ValidatedResult.new(self)
+        Validated.new(schema, elements, input)
+      end
+
+      class Validated < Result
+        def success?
+          validation.success?
+        end
+
+        def messages
+          validation.messages
+        end
       end
     end
   end
