@@ -1,9 +1,8 @@
 require "json"
 require "dry-configurable"
 require "dry-validation"
-require "dry/validation/schema/form"
+require "dry/validation/input_type_compiler"
 require "formalist/definition_compiler"
-require "formalist/output_compiler"
 require "formalist/display_adapters"
 require "formalist/form/definition"
 require "formalist/form/result"
@@ -25,16 +24,20 @@ module Formalist
     end
 
     # @api private
+    attr_reader :elements
+
+    # @api private
     attr_reader :schema
 
     # @api private
-    attr_reader :elements
+    attr_reader :form_post_compiler
 
     def initialize(schema)
       definition_compiler = DefinitionCompiler.new(self.class.display_adapters)
 
       @elements = definition_compiler.call(self.class.elements)
       @schema = schema
+      @form_post_compiler = Dry::Validation::InputTypeCompiler.new.(schema.class.rules.map(&:to_ast))
     end
 
     def build(input = {})
@@ -42,11 +45,7 @@ module Formalist
     end
 
     def receive(form_post)
-      form_data = Formalist::OutputCompiler.new.call(JSON.parse(form_post))
-      form_schema = Dry::Validation::Schema::Form.new(schema.class.rules)
-
-      input = form_schema.(form_data).output
-      build(input)
+      build(form_post_compiler.(form_post))
     end
   end
 end
