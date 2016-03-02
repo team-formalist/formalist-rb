@@ -33,6 +33,16 @@ module Formalist
         @children = build_children(children)
       end
 
+      # Until we can put defaults on `Types::Bool`, supply them here
+      def attributes
+        {
+          allow_create: true,
+          allow_update: true,
+          allow_destroy: true,
+          allow_reorder: true,
+        }.merge(super)
+      end
+
       # Converts a collection of "many" repeating elements into an array
       # format for including in a form's abstract syntax tree.
       #
@@ -98,7 +108,6 @@ module Formalist
           children.map { |el_list| el_list.map(&:to_ast) },
         ]]
       end
-
 
       private
 
