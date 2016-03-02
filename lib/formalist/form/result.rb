@@ -1,3 +1,5 @@
+require "dry-validation"
+
 module Formalist
   class Form
     class Result
@@ -8,17 +10,23 @@ module Formalist
       attr_reader :input
 
       # @api private
+      attr_reader :messages
+
+      # @api private
       attr_reader :elements
 
-      def initialize(form, input)
+      def initialize(form, input_or_result)
         @form = form
-        @input = input
-        @elements = form.elements.map { |el| el.(input, form.schema.rules.map(&:to_ary), messages) }
-      end
 
-      # TODO: make this show the actual schema messages when we've been handed a dry-v schema result
-      def messages
-        {}
+        if input_or_result.is_a?(Dry::Validation::Schema::Result)
+          @input = input_or_result.output
+          @messages = input_or_result.messages
+        else
+          @input = input
+          @messages = {}
+        end
+
+        @elements = form.elements.map { |el| el.(input, form.schema.rules.map(&:to_ary), messages) }
       end
 
       def to_ast
