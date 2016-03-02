@@ -22,7 +22,7 @@ module Formalist
           @input = input_or_result.output
           @messages = input_or_result.messages
         else
-          @input = input
+          @input = input_or_result
           @messages = {}
         end
 
