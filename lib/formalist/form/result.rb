@@ -2,52 +2,27 @@ module Formalist
   class Form
     class Result
       # @api private
-      attr_reader :input
+      attr_reader :form
 
       # @api private
-      attr_reader :schema
+      attr_reader :input
 
       # @api private
       attr_reader :elements
 
-      # @api public
-      attr_reader :validation
-
-      def initialize(schema, elements, input)
-        @schema = schema
-        @elements = elements
+      def initialize(form, input)
+        @form = form
         @input = input
-        @validation = schema.(@input)
+        @elements = form.elements.map { |el| el.(input, form.schema.rules.map(&:to_ary), messages) }
       end
 
-      def output
-        validation.output
-      end
-
-      def success?
-        true
-      end
-
+      # TODO: make this show the actual schema messages when we've been handed a dry-v schema result
       def messages
         {}
       end
 
       def to_ast
-        elements.map { |el| el.(output, schema.rules.map(&:to_ary), messages).to_ast }
-      end
-
-      def validate
-        Validated.new(schema, elements, input)
-      end
-
-      class Validated < Result
-        def success?
-          validation.success?
-        end
-
-        def messages
-          validation.messages
-        end
+        elements.map(&:to_ast)
       end
     end
   end

@@ -1,26 +1,39 @@
-require "json"
 require "dry-configurable"
-require "dry-validation"
-require "dry/validation/input_type_compiler"
-require "formalist/definition_compiler"
-require "formalist/display_adapters"
-require "formalist/form/definition"
+require "formalist/elements"
+require "formalist/form/definition_context"
+require "formalist/element/permitted_children"
 require "formalist/form/result"
 
 module Formalist
   class Form
     extend Dry::Configurable
-    extend Definition
 
-    setting :display_adapters, DisplayAdapters
-
-    def self.display_adapters
-      config.display_adapters
-    end
+    setting :elements_container, Elements
 
     # @api private
     def self.elements
-      @__elements__ ||= []
+      @elements ||= []
+    end
+
+    # @api private
+    def self.definition_context
+      @definition_context ||= DefinitionContext.new(
+        elements,
+        container: config.elements_container,
+        permissions: Element::PermittedChildren.all,
+      )
+    end
+
+    # @api private
+    def self.method_missing(name, *args, &block)
+      return super unless definition_context.element_exists?(name)
+
+      definition_context.add_element(name, *args, &block)
+    end
+
+    # @pi private
+    def self.respond_to_missing?(name, include_private = false)
+      definition_context.element_exists?(name)
     end
 
     # @api private
@@ -29,23 +42,22 @@ module Formalist
     # @api private
     attr_reader :schema
 
-    # @api private
-    attr_reader :form_post_compiler
-
+    # TODO: allow other deps here
     def initialize(schema)
-      definition_compiler = DefinitionCompiler.new(self.class.display_adapters)
-
-      @elements = definition_compiler.call(self.class.elements)
       @schema = schema
-      @form_post_compiler = Dry::Validation::InputTypeCompiler.new.(schema.class.rules.map(&:to_ast))
     end
 
+    def elements_container
+      self.class.elements_container
+    end
+
+    def elements
+      self.class.elements
+    end
+
+    # TODO: allow this to work with both hashes and dry-v schema results
     def build(input = {})
-      Result.new(schema, elements, input)
-    end
-
-    def receive(form_post)
-      build(form_post_compiler.(form_post))
+      Result.new(self, input)
     end
   end
 end

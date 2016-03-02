@@ -8,9 +8,9 @@ RSpec.describe Formalist::Form do
 
   subject(:form) {
     Class.new(Formalist::Form) do
-      component do |c|
-        c.field :title, type: "string"
-        c.field :rating, type: "int"
+      component do
+        field :title
+        field :rating
       end
     end.new(schema)
   }
@@ -20,10 +20,11 @@ RSpec.describe Formalist::Form do
 
     expect(form.build(title: "Aurora", rating:  10).to_ast).to eq [
       [:component, [
+        :component,
         [],
         [
-          [:field, [:title, "string", "default", "Aurora", [[:predicate, [:str?, []]]], [], []]],
-          [:field, [:rating, "int", "default", 10, [[:predicate, [:int?, []]]], [], []]]
+          [:field, [:title, :field, "Aurora", [[:predicate, [:str?, []]]], [], []]],
+          [:field, [:rating, :field, 10, [[:predicate, [:int?, []]]], [], []]]
         ],
       ]],
     ]
