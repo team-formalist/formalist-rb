@@ -21,7 +21,7 @@ module Formalist
         @input = input[attributes[:name]]
         @rules = rules_compiler.(@rules)
         @predicates = predicates_compiler.(@rules)
-        @errors = errors[attributes[:name]] || []
+        @errors = (errors[attributes[:name]] || [])[0].to_a
       end
 
       # Converts the field into an array format for including in a form's
