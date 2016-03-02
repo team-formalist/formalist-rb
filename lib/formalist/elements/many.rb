@@ -28,7 +28,7 @@ module Formalist
         @value_rules = value_rules_compiler.(rules)
         @value_predicates = value_predicates_compiler.(@value_rules)
         @collection_rules = collection_rules_compiler.(rules)
-        @errors = errors.fetch(definition.name, [])[0] || []
+        @errors = errors.fetch(attributes[:name], [])[0] || []
         @child_template = build_child_template(children)
         @children = build_children(children)
       end
