@@ -1,5 +1,6 @@
 require "inflecto"
 require "formalist/element/class_interface"
+require "formalist/types"
 
 module Formalist
   class Element
@@ -8,6 +9,8 @@ module Formalist
     attr_reader :attributes, :children, :input, :rules, :errors
 
     def initialize(attributes, children, input, rules, errors)
+      attributes = Types::Hash.schema(self.class.schema).(attributes)
+
       @attributes = attributes
       @input = input
       @rules = rules

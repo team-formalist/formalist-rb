@@ -27,18 +27,20 @@ RSpec.describe "Form validation" do
 
   subject(:form) {
     Class.new(Formalist::Form) do
-      field :title, type: "string"
-      field :rating, type: "int"
+      define do
+        field :title, type: "string"
+        field :rating, type: "int"
 
-      many :reviews do |review|
-        review.field :summary, type: "string"
-        review.field :rating, type: "int"
+        many :reviews do |review|
+          review.field :summary, type: "string"
+          review.field :rating, type: "int"
+        end
+
+        # attr :meta do |meta|
+        #   meta.field :pages, type: "int"
+        # end
       end
-
-      # attr :meta do |meta|
-      #   meta.field :pages, type: "int"
-      # end
-    end.new(schema)
+    end.new(schema: schema)
   }
 
   it "includes validation rules and errors in the AST" do

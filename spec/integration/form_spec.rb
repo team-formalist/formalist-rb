@@ -8,11 +8,13 @@ RSpec.describe Formalist::Form do
 
   subject(:form) {
     Class.new(Formalist::Form) do
-      component do
-        field :title
-        field :rating
+      define do
+        component do
+          field :title
+          field :rating
+        end
       end
-    end.new(schema)
+    end.new(schema: schema)
   }
 
   it "outputs an AST" do

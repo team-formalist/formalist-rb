@@ -1,27 +1,38 @@
-require "dry-data"
+require "formalist/types"
 
 module Formalist
   class Element
     class Definition
-      def self.build(type, attributes, children)
-        # Sanitize attributes here to provide early feedback to the users
-        attributes = Dry::Data["hash"].schema(type.schema).(attributes)
-
-        new(type, attributes, children)
-      end
+      Deferred = Struct.new(:name)
 
       attr_reader :type
+      attr_reader :args
       attr_reader :attributes
       attr_reader :children
 
-      def initialize(type, attributes, children)
+      def initialize(type, *args, attributes, children)
         @type = type
+        @args = args
         @attributes = attributes
         @children = children
       end
 
+      def resolve(scope)
+        resolved_args = args.map { |arg|
+          arg.is_a?(Deferred) ? scope.send(arg.name) : arg
+        }
+
+        resolved_attributes = attributes.each_with_object({}) { |(key, val), hsh|
+          hsh[key] = val.is_a?(Deferred) ? scope.send(val.name) : val
+        }
+
+        resolved_children = children.map { |c| c.resolve(scope) }
+
+        self.class.new(type, *resolved_args, resolved_attributes, resolved_children)
+      end
+
       def call(input, rules, messages)
-        type.(attributes, children, input, rules, messages)
+        type.new(*args, attributes, children, input, rules, messages)
       end
     end
   end

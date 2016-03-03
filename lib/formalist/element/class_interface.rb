@@ -1,4 +1,3 @@
-require "dry-data"
 require "formalist/element/permitted_children"
 
 module Formalist
@@ -7,6 +6,7 @@ module Formalist
       def attribute(name, type)
         attributes(name => type)
       end
+      # TODO: add attr_reader methods for each attribute here
 
       def attributes(new_schema)
         prev_schema = schema || {}
@@ -26,10 +26,6 @@ module Formalist
         else
           PermittedChildren[args]
         end
-      end
-
-      def call(*args)
-        new(*args)
       end
     end
   end

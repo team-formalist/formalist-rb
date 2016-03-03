@@ -4,9 +4,6 @@ module Formalist
   class Form
     class Result
       # @api private
-      attr_reader :form
-
-      # @api private
       attr_reader :input
 
       # @api private
@@ -15,9 +12,7 @@ module Formalist
       # @api private
       attr_reader :elements
 
-      def initialize(form, input_or_result)
-        @form = form
-
+      def initialize(input_or_result, elements, rules)
         if input_or_result.is_a?(Dry::Validation::Schema::Result)
           @input = input_or_result.output
           @messages = input_or_result.messages
@@ -26,7 +21,7 @@ module Formalist
           @messages = {}
         end
 
-        @elements = form.elements.map { |el| el.(input, form.schema.rules.map(&:to_ary), messages) }
+        @elements = elements.map { |el| el.(@input, rules, messages) }
       end
 
       def to_ast

@@ -15,49 +15,26 @@ module Formalist
       @elements ||= []
     end
 
-    # @api private
-    def self.definition_context
-      @definition_context ||= DefinitionContext.new(
-        elements,
+    # @api public
+    def self.define(&block)
+      @elements = DefinitionContext.new(
         container: config.elements_container,
-        permissions: Element::PermittedChildren.all,
-      )
+        permissions: Element::PermittedChildren.all
+      ).call(&block).elements
     end
-
-    # @api private
-    def self.method_missing(name, *args, &block)
-      return super unless definition_context.element_exists?(name)
-
-      definition_context.add_element(name, *args, &block)
-    end
-
-    # @pi private
-    def self.respond_to_missing?(name, include_private = false)
-      definition_context.element_exists?(name)
-    end
-
-    # @api private
-    attr_reader :elements
 
     # @api private
     attr_reader :schema
 
-    # TODO: allow other deps here
-    def initialize(schema)
-      @schema = schema
+    # @api public
+    def initialize(options = {})
+      @schema = options.fetch(:schema)
     end
 
-    def elements_container
-      self.class.elements_container
-    end
-
-    def elements
-      self.class.elements
-    end
-
-    # TODO: allow this to work with both hashes and dry-v schema results
+    # @api public
     def build(input = {})
-      Result.new(self, input)
+      elements = self.class.elements.map { |el| el.resolve(self) }
+      Result.new(input, elements, schema.rules.map(&:to_ary))
     end
   end
 end
