@@ -16,6 +16,7 @@ module Formalist
     Dry::Data.finalize
 
     ElementName = Types::Strict::Symbol.constrained(min_size: 1)
+    OptionsList = Formalist::Types::Array.member(Formalist::Types::Array.member(Formalist::Types::Strict::String).constrained(size: 2)).constrained(min_size: 1)
 
     Dependency = Dry::Data::Type.new(Dry::Data::Type.method(:constructor), primitive: Object)
     Function = Dependency.constrained(respond_to: :call)
