@@ -13,7 +13,9 @@ module Formalist
 
       attr_reader :value_rules, :value_predicates, :collection_rules, :child_errors
 
-      def prepare
+      def initialize(attributes, children, input, rules, errors)
+        super
+
         value_rules_compiler = Validation::ValueRulesCompiler.new(attributes[:name])
         value_predicates_compiler = Validation::PredicateListCompiler.new
         collection_rules_compiler = Validation::CollectionRulesCompiler.new(attributes[:name])
@@ -26,7 +28,7 @@ module Formalist
         @child_errors = errors[0].is_a?(Hash) ? errors[0] : {}
       end
 
-      def prepare_child(definition)
+      def build_child(definition)
         definition.(input, collection_rules, child_errors)
       end
 

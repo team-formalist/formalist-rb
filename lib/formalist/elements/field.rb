@@ -14,7 +14,9 @@ module Formalist
 
       attr_reader :predicates
 
-      def prepare
+      def initialize(attributes, children, input, rules, errors)
+        super
+
         rules_compiler = Validation::ValueRulesCompiler.new(attributes[:name])
         predicates_compiler = Validation::PredicateListCompiler.new
 

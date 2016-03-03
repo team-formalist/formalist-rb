@@ -15,16 +15,10 @@ module Formalist
       @input = input
       @rules = rules
       @errors = errors
-
-      prepare
-      @children = children.map(&method(:prepare_child))
+      @children = children.map(&method(:build_child))
     end
 
-    def prepare
-      # No op by default
-    end
-
-    def prepare_child(definition)
+    def build_child(definition)
       definition.(input, rules, errors)
     end
 
