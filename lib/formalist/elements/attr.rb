@@ -79,7 +79,7 @@ module Formalist
           type,
           value_predicates,
           local_errors,
-          attributes.to_a,
+          Element::Attributes.new(attributes).to_ast,
           children.map(&:to_ast),
         ]]
       end

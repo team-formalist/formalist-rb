@@ -50,31 +50,31 @@ RSpec.describe "Form validation" do
     }
 
     expect(form.build(schema.(input)).to_ast).to eq [
-      [:field, [:title, :field, nil, [[:predicate, [:filled?, []]]], ["title is missing"], []]],
-      [:field, [:rating, :field, nil, [[:and, [[:predicate, [:gteq?, [1]]], [:predicate, [:lteq?, [10]]]]]], ["rating is missing", "rating must be greater than or equal to 1", "rating must be less than or equal to 10"], []]],
+      [:field, [:title, :field, nil, [[:predicate, [:filled?, []]]], ["title is missing"], [:object, [[]]]]],
+      [:field, [:rating, :field, nil, [[:and, [[:predicate, [:gteq?, [1]]], [:predicate, [:lteq?, [10]]]]]], ["rating is missing", "rating must be greater than or equal to 1", "rating must be less than or equal to 10"], [:object, [[]]]]],
       [:many, [
         :reviews,
         :many,
         [[:predicate, [:filled?, []]]],
         [],
+        [:object, [[
+          :allow_create, [:value, [true]],
+          :allow_update, [:value, [true]],
+          :allow_destroy, [:value, [true]],
+          :allow_reorder, [:value, [true]]
+        ]]],
         [
-          [:allow_create, true],
-          [:allow_update, true],
-          [:allow_destroy, true],
-          [:allow_reorder, true],
-        ],
-        [
-          [:field, [:summary, :field, nil, [[:predicate, [:filled?, []]]], [], []]],
-          [:field, [:rating, :field, nil, [[:and, [[:predicate, [:gteq?, [1]]], [:predicate, [:lteq?, [10]]]]]], [], []]],
+          [:field, [:summary, :field, nil, [[:predicate, [:filled?, []]]], [], [:object, [[]]]]],
+          [:field, [:rating, :field, nil, [[:and, [[:predicate, [:gteq?, [1]]], [:predicate, [:lteq?, [10]]]]]], [], [:object, [[]]]]],
         ],
         [
           [
-            [:field, [:summary, :field, "Great", [[:predicate, [:filled?, []]]], [], []]],
-            [:field, [:rating, :field, 0, [[:and, [[:predicate, [:gteq?, [1]]], [:predicate, [:lteq?, [10]]]]]], ["rating must be greater than or equal to 1"], []]],
+            [:field, [:summary, :field, "Great", [[:predicate, [:filled?, []]]], [], [:object, [[]]]]],
+            [:field, [:rating, :field, 0, [[:and, [[:predicate, [:gteq?, [1]]], [:predicate, [:lteq?, [10]]]]]], ["rating must be greater than or equal to 1"], [:object, [[]]]]],
           ],
           [
-            [:field, [:summary, :field, "", [[:predicate, [:filled?, []]]], ["summary must be filled"], []]],
-            [:field, [:rating, :field, 1, [[:and, [[:predicate, [:gteq?, [1]]], [:predicate, [:lteq?, [10]]]]]], [], []]],
+            [:field, [:summary, :field, "", [[:predicate, [:filled?, []]]], ["summary must be filled"], [:object, [[]]]]],
+            [:field, [:rating, :field, 1, [[:and, [[:predicate, [:gteq?, [1]]], [:predicate, [:lteq?, [10]]]]]], [], [:object, [[]]]]],
           ]
         ],
       ]],

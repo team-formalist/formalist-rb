@@ -1,4 +1,5 @@
 require "inflecto"
+require "formalist/element/attributes"
 require "formalist/element/class_interface"
 require "formalist/types"
 

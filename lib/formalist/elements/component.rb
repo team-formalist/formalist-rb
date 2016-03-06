@@ -37,7 +37,7 @@ module Formalist
       def to_ast
         [:component, [
           type,
-          attributes.to_a,
+          Element::Attributes.new(attributes).to_ast,
           children.map(&:to_ast),
         ]]
       end

@@ -80,7 +80,7 @@ module Formalist
           input,
           predicates,
           errors,
-          attributes.to_a,
+          Element::Attributes.new(attributes).to_ast,
         ]]
       end
     end

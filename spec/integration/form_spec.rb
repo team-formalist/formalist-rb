@@ -23,10 +23,10 @@ RSpec.describe Formalist::Form do
     expect(form.build(title: "Aurora", rating:  10).to_ast).to eq [
       [:component, [
         :component,
-        [],
+        [:object, [[]]],
         [
-          [:field, [:title, :field, "Aurora", [[:predicate, [:str?, []]]], [], []]],
-          [:field, [:rating, :field, 10, [[:predicate, [:int?, []]]], [], []]]
+          [:field, [:title, :field, "Aurora", [[:predicate, [:str?, []]]], [], [:object, [[]]]]],
+          [:field, [:rating, :field, 10, [[:predicate, [:int?, []]]], [], [:object, [[]]]]]
         ],
       ]],
     ]

@@ -43,7 +43,7 @@ module Formalist
         [:section, [
           name,
           type,
-          attributes.to_a,
+          Element::Attributes.new(attributes).to_ast,
           children.map(&:to_ast),
         ]]
       end

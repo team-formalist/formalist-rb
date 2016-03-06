@@ -103,7 +103,7 @@ module Formalist
           type,
           value_predicates,
           local_errors,
-          attributes.to_a,
+          Element::Attributes.new(attributes).to_ast,
           child_template.map(&:to_ast),
           children.map { |el_list| el_list.map(&:to_ast) },
         ]]
