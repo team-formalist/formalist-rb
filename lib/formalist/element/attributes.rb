@@ -16,7 +16,7 @@ module Formalist
       def deep_to_ast(value)
         case value
           when Hash
-            [:object, [value.map { |k,v| [k.to_sym, deep_to_ast(v)] }.flatten(1)]]
+            [:object, [value.map { |k,v| [k.to_sym, deep_to_ast(v)] }].reject(&:empty?).flatten(1)]
           when Array
             [:array, [value.map { |v| deep_to_ast(v) }]]
           when String, Numeric, TrueClass, FalseClass, NilClass
