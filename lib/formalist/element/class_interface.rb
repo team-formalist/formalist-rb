@@ -6,11 +6,14 @@ module Formalist
       def attribute(name, type)
         attributes(name => type)
       end
-      # TODO: add attr_reader methods for each attribute here
 
       def attributes(new_schema)
         prev_schema = schema || {}
         @schema = prev_schema.merge(new_schema)
+
+        attr_reader *(new_schema.keys - prev_schema.keys)
+
+        self
       end
 
       def schema
