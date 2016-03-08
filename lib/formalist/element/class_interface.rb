@@ -16,8 +16,6 @@ module Formalist
         prev_schema = schema || {}
         @schema = prev_schema.merge(new_schema)
 
-        attr_reader *(new_schema.keys - prev_schema.keys)
-
         self
       end
 
