@@ -16,6 +16,7 @@ PATH
     formalist (0.2.2)
       dry-configurable
       dry-container
+      dry-data
       dry-validation (~> 0.6.0)
       inflecto
 

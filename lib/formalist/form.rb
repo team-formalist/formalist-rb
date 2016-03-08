@@ -1,51 +1,40 @@
-require "json"
 require "dry-configurable"
-require "dry-validation"
-require "dry/validation/input_type_compiler"
-require "formalist/definition_compiler"
-require "formalist/display_adapters"
-require "formalist/form/definition"
+require "formalist/elements"
+require "formalist/form/definition_context"
+require "formalist/element/permitted_children"
 require "formalist/form/result"
 
 module Formalist
   class Form
     extend Dry::Configurable
-    extend Definition
 
-    setting :display_adapters, DisplayAdapters
-
-    def self.display_adapters
-      config.display_adapters
-    end
+    setting :elements_container, Elements
 
     # @api private
     def self.elements
-      @__elements__ ||= []
+      @elements ||= []
     end
 
-    # @api private
-    attr_reader :elements
+    # @api public
+    def self.define(&block)
+      @elements = DefinitionContext.new(
+        container: config.elements_container,
+        permissions: Element::PermittedChildren.all
+      ).call(&block).elements
+    end
 
     # @api private
     attr_reader :schema
 
-    # @api private
-    attr_reader :form_post_compiler
-
-    def initialize(schema)
-      definition_compiler = DefinitionCompiler.new(self.class.display_adapters)
-
-      @elements = definition_compiler.call(self.class.elements)
-      @schema = schema
-      @form_post_compiler = Dry::Validation::InputTypeCompiler.new.(schema.class.rules.map(&:to_ast))
+    # @api public
+    def initialize(options = {})
+      @schema = options.fetch(:schema)
     end
 
+    # @api public
     def build(input = {})
-      Result.new(schema, elements, input)
-    end
-
-    def receive(form_post)
-      build(form_post_compiler.(form_post))
+      elements = self.class.elements.map { |el| el.resolve(self) }
+      Result.new(input, elements, schema.rules.map(&:to_ary))
     end
   end
 end

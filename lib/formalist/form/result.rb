@@ -1,3 +1,5 @@
+require "dry-validation"
+
 module Formalist
   class Form
     class Result
@@ -5,49 +7,25 @@ module Formalist
       attr_reader :input
 
       # @api private
-      attr_reader :schema
+      attr_reader :messages
 
       # @api private
       attr_reader :elements
 
-      # @api public
-      attr_reader :validation
+      def initialize(input_or_result, elements, rules)
+        if input_or_result.is_a?(Dry::Validation::Schema::Result)
+          @input = input_or_result.output
+          @messages = input_or_result.messages
+        else
+          @input = input_or_result
+          @messages = {}
+        end
 
-      def initialize(schema, elements, input)
-        @schema = schema
-        @elements = elements
-        @input = input
-        @validation = schema.(@input)
-      end
-
-      def output
-        validation.output
-      end
-
-      def success?
-        true
-      end
-
-      def messages
-        {}
+        @elements = elements.map { |el| el.(@input, rules, messages) }
       end
 
       def to_ast
-        elements.map { |el| el.(output, schema.rules.map(&:to_ary), messages).to_ast }
-      end
-
-      def validate
-        Validated.new(schema, elements, input)
-      end
-
-      class Validated < Result
-        def success?
-          validation.success?
-        end
-
-        def messages
-          validation.messages
-        end
+        elements.map(&:to_ast)
       end
     end
   end

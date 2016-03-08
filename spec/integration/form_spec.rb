@@ -8,11 +8,13 @@ RSpec.describe Formalist::Form do
 
   subject(:form) {
     Class.new(Formalist::Form) do
-      component do |c|
-        c.field :title, type: "string"
-        c.field :rating, type: "int"
+      define do
+        component do
+          field :title
+          field :rating
+        end
       end
-    end.new(schema)
+    end.new(schema: schema)
   }
 
   it "outputs an AST" do
@@ -20,10 +22,11 @@ RSpec.describe Formalist::Form do
 
     expect(form.build(title: "Aurora", rating:  10).to_ast).to eq [
       [:component, [
-        [],
+        :component,
+        [:object, []],
         [
-          [:field, [:title, "string", "default", "Aurora", [[:predicate, [:str?, []]]], [], []]],
-          [:field, [:rating, "int", "default", 10, [[:predicate, [:int?, []]]], [], []]]
+          [:field, [:title, :field, "Aurora", [[:predicate, [:str?, []]]], [], [:object, []]]],
+          [:field, [:rating, :field, 10, [[:predicate, [:int?, []]]], [], [:object, []]]]
         ],
       ]],
     ]
