@@ -9,9 +9,11 @@ module Formalist
     attr_reader :attributes, :children, :input, :rules, :errors
 
     def initialize(attributes, children, input, rules, errors)
-      attributes = Types::Hash.schema(self.class.schema).(attributes)
+      attributes_with_defaults = self.class.schema.each_with_object({}) { |(key, _val), memo|
+        memo[key] = attributes[key]
+      }
+      @attributes = Types::Hash.schema(self.class.schema).(attributes_with_defaults)
 
-      @attributes = attributes
       @input = input
       @rules = rules
       @errors = errors
