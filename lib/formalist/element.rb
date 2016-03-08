@@ -9,14 +9,14 @@ module Formalist
     attr_reader :attributes, :children, :input, :rules, :errors
 
     def initialize(attributes, children, input, rules, errors)
-      # Make the attributes completely match the schema, so type defaults can apply
-      complete_attributes = self.class.schema.each_with_object({}) { |(key, _val), memo|
-        memo[key] = attributes[key]
+      # Set supplied attributes or their defaults
+      full_attributes = self.class.schema.each_with_object({}) { |(name, defn), memo|
+        value = attributes[name] || defn[:default]
+        memo[name] = value unless value.nil?
       }
-      # Then remove any keys for values that are still nil
-      @attributes = Types::Hash.schema(self.class.schema).(complete_attributes).each_with_object({}) { |(key, val), memo|
-        memo[key] = val unless val.nil?
-      }
+
+      # Then run them through the schema
+      @attributes = Types::Hash.schema(self.class.schema.map { |name, defn| [name, defn[:type]] }.to_h).(full_attributes)
 
       @input = input
       @rules = rules

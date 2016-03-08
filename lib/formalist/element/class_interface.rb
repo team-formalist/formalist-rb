@@ -8,8 +8,8 @@ module Formalist
         Inflecto.underscore(Inflecto.demodulize(name)).to_sym
       end
 
-      def attribute(name, type)
-        attributes(name => type)
+      def attribute(name, type, default: nil)
+        attributes(name => {type: type, default: default})
       end
 
       def attributes(new_schema)
