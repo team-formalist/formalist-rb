@@ -1,8 +1,13 @@
+require "inflecto"
 require "formalist/element/permitted_children"
 
 module Formalist
   class Element
     module ClassInterface
+      def type
+        Inflecto.underscore(Inflecto.demodulize(name)).to_sym
+      end
+
       def attribute(name, type)
         attributes(name => type)
       end

@@ -4,7 +4,7 @@ require "formalist/types"
 
 module Formalist
   class Elements
-    class RadioButtons < Element
+    class RadioButtons < Field
       attribute :options, Types::OptionsList
     end
 

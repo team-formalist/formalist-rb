@@ -4,7 +4,7 @@ require "formalist/types"
 
 module Formalist
   class Elements
-    class SelectBox < Element
+    class SelectBox < Field
       attribute :options, Types::OptionsList
     end
 

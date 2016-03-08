@@ -4,7 +4,7 @@ require "formalist/types"
 
 module Formalist
   class Elements
-    class NumberField < Element
+    class NumberField < Field
       Number = Types::Int | Types::Float
 
       attribute :step, Number

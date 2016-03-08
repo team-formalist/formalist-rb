@@ -1,3 +1,5 @@
+require "inflecto"
+
 module Formalist
   class Element
     class PermittedChildren
@@ -14,13 +16,17 @@ module Formalist
       end.new
 
       class Some
-        attr_reader :children
+        attr_reader :permitted_children
+
         def initialize(children)
-          @children = children
+          @permitted_children = children
         end
 
         def permitted?(child)
-          children.include?(child)
+          permitted_children.any? { |permitted_child|
+            permitted_child_class = Elements.const_get(Inflecto.camelize(permitted_child))
+            child.ancestors.include?(permitted_child_class)
+          }
         end
       end
 

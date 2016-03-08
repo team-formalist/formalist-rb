@@ -4,7 +4,7 @@ require "formalist/types"
 
 module Formalist
   class Elements
-    class TextArea < Element
+    class TextArea < Field
       attribute :box_size, Types::Int
     end
 

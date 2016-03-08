@@ -4,7 +4,7 @@ require "formalist/types"
 
 module Formalist
   class Elements
-    class CheckBox < Element
+    class CheckBox < Field
       attribute :question_text, Types::String
     end
 

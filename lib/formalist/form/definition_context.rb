@@ -46,7 +46,8 @@ module Formalist
       end
 
       def add_element(element_type, *args, &block)
-        raise ArgumentError, "element +#{element_type}+ is not permitted in this context" unless permissions.permitted?(element_type)
+        type = container[element_type]
+        raise ArgumentError, "element +#{element_type}+ is not permitted in this context" unless permissions.permitted?(type)
 
         # TODO: handle the args as args, not as attributes (element classes can handle these as necessary)
 
@@ -56,7 +57,6 @@ module Formalist
         name = args.shift
         attributes = {name: name}.merge(attributes) if name
 
-        type = container[element_type]
         children = with(permissions: type.permitted_children).call(&block).elements
         definition = Element::Definition.new(type, attributes, children)
 

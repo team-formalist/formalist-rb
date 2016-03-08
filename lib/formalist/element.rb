@@ -1,4 +1,3 @@
-require "inflecto"
 require "formalist/element/attributes"
 require "formalist/element/class_interface"
 require "formalist/types"
@@ -19,12 +18,12 @@ module Formalist
       @children = children.map(&method(:build_child))
     end
 
-    def build_child(definition)
-      definition.(input, rules, errors)
+    def type
+      self.class.type
     end
 
-    def type
-      Inflecto.underscore(Inflecto.demodulize(self.class.name)).to_sym
+    def build_child(definition)
+      definition.(input, rules, errors)
     end
 
     def to_ast
