@@ -12,7 +12,6 @@ module Formalist
       attribute :label, Types::String
       attribute :hint, Types::String
       attribute :placeholder, Types::String
-      attribute :password, Types::Bool
 
       attr_reader :predicates
 
