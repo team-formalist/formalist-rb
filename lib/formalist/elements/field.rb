@@ -22,7 +22,7 @@ module Formalist
         rules_compiler = Validation::ValueRulesCompiler.new(attributes[:name])
         predicates_compiler = Validation::PredicateListCompiler.new
 
-        @input = input[attributes[:name]]
+        @input = input[attributes[:name]] if input
         @rules = rules_compiler.(@rules)
         @predicates = predicates_compiler.(@rules)
         @errors = (errors[attributes[:name]] || [])[0].to_a
