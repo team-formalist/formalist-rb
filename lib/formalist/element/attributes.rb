@@ -1,12 +1,19 @@
 module Formalist
   class Element
     class Attributes
+      # Returns the attributes hash.
       attr_reader :attrs
 
+      # Creates an attributes object from the supplied hash.
+      #
+      # @param attrs [Hash] hash of form element attributes
       def initialize(attrs = {})
         @attrs = attrs
       end
 
+      # Returns the attributes as an abstract syntax tree.
+      #
+      # @return [Array] the abstract syntax tree
       def to_ast
         deep_to_ast(deep_simplify(attrs))
       end
