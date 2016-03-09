@@ -20,10 +20,10 @@ module Formalist
       # Then run them through the schema
       @attributes = Types::Hash.schema(self.class.attributes_schema.map { |name, defn| [name, defn[:type]] }.to_h).(full_attributes)
 
+      @children = children.map { |el| el.(input, rules, errors) }
       @input = input
       @rules = rules
       @errors = errors
-      @children = children.map(&method(:build_child))
     end
 
     # Returns the element's type, which is a symbolized, camlized
@@ -42,16 +42,6 @@ module Formalist
     # @return [Symbol] the element type.
     def type
       self.class.type
-    end
-
-    # Build a given child of the form element using the element's input, rules, and
-    # errors.
-    #
-    # Override this in a subclass if you need to customise how children are built.
-    #
-    # @api private
-    def build_child(definition)
-      definition.(input, rules, errors)
     end
 
     # @abstract

@@ -31,11 +31,7 @@ module Formalist
         @collection_rules = collection_rules_compiler.(rules)
         @errors = errors.fetch(name, [])[0] || []
         @child_errors = errors[0].is_a?(Hash) ? errors[0] : {}
-      end
-
-      # @api private
-      def build_child(definition)
-        definition.(input, collection_rules, child_errors)
+        @children = build_children(children)
       end
 
       # Converts the attribute into an abstract syntax tree.
@@ -86,6 +82,14 @@ module Formalist
           Element::Attributes.new(attributes).to_ast,
           children.map(&:to_ast),
         ]]
+      end
+
+      private
+
+      def build_children(definitions)
+        definitions.map { |el|
+          el.(input, collection_rules, child_errors)
+        }
       end
     end
   end
