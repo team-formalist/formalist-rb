@@ -13,8 +13,10 @@ module Formalist
       attribute :hint, Types::String
       attribute :placeholder, Types::String
 
+      # @api private
       attr_reader :predicates
 
+      # @api private
       def initialize(attributes, children, input, rules, errors)
         super
 
@@ -27,10 +29,9 @@ module Formalist
         @errors = (errors[attributes[:name]] || [])[0].to_a
       end
 
-      # Converts the field into an array format for including in a form's
-      # abstract syntax tree.
+      # Converts the field into an abstract syntax tree.
       #
-      # The array takes the following format:
+      # It takes the following format:
       #
       # ```
       # [:field, [params]]
@@ -39,33 +40,29 @@ module Formalist
       # With the following parameters:
       #
       # 1. Field name
-      # 1. Field type
-      # 1. Display variant name
-      # 1. Input data
-      # 1. Validation rules (if any)
-      # 1. Validation error messages (if any)
-      # 1. Field configuration
+      # 2. Custom form element type (or `:field` otherwise)
+      # 3. Associated form input data
+      # 4. Validation rules (if any)
+      # 5. Validation error messages (if any)
+      # 6. Form element attributes
+      #
+      # @see Formalist::Element::Attributes#to_ast "Form element attributes" structure
       #
       # @example "email" field
-      #   field.to_ast # =>
-      #   # [:field, [
-      #   #   :email,
-      #   #   "string",
-      #   #   "default",
-      #   #   "invalid email value",
-      #   #   [
-      #   #     [:and, [
-      #   #       [:predicate, [:filled?, []]],
-      #   #       [:predicate, [:format?, [/\s+@\s+\.\s+/]]]
-      #   #     ]]
-      #   #   ],
-      #   #   ["email is in invalid format"],
-      #   #   [
-      #   #     [:some_config_name, :some_config_value]
-      #   #   ]
-      #   # ]]
+      #   field.to_ast
+      #   # => [:field, [
+      #     :email,
+      #     :field,
+      #     "jane@doe.org",
+      #     [[:and, [
+      #       [:predicate, [:filled?, []]],
+      #       [:predicate, [:format?, [/\s+@\s+\.\s+/]]]
+      #     ]]],
+      #     [],
+      #     [:object, []],
+      #   ]]
       #
-      # @return [Array] the field as an array.
+      # @return [Array] the field as an abstract syntax tree.
       def to_ast
         # errors looks like this
         # {:field_name => [["pages is missing", "another error message"], nil]}

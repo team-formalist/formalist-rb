@@ -15,8 +15,10 @@ module Formalist
       attribute :allow_destroy, Types::Bool
       attribute :allow_reorder, Types::Bool
 
+      # @api private
       attr_reader :value_rules, :value_predicates, :collection_rules, :child_template
 
+      # @api private
       def initialize(attributes, children, input, rules, errors)
         super
 
@@ -34,6 +36,7 @@ module Formalist
       end
 
       # Until we can put defaults on `Types::Bool`, supply them here
+      # @api private
       def attributes
         {
           allow_create: true,
@@ -43,10 +46,10 @@ module Formalist
         }.merge(super)
       end
 
-      # Converts a collection of "many" repeating elements into an array
-      # format for including in a form's abstract syntax tree.
+      # Converts a collection of "many" repeating elements into an abstract
+      # syntax tree.
       #
-      # The array takes the following format:
+      # It takes the following format:
       #
       # ```
       # [:many, [params]]
@@ -54,44 +57,49 @@ module Formalist
       #
       # With the following parameters:
       #
-      # 1. Collection array name
-      # 1. Collection validation rules (if any)
-      # 1. Collection error messages (if any)
-      # 1. Collection configuration
-      # 1. Child element "template" (i.e. the form elements comprising a
-      #    single entry in the collection of "many" elements, without any
-      #    user data associated)
-      # 1. Child elements, one for each of the entries in the input data (or
+      # 1. Collection name
+      # 2. Custom form element type (or `:many` otherwise)
+      # 3. Collection validation rules (if any)
+      # 4. Collection error messages (if any)
+      # 5. Form element attributes
+      # 6. Child element "template" (i.e. the form elements comprising a
+      #    single entry in the collection of "many" elements, without any user
+      #    data associated)
+      # 7. Child elements, one for each of the entries in the input data (or
       #    none, if there is no or empty input data)
       #
-      # @example "locations" collection
-      #   many.to_ast # =>
-      #   # [:many, [
-      #   #   :locations,
-      #   #   [[:predicate, [:min_size?, [3]]]],
-      #   #   ["locations size cannot be less than 3"],
-      #   #   [
-      #   #     [:allow_create, true],
-      #   #     [:allow_update, true],
-      #   #     [:allow_destroy, true],
-      #   #     [:allow_reorder, true]
-      #   #   ],
-      #   #   [
-      #   #     [:field, [:name, "string", "default", nil, [], [], []]],
-      #   #     [:field, [:address, "string", "default", nil, [], [], []]]
-      #   #   [
-      #   #     [
-      #   #       [:field, [:name, "string", "default", "Icelab Canberra", [], [], []]],
-      #   #       [:field, [:address, "string", "default", "Canberra, ACT, Australia", [], [], []]]
-      #   #     ],
-      #   #     [
-      #   #       [:field, [:name, "string", "default", "Icelab Melbourne", [], [], []]],
-      #   #       [:field, [:address, "string", "default", "Melbourne, VIC, Australia", [], [], []]]
-      #   #     ]
-      #   #   ]
-      #   # ]]
+      # @see Formalist::Element::Attributes#to_ast "Form element attributes" structure
       #
-      # @return [Array] the collection as an array.
+      # @example "locations" collection
+      #   many.to_ast
+      #   # => [:many, [
+      #     :locations,
+      #     :many,
+      #     [[:predicate, [:min_size?, [3]]]],
+      #     ["locations size cannot be less than 3"],
+      #     [:object, [
+      #       [:allow_create, [:value, [true]]],
+      #       [:allow_update, [:value, [true]]],
+      #       [:allow_destroy, [:value, [true]]],
+      #       [:allow_reorder, [:value, [true]]]
+      #     ]],
+      #     [
+      #       [:field, [:name, :field, nil, [], [], [:object, []]]],
+      #       [:field, [:address, :field, nil, [], [], [:object, []]]]
+      #     ],
+      #     [
+      #       [
+      #         [:field, [:name, :field, "Icelab Canberra", [], [], [:object, []]]],
+      #         [:field, [:address, :field, "Canberra, ACT, Australia", [], [], [:object, []]]]
+      #       ],
+      #       [
+      #         [:field, [:name, :field, "Icelab Melbourne", [], [], [:object, []]]],
+      #         [:field, [:address, :field, "Melbourne, VIC, Australia", [], [], [:object, []]]]
+      #       ]
+      #     ]
+      #   ]]
+      #
+      # @return [Array] the collection as an abstract syntax tree.
       def to_ast
         attributes = self.attributes.dup
         name = attributes.delete(:name)

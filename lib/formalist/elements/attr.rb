@@ -11,8 +11,10 @@ module Formalist
 
       attribute :name, Types::ElementName
 
+      # @api private
       attr_reader :value_rules, :value_predicates, :collection_rules, :child_errors
 
+      # @api private
       def initialize(attributes, children, input, rules, errors)
         super
 
@@ -28,14 +30,14 @@ module Formalist
         @child_errors = errors[0].is_a?(Hash) ? errors[0] : {}
       end
 
+      # @api private
       def build_child(definition)
         definition.(input, collection_rules, child_errors)
       end
 
-      # Converts the attribute into an array format for including in a
-      # form's abstract syntax tree.
+      # Converts the attribute into an abstract syntax tree.
       #
-      # The array takes the following format:
+      # It takes the following format:
       #
       # ```
       # [:attr, [params]]
@@ -44,24 +46,26 @@ module Formalist
       # With the following parameters:
       #
       # 1. Attribute name
-      # 1. Validation rules (if any)
-      # 1. Validation error messages (if any)
-      # 1. Child form elements
+      # 2. Custom element type (or `:attr` otherwise)
+      # 3. Validation rules (if any)
+      # 4. Validation error messages (if any)
+      # 5. Form element attributes
+      # 6. Child form elements
+      #
+      # @see Formalist::Element::Attributes#to_ast "Form element attributes" structure
       #
       # @example "metadata" attr
-      #   attr.to_ast # =>
-      #   # [:attr, [
-      #   #   :metadata,
-      #   #   [
-      #   #     [:predicate, [:hash?, []]],
-      #   #   ],
-      #   #   ["metadata is missing"],
-      #   #   [
-      #   #     ...child elements...
-      #   #   ]
-      #   # ]]
+      #   attr.to_ast
+      #   # => [:attr, [
+      #     :metadata,
+      #     :attr,
+      #     [[:predicate, [:hash?, []]]],
+      #     ["metadata is missing"],
+      #     [:object, []],
+      #     [...child elements...]
+      #   ]]
       #
-      # @return [Array] the attribute as an array.
+      # @return [Array] the attribute as an abstract syntax tree.
       def to_ast
         # Errors, if the attr hash is present and its members have errors:
         # {:meta=>[[{:pages=>[["pages is missing"], nil]}], {}]}

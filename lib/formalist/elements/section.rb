@@ -8,10 +8,9 @@ module Formalist
 
       attribute :name, Types::ElementName
 
-      # Converts the section into an array format for including in a form's
-      # abstract syntax tree.
+      # Converts the section into an abstract syntax tree.
       #
-      # The array takes the following format:
+      # It takes the following format:
       #
       # ```
       # [:section, [params]]
@@ -20,22 +19,22 @@ module Formalist
       # With the following parameters:
       #
       # 1. Section name
-      # 1. Section configuration
-      # 1. Child form elements
+      # 2. Custom form element type (or `:section` otherwise)
+      # 3. Form element attributes
+      # 4. Child form elements
+      #
+      # @see Formalist::Element::Attributes#to_ast "Form element attributes" structure
       #
       # @example "content" section
-      #   section.to_ast # =>
-      #   # [:section, [
-      #   #   :content,
-      #   #   [
-      #   #     [:some_config_name, :some_config_value]
-      #   #   ],
-      #   #   [
-      #   #     ...child elements...
-      #   #   ]
-      #   # ]]
+      #   section.to_ast
+      #   # => [:section, [
+      #     :content,
+      #     :section,
+      #     [:object, []],
+      #     [...child elements...]
+      #   ]]
       #
-      # @return [Array] the section as an array.
+      # @return [Array] the section as an abstract syntax tree.
       def to_ast
         attributes = self.attributes.dup
         name = attributes.delete(:name)
