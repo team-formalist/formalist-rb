@@ -3,6 +3,8 @@ require "formalist/element/definition"
 module Formalist
   class Form
     class DefinitionContext
+      DuplicateDefinitionError = Class.new(StandardError)
+
       attr_reader :elements
       attr_reader :container
       attr_reader :permissions
@@ -55,6 +57,10 @@ module Formalist
 
         children = with(permissions: type.permitted_children).call(&block).elements
         definition = Element::Definition.new(type, *args, attributes, children)
+
+        if elements.any? { |el| el == definition }
+          raise DuplicateDefinitionError, "element +#{element_type} #{args.map(&:inspect).join(', ')}+ is already defined in this context"
+        end
 
         elements << definition
       end
