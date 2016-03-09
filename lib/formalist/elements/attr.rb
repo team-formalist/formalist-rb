@@ -12,7 +12,7 @@ module Formalist
       # @api private
       attr_reader :name
 
-      attribute :label Types::String
+      attribute :label, Types::String
 
       # @api private
       attr_reader :value_rules, :value_predicates, :collection_rules, :child_errors
