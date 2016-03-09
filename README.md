@@ -1,8 +1,12 @@
+[gem]: https://rubygems.org/gems/formalist
 [travis]: https://travis-ci.org/icelab/formalist
+[inch]: http://inch-ci.org/github/icelab/formalist
 
 # Formalist
 
+[![Gem Version](https://img.shields.io/gem/v/formalist.svg)][gem]
 [![Build Status](https://travis-ci.org/icelab/formalist.svg?branch=master)][travis]
+[![API Documentation Coverage](http://inch-ci.org/github/icelab/formalist.svg)][inch]
 
 ## Installation
 
