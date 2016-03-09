@@ -34,7 +34,7 @@ module Formalist
     # @api public
     def build(input = {})
       elements = self.class.elements.map { |el| el.resolve(self) }
-      Result.new(input, elements, schema.rules.map(&:to_ary))
+      Result.new(input, elements, schema.class.rule_ast)
     end
   end
 end
