@@ -1,6 +1,10 @@
+require "formalist/validation/logic_helpers"
+
 module Formalist
   module Validation
     class CollectionRulesCompiler
+      include LogicHelpers
+
       attr_reader :target_name
 
       def initialize(target_name)
@@ -33,7 +37,7 @@ module Formalist
       end
 
       def visit_predicate(node)
-        name, args = node
+        name, _args = node
         [:predicate, node]
       end
 
@@ -57,20 +61,8 @@ module Formalist
         flatten_logical_operation(:implication, [visit(left), visit(right)])
       end
 
-      def method_missing(name, *args)
+      def method_missing(*)
         []
-      end
-
-      def flatten_logical_operation(name, contents)
-        contents = contents.select(&:any?)
-
-        if contents.length == 0
-          []
-        elsif contents.length == 1
-          contents.first
-        else
-          [name, contents]
-        end
       end
     end
   end

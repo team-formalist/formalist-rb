@@ -1,6 +1,10 @@
+require "formalist/validation/logic_helpers"
+
 module Formalist
   module Validation
     class ValueRulesCompiler
+      include LogicHelpers
+
       attr_reader :target_name
 
       def initialize(target_name)
@@ -18,7 +22,7 @@ module Formalist
         send(:"visit_#{name}", nodes)
       end
 
-      def visit_key(node)
+      def visit_key(_node)
         # We can ignore "key" checks - we'll only pick up rules for keys we
         # know will exist, since they're attached to fields.
         []
@@ -37,22 +41,8 @@ module Formalist
         [:val, [name, visit(predicate)]]
       end
 
-      # def visit_set(node)
-      #   name, rules = node
-      #   return [] unless name == target_name
-
-      #   rules.flatten(1)
-      # end
-
-      # def visit_each(node)
-      #   name, rule = node
-      #   return [] unless name == target_name
-
-      #   visit(rule)
-      # end
-
       def visit_predicate(node)
-        name, args = node
+        name, _args = node
         [:predicate, node]
       end
 
@@ -76,20 +66,8 @@ module Formalist
         flatten_logical_operation(:implication, [visit(left), visit(right)])
       end
 
-      def method_missing(name, *args)
+      def method_missing(*)
         []
-      end
-
-      def flatten_logical_operation(name, contents)
-        contents = contents.select(&:any?)
-
-        if contents.length == 0
-          []
-        elsif contents.length == 1
-          contents.first
-        else
-          [name, contents]
-        end
       end
     end
   end
