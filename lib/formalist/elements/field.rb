@@ -8,7 +8,9 @@ module Formalist
     class Field < Element
       permitted_children :none
 
-      attribute :name, Types::ElementName
+      # @api private
+      attr_reader :name
+
       attribute :label, Types::String
       attribute :hint, Types::String
       attribute :placeholder, Types::String
@@ -17,16 +19,18 @@ module Formalist
       attr_reader :predicates
 
       # @api private
-      def initialize(attributes, children, input, rules, errors)
+      def initialize(*args, attributes, children, input, rules, errors)
         super
 
-        rules_compiler = Validation::ValueRulesCompiler.new(attributes[:name])
+        @name = Types::ElementName.(args.first)
+
+        rules_compiler = Validation::ValueRulesCompiler.new(name)
         predicates_compiler = Validation::PredicateListCompiler.new
 
-        @input = input[attributes[:name]] if input
+        @input = input[name] if input
         @rules = rules_compiler.(@rules)
         @predicates = predicates_compiler.(@rules)
-        @errors = (errors[attributes[:name]] || [])[0].to_a
+        @errors = (errors[name] || [])[0].to_a
       end
 
       # Converts the field into an abstract syntax tree.
@@ -66,9 +70,6 @@ module Formalist
       def to_ast
         # errors looks like this
         # {:field_name => [["pages is missing", "another error message"], nil]}
-
-        attributes = self.attributes.dup
-        name = attributes.delete(:name)
 
         [:field, [
           name,

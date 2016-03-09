@@ -10,7 +10,7 @@ module Formalist
     attr_reader :attributes, :children, :input, :rules, :errors
 
     # @api private
-    def initialize(attributes, children, input, rules, errors)
+    def initialize(*args, attributes, children, input, rules, errors)
       # Set supplied attributes or their defaults
       full_attributes = self.class.attributes_schema.each_with_object({}) { |(name, defn), memo|
         value = attributes[name] || defn[:default]

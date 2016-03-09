@@ -9,7 +9,9 @@ module Formalist
     class Many < Element
       permitted_children :attr, :compound_field, :group, :field
 
-      attribute :name, Types::ElementName
+      # @api private
+      attr_reader :name
+
       attribute :allow_create, Types::Bool
       attribute :allow_update, Types::Bool
       attribute :allow_destroy, Types::Bool
@@ -19,18 +21,20 @@ module Formalist
       attr_reader :value_rules, :value_predicates, :collection_rules, :child_template
 
       # @api private
-      def initialize(attributes, children, input, rules, errors)
+      def initialize(*args, attributes, children, input, rules, errors)
         super
 
-        value_rules_compiler = Validation::ValueRulesCompiler.new(attributes[:name])
-        value_predicates_compiler = Validation::PredicateListCompiler.new
-        collection_rules_compiler = Validation::CollectionRulesCompiler.new(attributes[:name])
+        @name = Types::ElementName.(args.first)
 
-        @input = input.fetch(attributes[:name], [])
+        value_rules_compiler = Validation::ValueRulesCompiler.new(name)
+        value_predicates_compiler = Validation::PredicateListCompiler.new
+        collection_rules_compiler = Validation::CollectionRulesCompiler.new(name)
+
+        @input = input.fetch(name, [])
         @value_rules = value_rules_compiler.(rules)
         @value_predicates = value_predicates_compiler.(@value_rules)
         @collection_rules = collection_rules_compiler.(rules)
-        @errors = errors.fetch(attributes[:name], [])[0] || []
+        @errors = errors.fetch(name, [])[0] || []
         @child_template = build_child_template(children)
         @children = build_children(children)
       end
@@ -101,9 +105,6 @@ module Formalist
       #
       # @return [Array] the collection as an abstract syntax tree.
       def to_ast
-        attributes = self.attributes.dup
-        name = attributes.delete(:name)
-
         local_errors = errors.select { |e| e.is_a?(String) }
 
         [:many, [

@@ -6,7 +6,14 @@ module Formalist
     class Section < Element
       permitted_children :all
 
-      attribute :name, Types::ElementName
+      # @api private
+      attr_reader :name
+
+      def initialize(*args, attributes, children, input, rules, errors)
+        super
+
+        @name = Types::ElementName.(args.first)
+      end
 
       # Converts the section into an abstract syntax tree.
       #
@@ -36,9 +43,6 @@ module Formalist
       #
       # @return [Array] the section as an abstract syntax tree.
       def to_ast
-        attributes = self.attributes.dup
-        name = attributes.delete(:name)
-
         [:section, [
           name,
           type,

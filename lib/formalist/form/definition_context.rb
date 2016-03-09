@@ -49,16 +49,12 @@ module Formalist
         type = container[element_type]
         raise ArgumentError, "element +#{element_type}+ is not permitted in this context" unless permissions.permitted?(type)
 
-        # TODO: handle the args as args, not as attributes (element classes can handle these as necessary)
-
-        # Special-case the first naked argument and turn it into a `:name` attribute
+        # Work with top-level args and a trailing attributes hash
         args = args.dup
         attributes = args.last.is_a?(Hash) ? args.pop : {}
-        name = args.shift
-        attributes = {name: name}.merge(attributes) if name
 
         children = with(permissions: type.permitted_children).call(&block).elements
-        definition = Element::Definition.new(type, attributes, children)
+        definition = Element::Definition.new(type, *args, attributes, children)
 
         elements << definition
       end

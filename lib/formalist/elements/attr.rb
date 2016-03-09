@@ -9,24 +9,27 @@ module Formalist
     class Attr < Element
       permitted_children :all
 
-      attribute :name, Types::ElementName
+      # @api private
+      attr_reader :name
 
       # @api private
       attr_reader :value_rules, :value_predicates, :collection_rules, :child_errors
 
       # @api private
-      def initialize(attributes, children, input, rules, errors)
+      def initialize(*args, attributes, children, input, rules, errors)
         super
 
-        value_rules_compiler = Validation::ValueRulesCompiler.new(attributes[:name])
-        value_predicates_compiler = Validation::PredicateListCompiler.new
-        collection_rules_compiler = Validation::CollectionRulesCompiler.new(attributes[:name])
+        @name = Types::ElementName.(args.first)
 
-        @input = input.fetch(attributes[:name], {})
+        value_rules_compiler = Validation::ValueRulesCompiler.new(name)
+        value_predicates_compiler = Validation::PredicateListCompiler.new
+        collection_rules_compiler = Validation::CollectionRulesCompiler.new(name)
+
+        @input = input.fetch(name, {})
         @value_rules = value_rules_compiler.(rules)
         @value_predicates = value_predicates_compiler.(value_rules)
         @collection_rules = collection_rules_compiler.(rules)
-        @errors = errors.fetch(attributes[:name], [])[0] || []
+        @errors = errors.fetch(name, [])[0] || []
         @child_errors = errors[0].is_a?(Hash) ? errors[0] : {}
       end
 
@@ -72,9 +75,6 @@ module Formalist
 
         # Errors, if the attr hash hasn't been provided
         # {:meta=>[["meta is missing"], nil]}
-
-        attributes = self.attributes.dup
-        name = attributes.delete(:name)
 
         local_errors = errors[0].is_a?(Hash) ? [] : errors
 
