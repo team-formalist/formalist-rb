@@ -9,7 +9,7 @@ RSpec.describe Formalist::Form do
   subject(:form) {
     Class.new(Formalist::Form) do
       define do
-        component do
+        compound_field do
           field :title
           field :rating
         end
@@ -21,8 +21,8 @@ RSpec.describe Formalist::Form do
     ast = form.build(title: "Aurora", rating:  10).to_ast
 
     expect(form.build(title: "Aurora", rating:  10).to_ast).to eq [
-      [:component, [
-        :component,
+      [:compound_field, [
+        :compound_field,
         [:object, []],
         [
           [:field, [:title, :field, "Aurora", [[:predicate, [:str?, []]]], [], [:object, []]]],

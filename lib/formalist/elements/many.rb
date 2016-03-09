@@ -7,7 +7,7 @@ require "formalist/validation/predicate_list_compiler"
 module Formalist
   class Elements
     class Many < Element
-      permitted_children :attr, :component, :group, :field
+      permitted_children :attr, :compound_field, :group, :field
 
       attribute :name, Types::ElementName
       attribute :allow_create, Types::Bool

@@ -4,7 +4,7 @@ require "formalist/types"
 module Formalist
   class Elements
     class Group < Element
-      permitted_children :attr, :component, :field, :many
+      permitted_children :attr, :compound_field, :field, :many
 
       # Converts the group into an abstract syntax tree.
       #
