@@ -1,11 +1,13 @@
 [gem]: https://rubygems.org/gems/formalist
 [travis]: https://travis-ci.org/icelab/formalist
+[code_climate]: https://codeclimate.com/github/icelab/formalist
 [inch]: http://inch-ci.org/github/icelab/formalist
 
 # Formalist
 
 [![Gem Version](https://img.shields.io/gem/v/formalist.svg)][gem]
 [![Build Status](https://travis-ci.org/icelab/formalist.svg?branch=master)][travis]
+[![Code Climate](https://img.shields.io/codeclimate/github/icelab/formalist.svg)][code_climate]
 [![API Documentation Coverage](http://inch-ci.org/github/icelab/formalist.svg)][inch]
 
 ## Installation
