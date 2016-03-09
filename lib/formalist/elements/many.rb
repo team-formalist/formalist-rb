@@ -12,6 +12,7 @@ module Formalist
       # @api private
       attr_reader :name
 
+      attribute :label, Types::String
       attribute :allow_create, Types::Bool
       attribute :allow_update, Types::Bool
       attribute :allow_destroy, Types::Bool

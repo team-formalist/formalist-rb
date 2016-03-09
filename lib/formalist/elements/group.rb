@@ -6,6 +6,8 @@ module Formalist
     class Group < Element
       permitted_children :attr, :compound_field, :field, :many
 
+      attribute :label, Types::String
+
       # Converts the group into an abstract syntax tree.
       #
       # It takes the following format:
