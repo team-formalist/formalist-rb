@@ -4,7 +4,9 @@ source "https://rubygems.org"
 gemspec
 
 # Lock to a version of dry-v that'll offer the AST/error message structures we expect
-gem "dry-validation", git: "https://github.com/dryrb/dry-validation", ref: "6447302f3b53766b29f29230831890a5cc3822e0"
+gem "dry-validation", git: "https://github.com/dryrb/dry-validation", branch: "master"
+gem "dry-logic", git: "https://github.com/dryrb/dry-logic", branch: "master"
+gem "dry-types", git: "https://github.com/dryrb/dry-types", branch: "master"
 
 group :tools do
   gem "pry"
