@@ -39,7 +39,7 @@ module Formalist
       # 1. Field name
       # 2. Custom form element type (or `:field` otherwise)
       # 3. Associated form input data
-      # 4. Validation error messages (if any)
+      # 4. Error messages
       # 5. Form element attributes
       #
       # @see Formalist::Element::Attributes#to_ast "Form element attributes" structure

@@ -53,7 +53,7 @@ module Formalist
       #
       # 1. Collection name
       # 2. Custom form element type (or `:many` otherwise)
-      # 3. Collection error messages (if any)
+      # 3. Collection-level error messages
       # 4. Form element attributes
       # 5. Child element "template" (i.e. the form elements comprising a
       #    single entry in the collection of "many" elements, without any user

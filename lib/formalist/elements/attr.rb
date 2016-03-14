@@ -39,7 +39,7 @@ module Formalist
       #
       # 1. Attribute name
       # 2. Custom element type (or `:attr` otherwise)
-      # 3. Validation error messages (if any)
+      # 3. Error messages
       # 4. Form element attributes
       # 5. Child form elements
       #
