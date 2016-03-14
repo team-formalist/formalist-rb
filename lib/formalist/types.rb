@@ -12,6 +12,8 @@ module Formalist
     ElementName = Types::Strict::Symbol.constrained(min_size: 1)
     OptionsList = Types::Array.member(Formalist::Types::Array.member(Formalist::Types::Strict::String).constrained(size: 2)).constrained(min_size: 1)
 
+    Validation = Types::Strict::Hash
+
     Dependency = Dry::Types::Definition[Object].new(Object)
     Function = Dependency.constrained(respond_to: :call)
   end

@@ -13,6 +13,7 @@ module Formalist
       attribute :allow_update, Types::Bool
       attribute :allow_destroy, Types::Bool
       attribute :allow_reorder, Types::Bool
+      attribute :validation, Types::Validation
 
       # @api private
       attr_reader :child_template
