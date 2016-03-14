@@ -18,7 +18,6 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "dry-configurable"
   spec.add_runtime_dependency "dry-container"
   spec.add_runtime_dependency "dry-types"
-  spec.add_runtime_dependency "dry-validation"
   spec.add_runtime_dependency "inflecto"
 
   spec.add_development_dependency "bundler", "~> 1.10"

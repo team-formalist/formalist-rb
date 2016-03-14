@@ -40,7 +40,6 @@ PATH
       dry-configurable
       dry-container
       dry-types
-      dry-validation
       inflecto
 
 GEM
