@@ -1,8 +1,5 @@
 require "formalist/element"
 require "formalist/types"
-require "formalist/validation/collection_rules_compiler"
-require "formalist/validation/value_rules_compiler"
-require "formalist/validation/predicate_list_compiler"
 
 module Formalist
   class Elements
@@ -18,22 +15,14 @@ module Formalist
       attribute :allow_reorder, Types::Bool
 
       # @api private
-      attr_reader :value_rules, :value_predicates, :collection_rules, :child_template
+      attr_reader :child_template
 
       # @api private
-      def initialize(*args, attributes, children, input, rules, errors)
+      def initialize(*args, attributes, children, input, errors)
         super
 
         @name = Types::ElementName.(args.first)
-
-        value_rules_compiler = Validation::ValueRulesCompiler.new(name)
-        value_predicates_compiler = Validation::PredicateListCompiler.new
-        collection_rules_compiler = Validation::CollectionRulesCompiler.new(name)
-
         @input = input.fetch(name, [])
-        @value_rules = value_rules_compiler.(rules)
-        @value_predicates = value_predicates_compiler.(@value_rules)
-        @collection_rules = collection_rules_compiler.(rules)
         @errors = errors.fetch(name, [])[0] || []
         @child_template = build_child_template(children)
         @children = build_children(children)
@@ -63,13 +52,12 @@ module Formalist
       #
       # 1. Collection name
       # 2. Custom form element type (or `:many` otherwise)
-      # 3. Collection validation rules (if any)
-      # 4. Collection error messages (if any)
-      # 5. Form element attributes
-      # 6. Child element "template" (i.e. the form elements comprising a
+      # 3. Collection error messages (if any)
+      # 4. Form element attributes
+      # 5. Child element "template" (i.e. the form elements comprising a
       #    single entry in the collection of "many" elements, without any user
       #    data associated)
-      # 7. Child elements, one for each of the entries in the input data (or
+      # 6. Child elements, one for each of the entries in the input data (or
       #    none, if there is no or empty input data)
       #
       # @see Formalist::Element::Attributes#to_ast "Form element attributes" structure
@@ -79,7 +67,6 @@ module Formalist
       #   # => [:many, [
       #     :locations,
       #     :many,
-      #     [[:predicate, [:min_size?, [3]]]],
       #     ["locations size cannot be less than 3"],
       #     [:object, [
       #       [:allow_create, [:value, [true]]],
@@ -124,7 +111,7 @@ module Formalist
         template_input = {}
         template_errors = {}
 
-        definitions.map { |el| el.(template_input, collection_rules, template_errors)}
+        definitions.map { |el| el.(template_input, template_errors)}
       end
 
       def build_children(definitions)
@@ -146,7 +133,7 @@ module Formalist
             e[1] == child_input
           }.to_a.dig(0, 0) || {}
 
-          definitions.map { |el| el.(child_input, collection_rules, local_child_errors) }
+          definitions.map { |el| el.(child_input, local_child_errors) }
         }
       end
     end

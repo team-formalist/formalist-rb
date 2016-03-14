@@ -23,18 +23,14 @@ module Formalist
       ).call(&block).elements
     end
 
-    # @api private
-    attr_reader :schema
-
     # @api public
     def initialize(options = {})
-      @schema = options.fetch(:schema)
     end
 
     # @api public
     def build(input = {})
       elements = self.class.elements.map { |el| el.resolve(self) }
-      Result.new(input, elements, schema.class.rule_ast)
+      Result.new(input, elements)
     end
   end
 end

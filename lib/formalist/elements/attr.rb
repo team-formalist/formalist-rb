@@ -1,8 +1,5 @@
 require "formalist/element"
 require "formalist/types"
-require "formalist/validation/collection_rules_compiler"
-require "formalist/validation/value_rules_compiler"
-require "formalist/validation/predicate_list_compiler"
 
 module Formalist
   class Elements
@@ -13,29 +10,21 @@ module Formalist
       attr_reader :name
 
       # @api private
-      attr_reader :value_rules, :value_predicates, :collection_rules, :child_errors
+      attr_reader :child_errors
 
       # @api private
-      def initialize(*args, attributes, children, input, rules, errors)
+      def initialize(*args, attributes, children, input, errors)
         super
 
         @name = Types::ElementName.(args.first)
-
-        value_rules_compiler = Validation::ValueRulesCompiler.new(name)
-        value_predicates_compiler = Validation::PredicateListCompiler.new
-        collection_rules_compiler = Validation::CollectionRulesCompiler.new(name)
-
         @input = input.fetch(name, {})
-        @value_rules = value_rules_compiler.(rules)
-        @value_predicates = value_predicates_compiler.(value_rules)
-        @collection_rules = collection_rules_compiler.(rules)
         @errors = errors.fetch(name, [])[0] || []
         @child_errors = errors[0].is_a?(Hash) ? errors[0] : {}
       end
 
       # @api private
       def build_child(definition)
-        definition.(input, collection_rules, child_errors)
+        definition.(input, child_errors)
       end
 
       # Converts the attribute into an abstract syntax tree.
@@ -50,10 +39,9 @@ module Formalist
       #
       # 1. Attribute name
       # 2. Custom element type (or `:attr` otherwise)
-      # 3. Validation rules (if any)
-      # 4. Validation error messages (if any)
-      # 5. Form element attributes
-      # 6. Child form elements
+      # 3. Validation error messages (if any)
+      # 4. Form element attributes
+      # 5. Child form elements
       #
       # @see Formalist::Element::Attributes#to_ast "Form element attributes" structure
       #
@@ -62,7 +50,6 @@ module Formalist
       #   # => [:attr, [
       #     :metadata,
       #     :attr,
-      #     [[:predicate, [:hash?, []]]],
       #     ["metadata is missing"],
       #     [:object, []],
       #     [...child elements...]
@@ -81,7 +68,6 @@ module Formalist
         [:attr, [
           name,
           type,
-          value_predicates,
           local_errors,
           Element::Attributes.new(attributes).to_ast,
           children.map(&:to_ast),

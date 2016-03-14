@@ -10,7 +10,7 @@ RSpec.describe Formalist::Form do
     Class.new(Formalist::Form) do
       define do
         compound_field do
-          field :title
+          field :title, validate: {filled: true, format: /abc/}
           field :rating
         end
       end
@@ -25,8 +25,8 @@ RSpec.describe Formalist::Form do
         :compound_field,
         [:object, []],
         [
-          [:field, [:title, :field, "Aurora", [[:predicate, [:str?, []]]], [], [:object, []]]],
-          [:field, [:rating, :field, 10, [[:predicate, [:int?, []]]], [], [:object, []]]]
+          [:field, [:title, :field, "Aurora", [], [:object, []]]],
+          [:field, [:rating, :field, 10, [], [:object, []]]]
         ],
       ]],
     ]
