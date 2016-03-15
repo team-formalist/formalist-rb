@@ -6,7 +6,7 @@ module Formalist
   class Elements
     class TextField < Field
       attribute :password, Types::Bool
-      attribute :inline, Types::Bool
+      attribute :code, Types::Bool
     end
 
     register :text_field, TextField

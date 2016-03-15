@@ -6,6 +6,8 @@ module Formalist
     class Group < Element
       permitted_children :attr, :compound_field, :field, :many
 
+      attribute :label, Types::String
+
       def initialize(*args, attributes, children, input, errors)
         super
         @children = children.map { |definition| definition.(input, errors) }

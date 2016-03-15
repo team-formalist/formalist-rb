@@ -12,6 +12,7 @@ module Formalist
       attribute :label, Types::String
       attribute :hint, Types::String
       attribute :placeholder, Types::String
+      attribute :inline, Types::Bool
       attribute :validation, Types::Validation
 
       # @api private

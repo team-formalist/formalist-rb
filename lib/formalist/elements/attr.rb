@@ -9,6 +9,8 @@ module Formalist
       # @api private
       attr_reader :name
 
+      attribute :label, Types::String
+
       # @api private
       def initialize(*args, attributes, children, input, errors)
         super

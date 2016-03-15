@@ -20,9 +20,9 @@ module Formalist
       # Then run them through the schema
       @attributes = Types::Hash.schema(self.class.attributes_schema.map { |name, defn| [name, defn[:type]] }.to_h).(full_attributes)
 
+      @children = []
       @input = input
       @errors = errors
-      @children = []
     end
 
     # Returns the element's type, which is a symbolized, camlized

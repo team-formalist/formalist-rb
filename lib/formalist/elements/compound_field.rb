@@ -21,10 +21,9 @@ module Formalist
       #
       # With the following parameters:
       #
-      # 1. Section name
-      # 2. Custom element type (or `:compound_field` otherwise)
-      # 3. Form element attributes
-      # 4. Child form elements
+      # 1. Custom element type (or `:compound_field` otherwise)
+      # 2. Form element attributes
+      # 3. Child form elements
       #
       # @see Formalist::Element::Attributes#to_ast "Form element attributes" structure
       #
