@@ -28,9 +28,9 @@ module Formalist
     end
 
     # @api public
-    def build(input = {})
+    def build(input = {}, messages = {})
       elements = self.class.elements.map { |el| el.resolve(self) }
-      Result.new(input, elements)
+      Result.new(input, messages, elements)
     end
   end
 end
