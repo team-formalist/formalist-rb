@@ -1,5 +1,3 @@
-require "pp"
-
 RSpec.describe Formalist::Form do
   let(:schema) {
     Dry::Validation.Schema do
