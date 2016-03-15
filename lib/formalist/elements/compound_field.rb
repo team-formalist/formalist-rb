@@ -6,6 +6,11 @@ module Formalist
     class CompoundField < Element
       permitted_children :field
 
+      def initialize(*args, attributes, children, input, errors)
+        super
+        @children = children.map { |definition| definition.(input, errors) }
+      end
+
       # Converts the compound field into an abstract syntax tree.
       #
       # It takes the following format:

@@ -22,7 +22,7 @@ module Formalist
 
       @input = input
       @errors = errors
-      @children = children.map(&method(:build_child))
+      @children = []
     end
 
     # Returns the element's type, which is a symbolized, camlized
@@ -41,16 +41,6 @@ module Formalist
     # @return [Symbol] the element type.
     def type
       self.class.type
-    end
-
-    # Build a given child of the form element using the element's input and
-    # errors.
-    #
-    # Override this in a subclass if you need to customise how children are built.
-    #
-    # @api private
-    def build_child(definition)
-      definition.(input, errors)
     end
 
     # @abstract

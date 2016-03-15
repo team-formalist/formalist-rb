@@ -6,6 +6,11 @@ module Formalist
     class Group < Element
       permitted_children :attr, :compound_field, :field, :many
 
+      def initialize(*args, attributes, children, input, errors)
+        super
+        @children = children.map { |definition| definition.(input, errors) }
+      end
+
       # Converts the group into an abstract syntax tree.
       #
       # It takes the following format:

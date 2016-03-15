@@ -13,6 +13,7 @@ module Formalist
         super
 
         @name = Types::ElementName.(args.first)
+        @children = children.map { |definition| definition.(input, errors) }
       end
 
       # Converts the section into an abstract syntax tree.
