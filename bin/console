@@ -3,5 +3,6 @@
 require "pry"
 require "byebug"
 require "formalist"
+require "dry-validation"
 
 Pry.start

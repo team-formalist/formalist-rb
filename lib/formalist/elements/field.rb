@@ -1,7 +1,5 @@
 require "formalist/element"
 require "formalist/types"
-require "formalist/validation/value_rules_compiler"
-require "formalist/validation/predicate_list_compiler"
 
 module Formalist
   class Elements
@@ -15,23 +13,18 @@ module Formalist
       attribute :hint, Types::String
       attribute :placeholder, Types::String
       attribute :inline, Types::Bool
+      attribute :validation, Types::Validation
 
       # @api private
       attr_reader :predicates
 
       # @api private
-      def initialize(*args, attributes, children, input, rules, errors)
+      def initialize(*args, attributes, children, input, errors)
         super
 
         @name = Types::ElementName.(args.first)
-
-        rules_compiler = Validation::ValueRulesCompiler.new(name)
-        predicates_compiler = Validation::PredicateListCompiler.new
-
-        @input = input[name] if input
-        @rules = rules_compiler.(@rules)
-        @predicates = predicates_compiler.(@rules)
-        @errors = (errors[name] || [])[0].to_a
+        @input = input[@name] if input
+        @errors = errors[@name].to_a
       end
 
       # Converts the field into an abstract syntax tree.
@@ -47,9 +40,8 @@ module Formalist
       # 1. Field name
       # 2. Custom form element type (or `:field` otherwise)
       # 3. Associated form input data
-      # 4. Validation rules (if any)
-      # 5. Validation error messages (if any)
-      # 6. Form element attributes
+      # 4. Error messages
+      # 5. Form element attributes
       #
       # @see Formalist::Element::Attributes#to_ast "Form element attributes" structure
       #
@@ -59,10 +51,6 @@ module Formalist
       #     :email,
       #     :field,
       #     "jane@doe.org",
-      #     [[:and, [
-      #       [:predicate, [:filled?, []]],
-      #       [:predicate, [:format?, [/\s+@\s+\.\s+/]]]
-      #     ]]],
       #     [],
       #     [:object, []],
       #   ]]
@@ -76,7 +64,6 @@ module Formalist
           name,
           type,
           input,
-          predicates,
           errors,
           Element::Attributes.new(attributes).to_ast,
         ]]

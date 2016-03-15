@@ -47,8 +47,8 @@ module Formalist
         self.class.new(type, *resolved_args, resolved_attributes, resolved_children)
       end
 
-      def call(input, rules, messages)
-        type.new(*args, attributes, children, input, rules, messages)
+      def call(input, messages)
+        type.new(*args, attributes, children, input, messages)
       end
     end
   end

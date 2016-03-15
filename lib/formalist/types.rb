@@ -1,24 +1,20 @@
-require "dry-data"
+require "dry-types"
+require "dry-logic"
 
-module Dry
-  module Data
-    module Predicates
-      predicate :respond_to? do |method_name, value|
-        value.respond_to?(method_name)
-      end
-    end
-  end
+Dry::Types::Predicates.predicate :respond_to? do |method_name, value|
+  value.respond_to?(method_name)
 end
 
 module Formalist
   module Types
-    Dry::Data.configure { |c| c.namespace = self }
-    Dry::Data.finalize
+    include Dry::Types.module
 
     ElementName = Types::Strict::Symbol.constrained(min_size: 1)
-    OptionsList = Formalist::Types::Array.member(Formalist::Types::Array.member(Formalist::Types::Strict::String).constrained(size: 2)).constrained(min_size: 1)
+    OptionsList = Types::Array.member(Formalist::Types::Array.member(Formalist::Types::Strict::String).constrained(size: 2)).constrained(min_size: 1)
 
-    Dependency = Dry::Data::Type.new(Dry::Data::Type.method(:constructor), primitive: Object)
+    Validation = Types::Strict::Hash
+
+    Dependency = Dry::Types::Definition[Object].new(Object)
     Function = Dependency.constrained(respond_to: :call)
   end
 end

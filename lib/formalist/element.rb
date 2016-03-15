@@ -7,10 +7,10 @@ module Formalist
     extend ClassInterface
 
     # @api private
-    attr_reader :attributes, :children, :input, :rules, :errors
+    attr_reader :attributes, :children, :input, :errors
 
     # @api private
-    def initialize(*args, attributes, children, input, rules, errors)
+    def initialize(*args, attributes, children, input, errors)
       # Set supplied attributes or their defaults
       full_attributes = self.class.attributes_schema.each_with_object({}) { |(name, defn), memo|
         value = attributes[name] || defn[:default]
@@ -20,9 +20,8 @@ module Formalist
       # Then run them through the schema
       @attributes = Types::Hash.schema(self.class.attributes_schema.map { |name, defn| [name, defn[:type]] }.to_h).(full_attributes)
 
-      @children = children.map { |el| el.(input, rules, errors) }
+      @children = []
       @input = input
-      @rules = rules
       @errors = errors
     end
 

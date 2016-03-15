@@ -8,6 +8,11 @@ module Formalist
 
       attribute :label, Types::String
 
+      def initialize(*args, attributes, children, input, errors)
+        super
+        @children = children.map { |definition| definition.(input, errors) }
+      end
+
       # Converts the group into an abstract syntax tree.
       #
       # It takes the following format:
