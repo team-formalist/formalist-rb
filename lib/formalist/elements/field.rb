@@ -22,8 +22,8 @@ module Formalist
         super
 
         @name = Types::ElementName.(args.first)
-        @input = input[name] if input
-        @errors = (errors[name] || [])[0].to_a
+        @input = input[@name] if input
+        @errors = errors[@name].to_a
       end
 
       # Converts the field into an abstract syntax tree.

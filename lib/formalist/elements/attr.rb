@@ -10,21 +10,13 @@ module Formalist
       attr_reader :name
 
       # @api private
-      attr_reader :child_errors
-
-      # @api private
       def initialize(*args, attributes, children, input, errors)
         super
 
         @name = Types::ElementName.(args.first)
-        @input = input.fetch(name, {})
-        @errors = errors.fetch(name, [])[0] || []
-        @child_errors = errors[0].is_a?(Hash) ? errors[0] : {}
-      end
-
-      # @api private
-      def build_child(definition)
-        definition.(input, child_errors)
+        @input = input.fetch(@name, {})
+        @errors = errors[@name]
+        @children = build_children(children)
       end
 
       # Converts the attribute into an abstract syntax tree.
@@ -57,13 +49,7 @@ module Formalist
       #
       # @return [Array] the attribute as an abstract syntax tree.
       def to_ast
-        # Errors, if the attr hash is present and its members have errors:
-        # {:meta=>[[{:pages=>[["pages is missing"], nil]}], {}]}
-
-        # Errors, if the attr hash hasn't been provided
-        # {:meta=>[["meta is missing"], nil]}
-
-        local_errors = errors[0].is_a?(Hash) ? [] : errors
+        local_errors = errors.is_a?(Array) ? errors : []
 
         [:attr, [
           name,
@@ -72,6 +58,14 @@ module Formalist
           Element::Attributes.new(attributes).to_ast,
           children.map(&:to_ast),
         ]]
+      end
+
+      private
+
+      def build_children(definitions)
+        child_errors = errors.is_a?(Hash) ? errors : {}
+
+        definitions.map { |definition| definition.(input, child_errors) }
       end
     end
   end

@@ -24,7 +24,7 @@ module Formalist
 
         @name = Types::ElementName.(args.first)
         @input = input.fetch(name, [])
-        @errors = errors.fetch(name, [])[0] || []
+        @errors = errors[@name]
         @child_template = build_child_template(children)
         @children = build_children(children)
       end
@@ -93,12 +93,11 @@ module Formalist
       #
       # @return [Array] the collection as an abstract syntax tree.
       def to_ast
-        local_errors = errors.select { |e| e.is_a?(String) }
+        local_errors = errors.is_a?(Array) ? errors : []
 
         [:many, [
           name,
           type,
-          value_predicates,
           local_errors,
           Element::Attributes.new(attributes).to_ast,
           child_template.map(&:to_ast),
@@ -109,32 +108,17 @@ module Formalist
       private
 
       def build_child_template(definitions)
-        template_input = {}
-        template_errors = {}
-
-        definitions.map { |el| el.(template_input, template_errors)}
+        definitions.map { |el| el.({}, {})}
       end
 
       def build_children(definitions)
-        # child errors looks like this:
-        # [
-        #   {:rating=>[["rating must be greater than or equal to 1"], 0]},
-        #   {:summary=>"Great", :rating=>0},
-        #   {:summary=>[["summary must be filled"], ""]},
-        #   {:summary=>"", :rating=>1}
-        # ]
-        #
-        # or local errors:
-        # {:links=>[["links is missing"], nil]}
+        # Child errors look like this: {0=>{:summary=>["must be filled"]}
+        child_errors = errors.is_a?(Hash) ? errors : {}
 
-        child_errors = errors.each_slice(2).to_a
+        input.each_with_index.map { |child_input, index|
+          errors = child_errors.fetch(index, {})
 
-        input.map { |child_input|
-          local_child_errors = child_errors.select { |e|
-            e[1] == child_input
-          }.to_a.dig(0, 0) || {}
-
-          definitions.map { |el| el.(child_input, local_child_errors) }
+          definitions.map { |el| el.(child_input, errors) }
         }
       end
     end
