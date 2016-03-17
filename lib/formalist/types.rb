@@ -11,6 +11,7 @@ module Formalist
 
     ElementName = Types::Strict::Symbol.constrained(min_size: 1)
     OptionsList = Types::Array.member(Formalist::Types::Array.member(Formalist::Types::Strict::String).constrained(size: 2)).constrained(min_size: 1)
+    SelectionsList = Formalist::Types::Strict::Array.member(Formalist::Types::Strict::Hash)
 
     Validation = Types::Strict::Hash
 
