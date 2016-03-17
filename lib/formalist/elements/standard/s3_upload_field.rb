@@ -4,10 +4,10 @@ require "formalist/types"
 
 module Formalist
   class Elements
-    class UploadField < Field
+    class S3UploadField < Field
       attribute :presign_url, Types::String
     end
 
-    register :upload_field, UploadField
+    register :s3_upload_field, S3UploadField
   end
 end
