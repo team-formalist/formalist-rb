@@ -6,9 +6,9 @@ module Formalist
   class Elements
     class SelectionField < Field
       attribute :options, Types::SelectionsList
-      attribute :select_button_text, Types::String
-      attribute :selected_component, Types::String
-      attribute :selection_component, Types::String
+      attribute :selector_label, Types::String
+      attribute :render_option_as, Types::String
+      attribute :render_selection_as, Types::String
     end
 
     register :selection_field, SelectionField
