@@ -10,7 +10,7 @@ module Formalist
       attr_reader :name
 
       attribute :label, Types::String
-      attribute :add_label, Types::String
+      attribute :action_label, Types::String
       attribute :placeholder, Types::String
       attribute :validation, Types::Validation
 
