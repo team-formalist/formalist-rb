@@ -10,10 +10,8 @@ module Formalist
       attr_reader :name
 
       attribute :label, Types::String
-      attribute :allow_create, Types::Bool
-      attribute :allow_update, Types::Bool
-      attribute :allow_destroy, Types::Bool
-      attribute :allow_reorder, Types::Bool
+      attribute :add_label, Types::String
+      attribute :placeholder, Types::String
       attribute :validation, Types::Validation
 
       # @api private
