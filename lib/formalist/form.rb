@@ -24,10 +24,6 @@ module Formalist
     end
 
     # @api public
-    def initialize(options = {})
-    end
-
-    # @api public
     def build(input = {}, messages = {})
       elements = self.class.elements.map { |el| el.resolve(self) }
       Result.new(input, messages, elements)
