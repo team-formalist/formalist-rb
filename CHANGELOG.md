@@ -1,3 +1,7 @@
+# 0.2.3 / 2016-04-07
+
+Default check_box element values to false.
+
 # 0.2.2 / 2015-02-23
 
 Remove local type coercion using dry-data. We rely on a `Dry::Validation::Schema` to do this now. The form definition API has not yet changed, though. We still require field types to be specified, but there is no longer any restriction over what is entered. We'll remove this in a future release, once we can infer types from the schema.
