@@ -1,3 +1,23 @@
 language: ruby
+sudo: false
+cache: bundler
 rvm:
+  - 2.0
+  - 2.1
+  - 2.2
   - 2.3.0
+  - rbx-2
+  - jruby-9000
+  - ruby-head
+  - jruby-head
+before_install:
+  - gem update bundler
+matrix:
+  allow_failures:
+    - rvm: ruby-head
+    - rvm: jruby-head
+addons:
+  code_climate:
+    repo_token: 2c2c7c253435c02667371778ca886b069d4d24590748fbd7396b9b080016bfa7
+notifications:
+  email: false
