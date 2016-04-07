@@ -11,4 +11,5 @@ end
 
 group :tools do
   gem "pry"
+  gem "byebug", platform: :mri
 end

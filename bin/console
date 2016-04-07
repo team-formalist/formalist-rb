@@ -1,7 +1,9 @@
 #!/usr/bin/env ruby
 
 require "pry"
-require "byebug"
+begin
+  require "byebug"
+rescue LoadError; end
 require "formalist"
 require "dry-validation"
 

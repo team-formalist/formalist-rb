@@ -8,7 +8,9 @@ if RUBY_ENGINE == "ruby"
   end
 end
 
-require "byebug"
+begin
+  require "byebug"
+rescue LoadError; end
 
 require "formalist"
 require "dry-validation"
