@@ -1,10 +1,16 @@
-require "simplecov"
-# SimpleCov.minimum_coverage 100
-SimpleCov.start do
-  add_filter "/spec/"
+if RUBY_ENGINE == "ruby"
+  require "codeclimate-test-reporter"
+  CodeClimate::TestReporter.start
+
+  require "simplecov"
+  SimpleCov.start do
+    add_filter "/spec/"
+  end
 end
 
-require "byebug"
+begin
+  require "byebug"
+rescue LoadError; end
 
 require "formalist"
 require "dry-validation"
