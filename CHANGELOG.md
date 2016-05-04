@@ -1,3 +1,7 @@
+# 0.3.0 / 2016-05-04
+
+Add support for upload and multi upload fields.
+
 # 0.2.3 / 2016-04-07
 
 Default check_box element values to false.
