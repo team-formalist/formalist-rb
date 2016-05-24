@@ -7,6 +7,8 @@ module Formalist
     class UploadField < Field
       attribute :presign_url, Types::String
       attribute :render_uploaded_as, Types::String
+      attribute :upload_label, Types::String
+      attribute :button_label, Types::String
     end
 
     register :upload_field, UploadField
