@@ -2,32 +2,22 @@ require "formalist/draft_js_html_renderer"
 
 module Formalist
   class DraftJSCompiler
-    attr_reader render
-    LIST_ITEM_TYPES = ["unordered-list-item", "ordered-list-item"]
 
-    def call(ast, renderer)
+    LIST_ITEM_TYPES = %w(unordered-list-item, ordered-list-item)
+
+    def initialize(renderer)
       @renderer = renderer || DraftJSHTMLRenderer.new
-      @renderer.list(chunk_lists(ast)) do |chunk|
-        visit_chunk(chunk)
+    end
+
+    def call(ast)
+      @renderer.list(wrap_lists(ast)) do |node|
+        visit(node)
       end
     end
 
     private
 
-    def visit_chunk(data)
-      type, children = data
-      if LIST_ITEM_TYPES.include?(type)
-        @renderer.wrapper(type, children) do |child|
-          visit_node(child)
-        end
-      else
-        @renderer.list(children) do |child|
-          visit_node(child)
-        end
-      end
-    end
-
-    def visit_node(node)
+    def visit(node)
       type = node[0]
       content = node[1]
       send(:"visit_#{type}", content)
@@ -35,9 +25,9 @@ module Formalist
 
     def visit_block(data)
       type, key, children = data
-      children_chunked = chunked_list(children)
-      @renderer.block(type, key, children_chunked) do |child|
-        visit_chunk(child)
+      children_wrapped = wrap_lists(children)
+      @renderer.block(type, key, children_wrapped) do |child|
+        visit(child)
       end
     end
 
@@ -48,28 +38,45 @@ module Formalist
 
     def visit_entity(data)
       type, key, _mutability, data, children = data
-      children_chunked = chunked_list(children)
-      @renderer.entity(type, key, data, children_chunked) do |child|
-        visit_chunk(child)
+      children_wrapped = wrap_lists(children)
+      @renderer.entity(type, key, data, children_wrapped) do |child|
+        visit(child)
       end
     end
   end
 
-  def chunk_lists(nodes)
-    chunked_array = []
+  def convert_to_wrapper_node(type, children)
+    [
+      "wrapper",
+      [type, children]
+    ]
+  end
+
+  def wrap_lists(nodes)
     chunked = ast.chunk do |node|
       node[0] = type
       node[1] = content
       if type == "block"
-        content[0]
+        content[0] # block type
       else
         type
       end
     end
-    chunked.each do |res, chunk|
-      chunked_array << [res, chunk]
+
+    output_array = []
+    chunked.each do |type, chunk|
+      if is_list_item?(type)
+        output_array << convert_to_wrapper_node(type, chunk)
+      else
+        # flatten again by appending chunk onto array.
+        output_array = output_array + chunk
+      end
     end
-    chunked_array
+    output_array
+  end
+
+  def is_list_item?(type)
+    LIST_ITEM_TYPES.include?(type)
   end
 end
 
