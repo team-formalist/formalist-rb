@@ -31,6 +31,13 @@ module Formalist
       end
     end
 
+    def visit_wrapper(data)
+      type, children = data
+      @renderer.wrapper(type, children) do |child|
+        visit(child)
+      end
+    end
+
     def visit_inline(data)
       styles, text = data
       @renderer.inline(styles, text)
