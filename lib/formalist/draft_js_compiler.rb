@@ -1,12 +1,12 @@
 require "formalist/draft_js_html_renderer"
 
 module Formalist
-  class DraftJSCompiler
+  class DraftJsCompiler
 
-    LIST_ITEM_TYPES = %w(unordered-list-item, ordered-list-item)
+    LIST_ITEM_TYPES = %w(unordered-list-item ordered-list-item)
 
-    def initialize(renderer)
-      @renderer = renderer || DraftJSHTMLRenderer.new
+    def initialize(renderer = nil)
+      @renderer = renderer || DraftJsHtmlRenderer.new
     end
 
     def call(ast)

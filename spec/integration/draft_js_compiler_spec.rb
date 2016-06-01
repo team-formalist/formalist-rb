@@ -1,7 +1,7 @@
 require "formalist/draft_js_compiler"
 
-RSpec.describe Formalist::DraftJSCompiler do
-  subject(:compiler) { Formalist::DraftJSCompiler.new }
+RSpec.describe Formalist::DraftJsCompiler do
+  subject(:compiler) { Formalist::DraftJsCompiler.new }
 
   let(:ast) {
     block1 = ["block", ["header-two", "a34sd", [["inline", [[], "Heading"] ] ] ]]
