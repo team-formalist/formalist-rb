@@ -93,39 +93,35 @@ module Formalist
     end
 
     def wrapper_unordered_list_item(children)
-      result = children
-      result.unshift("<ul>")
-      result.push("</ul>")
-      result.join
+      html_tag(:ul) do
+        children.join
+      end
     end
 
     def wrapper_ordered_list_item(children)
-      result = children
-      result.unshift("<ol>")
-      result.push("</ol>")
-      result.join
+      html_tag(:ol) do
+        children.join
+      end
     end
 
     def entity_link(key, data, children)
-      result = children
-      result.unshift("<a data-entity-key='#{key}' href='#{data[:url]}'>")
-      result.push("</a>")
-      result.join
+      html_tag(:a, "data-entity-key" => key, :href => data[:url]) do
+        children.join
+      end
     end
 
     def entity_image(key, data, children)
-      "<img data-entity-key='#{key}' src='#{data[:src]}'/>"
+      html_tag(:img, "data-entity-key" => key, :src => data[:src])
     end
 
     def entity_video(key, data, children)
-      "<video data-entity-key='#{key}' src='#{data[:src]}'/>"
+       html_tag(:video, "data-entity-key" => key, :src => data[:src])
     end
 
     def entity_default(key, data, children)
-      result = children
-      result.unshift("<div data-entity-key='#{key}'>")
-      result.push("</div>")
-      result.join
+      html_tag(:div, {"data-entity-key" => key}.merge(data)) do
+        children.join
+      end
     end
 
 
@@ -133,18 +129,49 @@ module Formalist
       result = content
       map = ELEMENT_NAME_MAP[:block]
       elem = map[type] || map["default"]
-      result.unshift("<#{elem} data-key='#{key}'>")
-      result.push("</#{elem}>")
-      result.join
+      html_tag(elem, "data-key" => key) do
+        if content.is_a?(Array)
+          content.join
+        else
+          content
+        end
+      end
     end
 
     def render_inline_element(type, content)
       result = content
       map = ELEMENT_NAME_MAP[:inline]
       elem = map[type] || map["default"]
-      result.unshift("<#{elem}>")
-      result.push("</#{elem}>")
-      result.join
+      html_tag(elem) do
+        if content.is_a?(Array)
+          content.join
+        else
+          content
+        end
+      end
+    end
+
+    def html_tag(tag, options = {}, &block)
+      options_string = html_options_string(options)
+      out = "<#{tag} #{options_string}".strip
+      if block_given?
+        content = block.call
+      else
+        content = ""
+      end
+
+      if content.nil? || content.empty?
+        out << "/>"
+      else
+        out << ">#{content}</#{tag}>"
+      end
+    end
+
+    def html_options_string(options)
+      opts = options.map do |key, val|
+        "#{key}='#{val}'"
+      end
+      opts.join(" ")
     end
   end
 end
