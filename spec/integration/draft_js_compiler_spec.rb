@@ -10,8 +10,12 @@ RSpec.describe Formalist::DraftJsCompiler do
     [block1, block2, block2, block1]
   }
 
+  let(:output_html) {
+    "<h2 data-key='a34sd'>Heading</h2><ul><li data-key='dodnk'>I am more <a data-entity-key='3' href='http://makenosound.com'>content</a>.</li><li data-key='dodnk'>I am more <a data-entity-key='3' href='http://makenosound.com'>content</a>.</li></ul><h2 data-key='a34sd'>Heading</h2>"
+  }
+
   it "works" do
-    expect(compiler.call(ast)).to_not be_nil
+    expect(compiler.call(ast)).to eq(output_html)
   end
 
 
