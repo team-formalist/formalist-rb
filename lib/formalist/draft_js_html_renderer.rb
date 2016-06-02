@@ -10,23 +10,27 @@ module Formalist
     # block and entity must iterate over the children and yield each of the children back to the compiler
 
     ELEMENT_NAME_MAP = {
-      "header-one" => "h1",
-      "header-two" => "h2",
-      "header-three" => "h3",
-      "header-four" => "h4",
-      "header-five" => "h5",
-      "header-six" => "h6",
-      "unordered-list-item" => "li",
-      "ordered-list-item" => "li",
-      "unstyled" => "p",
-      "blockquote" => "blockquote",
-      "code-block" => "pre",
-      "bold" => "strong",
-      "italic" => "em",
-      "strikethrough" => "del",
-      "code" => "code",
-      "underline" => "u",
-      "span" => "span"
+      :block => {
+        "header-one" => "h1",
+        "header-two" => "h2",
+        "header-three" => "h3",
+        "header-four" => "h4",
+        "header-five" => "h5",
+        "header-six" => "h6",
+        "unordered-list-item" => "li",
+        "ordered-list-item" => "li",
+        "blockquote" => "blockquote",
+        "code-block" => "pre",
+        "default" => "p"
+      },
+      :inline => {
+        "bold" => "strong",
+        "italic" => "em",
+        "strikethrough" => "del",
+        "code" => "code",
+        "underline" => "u",
+        "default" => "span"
+      }
     }
 
     def initialize(options = {})
@@ -49,12 +53,13 @@ module Formalist
 
       rendered_children = children.map{|child| render_child.call(child)}
 
-      if ELEMENT_NAME_MAP.has_key?(type)
-        wrap_block_element(type, key, rendered_children)
+      if type == 'atomic'
+        block_atomic(key, rendered_children)
       else
-        send(:"block_#{type_for_method}", key, rendered_children)
+        render_block_element(type, key, rendered_children)
       end
     end
+
      # Defines how to handle a list of blocks with a list type
     def wrapper(type, children, &render_child)
       type_for_method = type.gsub("-", "_")
@@ -66,18 +71,19 @@ module Formalist
       return content if styles.nil? || styles.empty?
       out = content
       styles.each do |style|
-        if style == "default" && options[:allow_empty_tags]
-          out = content
-        else
-          style = style == "default" ? "span" : style
-          out = wrap_inline_element(style, out)
-        end
+        out = render_inline_element(style, out)
       end
       out
     end
 
-    def entity(type, key, data, children)
-      ""
+    def entity(type, key, data, children,  &render_child)
+      valid_types = %w(link video image default)
+      rendered_children = children.map{|child| render_child.call(child)}
+      if valid_types.include?(type.downcase)
+        send(:"entity_#{type.downcase}", key, data, rendered_children)
+      else
+        rendered_children
+      end
     end
 
     private
@@ -86,13 +92,13 @@ module Formalist
       children.join
     end
 
-
     def wrapper_unordered_list_item(children)
       result = children
       result.unshift("<ul>")
       result.push("</ul>")
       result.join
     end
+
     def wrapper_ordered_list_item(children)
       result = children
       result.unshift("<ol>")
@@ -100,17 +106,42 @@ module Formalist
       result.join
     end
 
-    def wrap_block_element(type, key, content)
+    def entity_link(key, data, children)
+      result = children
+      result.unshift("<a data-entity-key='#{key}' href='#{data[:url]}'>")
+      result.push("</a>")
+      result.join
+    end
+
+    def entity_image(key, data, children)
+      "<img data-entity-key='#{key}' src='#{data[:src]}'/>"
+    end
+
+    def entity_video(key, data, children)
+      "<video data-entity-key='#{key}' src='#{data[:src]}'/>"
+    end
+
+    def entity_default(key, data, children)
+      result = children
+      result.unshift("<div data-entity-key='#{key}'>")
+      result.push("</div>")
+      result.join
+    end
+
+
+    def render_block_element(type, key, content)
       result = content
-      elem = ELEMENT_NAME_MAP[type]
+      map = ELEMENT_NAME_MAP[:block]
+      elem = map[type] || map["default"]
       result.unshift("<#{elem} data-key='#{key}'>")
       result.push("</#{elem}>")
       result.join
     end
 
-    def wrap_inline_element(type, content)
+    def render_inline_element(type, content)
       result = content
-      elem = ELEMENT_NAME_MAP[type]
+      map = ELEMENT_NAME_MAP[:inline]
+      elem = map[type] || map["default"]
       result.unshift("<#{elem}>")
       result.push("</#{elem}>")
       result.join
