@@ -51,14 +51,6 @@ module Formalist
       end
     end
 
-
-    def convert_to_wrapper_node(type, children)
-      [
-        "wrapper",
-        [type, children]
-      ]
-    end
-
     def wrap_lists(nodes)
       chunked = nodes.chunk do |node|
         type = node[0]
@@ -80,6 +72,13 @@ module Formalist
         end
       end
       output_array
+    end
+
+    def convert_to_wrapper_node(type, children)
+      [
+        "wrapper",
+        [type, children]
+      ]
     end
 
     def is_list_item?(type)
