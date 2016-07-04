@@ -1,16 +1,16 @@
 RSpec.describe Formalist::Form do
   let(:schema) {
     Dry::Validation.Schema do
-      key(:title).required
-      key(:rating).required(:int?)
+      required(:title).filled
+      required(:rating).filled(:int?)
 
-      key(:reviews).each do
-        key(:summary).required
-        key(:rating).required(:int?, gteq?: 1, lteq?: 10)
+      required(:reviews).each do
+        required(:summary).filled
+        required(:rating).filled(:int?, gteq?: 1, lteq?: 10)
       end
 
-      key(:meta).schema do
-        key(:pages).required(:int?, gteq?: 1)
+      required(:meta).schema do
+        required(:pages).filled(:int?, gteq?: 1)
       end
     end
   }
