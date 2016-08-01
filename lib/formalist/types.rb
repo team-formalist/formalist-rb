@@ -1,7 +1,7 @@
 require "dry-types"
-require "dry-logic"
 
-Dry::Types::Predicates.predicate :respond_to? do |method_name, value|
+# TODO: Find a way to avoid registering this globally
+Dry::Logic::Predicates.predicate :respond_to? do |method_name, value|
   value.respond_to?(method_name)
 end
 
