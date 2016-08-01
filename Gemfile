@@ -5,7 +5,7 @@ gemspec
 group :test do
   gem "codeclimate-test-reporter", require: nil
   gem "dry-auto_inject"
-  gem "dry-validation", "~> 0.8"
+  gem "dry-validation", ">= 0.8"
 end
 
 group :tools do
