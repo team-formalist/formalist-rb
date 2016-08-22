@@ -18,7 +18,7 @@ module Formalist
         attrs.merge(
           embeddable_forms: attrs[:embeddable_forms].map { |key, attrs|
             original_attrs = attrs
-            adjusted_attrs = original_attrs.merge(template: original_attrs[:template].build.to_ast)
+            adjusted_attrs = original_attrs.merge(form: original_attrs[:form].build.to_ast)
 
             [key, adjusted_attrs]
           }.to_h
