@@ -16,7 +16,7 @@ module Formalist
 
         # Replace the form objects with their AST
         attrs.merge(
-          embeddable_forms: attrs[:embeddable_forms].map { |key, attrs|
+          embeddable_forms: Hash(attrs[:embeddable_forms]).map { |key, attrs|
             original_attrs = attrs
             adjusted_attrs = original_attrs.merge(form: original_attrs[:form].build.to_ast)
 
