@@ -23,6 +23,7 @@ module Formalist
       def call(ast)
         ast.map { |node| visit(node) }
       end
+      alias_method :[], :call
 
       private
 
@@ -32,7 +33,7 @@ module Formalist
         handler = :"visit_#{name}"
 
         if respond_to?(handler, true)
-          send(:"visit_#{name}", nodes)
+          send(handler, nodes)
         else
           [name, nodes]
         end
@@ -50,26 +51,20 @@ module Formalist
 
         if type == "formalist"
           form_ast = prepare_form_ast(
-            embedded_forms[entity_data[:name]],
-            entity_data[:data]
+            embedded_forms[entity_data["name"]],
+            entity_data["data"]
           )
 
-          entity_data = entity_data.merge(form: form_ast)
+          entity_data = entity_data.merge("form" => form_ast)
         end
 
         ["entity", [type, key, mutability, entity_data, children]]
       end
 
       def prepare_form_ast(embedded_form, data)
-        form = embedded_form.form
+        input = embedded_form.schema.(data)
 
-        errors = if embedded_form.schema
-          embedded_form.schema.(data).messages
-        else
-          {}
-        end
-
-        form.build(data, errors).to_ast
+        embedded_form.form.build(input.to_h, input.messages).to_ast
       end
     end
   end
