@@ -1,3 +1,5 @@
+require "json"
+
 module Formalist
   module RichText
 
@@ -21,6 +23,8 @@ module Formalist
       end
 
       def call(ast)
+        ast = ast.is_a?(String) ? JSON.parse(ast) : ast
+
         ast.map { |node| visit(node) }
       end
       alias_method :[], :call
