@@ -3,34 +3,19 @@ require "formalist/rich_text/embedded_form_compiler"
 
 module Formalist
   module RichText
-
-    # - Need to initialize this with the embedded form collection
-    # - And then call it with the hash of the form post data
-    #
-    # I also need to supply a custom transformer, kind of like map_values
-    #
-    # Usage? Something like this:
-    #
-    # class MyFormTransformer < Formalist::RichText::Transformer[MyEmbeddedForms]
-    #   prepare_rich_text :body
-    # end
+    def self.Transformer(embedded_form_collection, &block)
+      Transformer.define(embedded_form_collection, &block)
+    end
 
     class Transformer < Transproc::Transformer
-      Undefined = Object.new.freeze
-
       class << self
-        def [](embedded_form_collection)
-          Class.new(self).tap do |klass|
-            klass.embedded_form_collection embedded_form_collection
-          end
-        end
+        attr_reader :embedded_form_collection
 
-        def embedded_form_collection(collection = Undefined)
-          if collection == Undefined
-            @embedded_form_collection
-          else
-            @embedded_form_collection = collection
-          end
+        def define(embedded_form_collection, &block)
+          Class.new(self).tap do |klass|
+            klass.instance_variable_set :@embedded_form_collection, embedded_form_collection
+            klass.instance_exec(&block)
+          end.new
         end
 
         def embedded_form_compiler
