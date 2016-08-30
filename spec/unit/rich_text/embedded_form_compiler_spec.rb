@@ -9,7 +9,7 @@ RSpec.describe Formalist::RichText::EmbeddedFormCompiler do
 
   let(:embedded_forms) {
     Formalist::RichText::EmbeddedFormCollection.new.tap do |collection|
-      collection.register :image_with_caption, form, schema
+      collection.register :image_with_caption, form: form, schema: schema
     end
   }
 
