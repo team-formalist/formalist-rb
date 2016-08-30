@@ -21,7 +21,6 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "dry-container"
   spec.add_runtime_dependency "dry-types", ">= 0.8"
   spec.add_runtime_dependency "inflecto"
-  spec.add_runtime_dependency "transproc"
 
   spec.add_development_dependency "bundler", "~> 1.10"
   spec.add_development_dependency "rake", "~> 10.4.2"

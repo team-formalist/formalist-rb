@@ -2,8 +2,6 @@ source "https://rubygems.org"
 
 gemspec
 
-gem "transproc", git: "https://github.com/solnic/transproc", branch: "master"
-
 group :test do
   gem "codeclimate-test-reporter", require: nil
   gem "dry-auto_inject"
