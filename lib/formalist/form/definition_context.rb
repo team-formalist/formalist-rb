@@ -6,21 +6,19 @@ module Formalist
       DuplicateDefinitionError = Class.new(StandardError)
 
       attr_reader :elements
-      attr_reader :container
-      attr_reader :permissions
+      attr_reader :config
 
-      def initialize(options = {})
+      def initialize(config)
         @elements = []
-        @container = options.fetch(:container)
-        @permissions = options.fetch(:permissions)
+        @config = config
       end
 
       def with(options = {})
-        %i[container permissions].each do |attr|
-          options[attr] ||= send(attr)
-        end
+        new_config = options.each_with_object(config.dup) { |(key, value), config|
+          config.send :"#{key}=", value
+        }
 
-        self.class.new(options)
+        self.class.new(new_config)
       end
 
       def call(&block)
@@ -44,18 +42,18 @@ module Formalist
       private
 
       def element_type_exists?(type)
-        container.key?(type)
+        config.elements_container.key?(type)
       end
 
       def add_element(element_type, *args, &block)
-        type = container[element_type]
-        raise ArgumentError, "element +#{element_type}+ is not permitted in this context" unless permissions.permitted?(type)
+        type = config.elements_container[element_type]
+        raise ArgumentError, "element +#{element_type}+ is not permitted in this context" unless config.permitted_children.permitted?(type)
 
-        # Work with top-level args and a trailing attributes hash
+        # Work with positional args and a trailing attributes hash
         args = args.dup
         attributes = args.last.is_a?(Hash) ? args.pop : {}
 
-        children = with(permissions: type.permitted_children).call(&block).elements
+        children = with(permitted_children: type.permitted_children).call(&block).elements
         definition = Element::Definition.new(type, *args, attributes, children)
 
         if elements.any? { |el| el == definition }

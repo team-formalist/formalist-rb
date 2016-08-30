@@ -9,6 +9,7 @@ module Formalist
     extend Dry::Configurable
 
     setting :elements_container, Elements
+    setting :permitted_children, Element::PermittedChildren.all
 
     # @api private
     def self.elements
@@ -17,10 +18,7 @@ module Formalist
 
     # @api public
     def self.define(&block)
-      @elements = DefinitionContext.new(
-        container: config.elements_container,
-        permissions: Element::PermittedChildren.all
-      ).call(&block).elements
+      @elements = DefinitionContext.new(config).call(&block).elements
     end
 
     # @api public
