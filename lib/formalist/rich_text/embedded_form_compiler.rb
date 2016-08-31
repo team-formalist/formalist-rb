@@ -53,16 +53,16 @@ module Formalist
       def visit_entity(node)
         type, key, mutability, entity_data, children = node
 
-        if type == "formalist"
-          form_ast = prepare_form_ast(
-            embedded_forms[entity_data["name"]],
-            entity_data["data"]
-          )
+        return ["entity", node] unless type == "formalist"
 
-          entity_data = entity_data.merge("form" => form_ast)
-        end
+        embedded_form = embedded_forms[entity_data["name"]]
 
-        ["entity", [type, key, mutability, entity_data, children]]
+        compiled_entity_data = entity_data.merge(
+          "label" => embedded_form.label,
+          "form" => prepare_form_ast(embedded_form, entity_data["data"])
+        )
+
+        ["entity", [type, key, mutability, compiled_entity_data, children]]
       end
 
       def prepare_form_ast(embedded_form, data)
