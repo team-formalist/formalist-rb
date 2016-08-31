@@ -1,17 +1,19 @@
 module Formalist
   module RichText
-    class EmbeddedFormCollection
+    class EmbeddedFormsContainer
       class Registration
+        attr_reader :label
         attr_reader :form
         attr_reader :schema
 
-        def initialize(form, schema)
+        def initialize(label, form, schema)
+          @label = label
           @form = form
           @schema = schema
         end
 
         def to_h
-          {form: form, schema: schema}
+          {label: label, form: form, schema: schema}
         end
       end
     end

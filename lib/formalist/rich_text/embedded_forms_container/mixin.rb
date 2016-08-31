@@ -1,9 +1,9 @@
 require "dry-container"
-require "formalist/rich_text/embedded_form_collection/registration"
+require "formalist/rich_text/embedded_forms_container/registration"
 
 module Formalist
   module RichText
-    class EmbeddedFormCollection
+    class EmbeddedFormsContainer
       module Mixin
         def self.included(base)
           base.class_eval do
@@ -24,17 +24,17 @@ module Formalist
             super(key.to_s)
           end
 
-          def register(key, form:, schema:)
-            super(key.to_s, Registration.new(form, schema))
+          def register(key, label:, form:, schema:)
+            super(key.to_s, Registration.new(label, form, schema))
           end
-
-          # TODO: methods to return filtered sets of registrations
 
           def to_h
             keys.each_with_object({}) { |key, output|
               output[key] = self[key].to_h
             }
           end
+
+          # TODO: methods to return filtered sets of registrations
         end
       end
     end
