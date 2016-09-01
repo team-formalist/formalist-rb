@@ -1,15 +1,15 @@
 require "dry-validation"
 require "formalist/form"
 require "formalist/elements/standard"
-require "formalist/rich_text/embedded_form_collection"
+require "formalist/rich_text/embedded_forms_container"
 require "formalist/rich_text/embedded_form_compiler"
 
 RSpec.describe Formalist::RichText::EmbeddedFormCompiler do
   let(:compiler) { described_class.new(embedded_forms) }
 
   let(:embedded_forms) {
-    Formalist::RichText::EmbeddedFormCollection.new.tap do |collection|
-      collection.register :image_with_caption, form: form, schema: schema
+    Formalist::RichText::EmbeddedFormsContainer.new.tap do |collection|
+      collection.register :image_with_caption, label: "Image with caption", form: form, schema: schema
     end
   }
 
