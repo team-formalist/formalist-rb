@@ -5,12 +5,14 @@ module Formalist
     class HTMLCompiler
       LIST_ITEM_TYPES = %w(unordered-list-item ordered-list-item)
 
+      attr_reader :renderer
+
       def initialize(renderer = nil)
         @renderer = renderer || HTMLRenderer.new
       end
 
       def call(ast)
-        @renderer.list(wrap_lists(ast)) do |node|
+        renderer.list(wrap_lists(ast)) do |node|
           visit(node)
         end
       end
@@ -26,27 +28,27 @@ module Formalist
       def visit_block(data)
         type, key, children = data
         children_wrapped = wrap_lists(children)
-        @renderer.block(type, key, children_wrapped) do |child|
+        renderer.block(type, key, children_wrapped) do |child|
           visit(child)
         end
       end
 
       def visit_wrapper(data)
         type, children = data
-        @renderer.wrapper(type, children) do |child|
+        renderer.wrapper(type, children) do |child|
           visit(child)
         end
       end
 
       def visit_inline(data)
         styles, text = data
-        @renderer.inline(styles, text)
+        renderer.inline(styles, text)
       end
 
       def visit_entity(data)
         type, key, _mutability, data, children = data
         children_wrapped = wrap_lists(children)
-        @renderer.entity(type, key, data, children_wrapped) do |child|
+        renderer.entity(type, key, data, children_wrapped) do |child|
           visit(child)
         end
       end
