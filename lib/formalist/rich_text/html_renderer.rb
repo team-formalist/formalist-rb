@@ -10,29 +10,30 @@ module Formalist
 
       # block and entity must iterate over the children and yield each of the children back to the compiler
 
-      ELEMENT_NAME_MAP = {
-        :block => {
-          "header-one" => "h1",
-          "header-two" => "h2",
-          "header-three" => "h3",
-          "header-four" => "h4",
-          "header-five" => "h5",
-          "header-six" => "h6",
-          "unordered-list-item" => "li",
-          "ordered-list-item" => "li",
-          "blockquote" => "blockquote",
-          "code-block" => "pre",
-          "default" => "p"
-        },
-        :inline => {
-          "bold" => "strong",
-          "italic" => "em",
-          "strikethrough" => "del",
-          "code" => "code",
-          "underline" => "u",
-          "default" => "span"
-        }
+      BLOCK_ELEMENTS_MAP = {
+        "header-one" => "h1",
+        "header-two" => "h2",
+        "header-three" => "h3",
+        "header-four" => "h4",
+        "header-five" => "h5",
+        "header-six" => "h6",
+        "unordered-list-item" => "li",
+        "ordered-list-item" => "li",
+        "blockquote" => "blockquote",
+        "code-block" => "pre",
       }.freeze
+
+      DEFAULT_BLOCK_ELEMENT = "p".freeze
+
+      INLINE_ELEMENTS_MAP = {
+        "bold" => "strong",
+        "italic" => "em",
+        "strikethrough" => "del",
+        "code" => "code",
+        "underline" => "u",
+      }
+
+      DEFAULT_INLINE_ELEMENT = "span".freeze
 
       def initialize(options = {})
         @options = options
@@ -128,8 +129,8 @@ module Formalist
       end
 
       def render_block_element(type, content)
-        map = ELEMENT_NAME_MAP[:block]
-        elem = map[type] || map["default"]
+        elem = BLOCK_ELEMENTS_MAP.fetch(type, DEFAULT_BLOCK_ELEMENT)
+
         html_tag(elem) do
           if content.is_a?(Array)
             content.join
@@ -140,8 +141,8 @@ module Formalist
       end
 
       def render_inline_element(type, content)
-        map = ELEMENT_NAME_MAP[:inline]
-        elem = map[type] || map["default"]
+        elem = INLINE_ELEMENTS_MAP.fetch(type, DEFAULT_INLINE_ELEMENT)
+
         html_tag(elem) do
           if content.is_a?(Array)
             content.join
