@@ -6,7 +6,7 @@ module Formalist
       #  2. block
       #  3. entity
       #  4. wrapper
-      #  5. list
+      #  5. nodes
 
       # block and entity must iterate over the children and yield each of the children back to the compiler
 
@@ -41,12 +41,9 @@ module Formalist
       end
 
       # Defines how to handle a list of nodes
-      def list(list)
-        if block_given?
-          list.map { |child| yield(child) }.join
-        else
-          list.join
-        end
+      def nodes(nodes)
+        nodes = nodes.map { |node| yield(node) } if block_given?
+        nodes.join
       end
 
       # Defines how to handle a block node

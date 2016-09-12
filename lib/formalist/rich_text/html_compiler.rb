@@ -12,7 +12,7 @@ module Formalist
       end
 
       def call(ast)
-        renderer.list(wrap_lists(ast)) do |node|
+        renderer.nodes(wrap_lists(ast)) do |node|
           visit(node)
         end
       end
