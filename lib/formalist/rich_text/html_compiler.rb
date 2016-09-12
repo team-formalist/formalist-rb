@@ -20,17 +20,15 @@ module Formalist
       private
 
       def visit(node)
-        type = node[0]
-        content = node[1]
+        type, content = node
+
         send(:"visit_#{type}", content)
       end
 
       def visit_block(data)
         type, key, children = data
 
-        children_wrapped = wrap_lists(children)
-
-        renderer.block(type, key, children_wrapped) do |child|
+        renderer.block(type, key, wrap_lists(children)) do |child|
           visit(child)
         end
       end
@@ -52,16 +50,14 @@ module Formalist
       def visit_entity(data)
         type, key, _mutability, data, children = data
 
-        children_wrapped = wrap_lists(children)
-
-        renderer.entity(type, key, data, children_wrapped) do |child|
+        renderer.entity(type, key, data, wrap_lists(children)) do |child|
           visit(child)
         end
       end
 
       def wrap_lists(nodes)
         chunked = nodes.chunk do |node|
-          type, content, _ = node
+          type, content = node
 
           if type == "block"
             content[0] # return the block's own type
