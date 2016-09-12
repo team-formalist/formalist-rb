@@ -37,7 +37,6 @@ module Formalist
 
       def initialize(options = {})
         @options = options
-        options[:allow_empty_tags] ||= false
       end
 
       # Defines how to handle a list of nodes
