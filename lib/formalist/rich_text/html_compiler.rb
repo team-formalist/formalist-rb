@@ -61,35 +61,30 @@ module Formalist
 
       def wrap_lists(nodes)
         chunked = nodes.chunk do |node|
-          type = node[0]
-          content = node[1]
+          type, content, _ = node
+
           if type == "block"
-            content[0] # block type
+            content[0] # return the block's own type
           else
             type
           end
         end
 
-        output_array = []
-        chunked.each do |type, chunk|
-          if is_list_item?(type)
-            output_array << convert_to_wrapper_node(type, chunk)
+        chunked.inject([]) { |output, (type, chunk)|
+          if list_item?(type)
+            output << convert_to_wrapper_node(type, chunk)
           else
-            # flatten again by appending chunk onto array.
-            output_array = output_array + chunk
+            # Flatten again by appending chunk onto array
+            output + chunk
           end
-        end
-        output_array
+        }
       end
 
       def convert_to_wrapper_node(type, children)
-        [
-          "wrapper",
-          [type, children]
-        ]
+        ["wrapper", [type, children]]
       end
 
-      def is_list_item?(type)
+      def list_item?(type)
         LIST_ITEM_TYPES.include?(type)
       end
     end
