@@ -50,8 +50,6 @@ module Formalist
 
       # Defines how to handle a block node
       def block(type, key, children)
-        type_for_method = type.gsub("-", "_")
-
         rendered_children = children.map { |child| yield(child) }
 
         if type == 'atomic'
