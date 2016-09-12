@@ -32,7 +32,7 @@ module Formalist
           "underline" => "u",
           "default" => "span"
         }
-      }
+      }.freeze
 
       def initialize(options = {})
         @options = options
@@ -40,19 +40,19 @@ module Formalist
       end
 
       # Defines how to handle a list of nodes
-      def list(list, &render_child)
+      def list(list)
         if block_given?
-          list.map{|child| render_child.call(child)}.join
+          list.map { |child| yield(child) }.join
         else
           list.join
         end
       end
 
       # Defines how to handle a block node
-      def block(type, key, children, &render_child)
+      def block(type, key, children)
         type_for_method = type.gsub("-", "_")
 
-        rendered_children = children.map{|child| render_child.call(child)}
+        rendered_children = children.map { |child| yield(child) }
 
         if type == 'atomic'
           block_atomic(key, rendered_children)
@@ -62,9 +62,11 @@ module Formalist
       end
 
        # Defines how to handle a list of blocks with a list type
-      def wrapper(type, children, &render_child)
+      def wrapper(type, children)
         type_for_method = type.gsub("-", "_")
-        rendered_children = children.map{|child| render_child.call(child)}
+
+        rendered_children = children.map { |child| yield(child) }
+
         send(:"wrapper_#{type_for_method}", rendered_children)
       end
 
@@ -77,9 +79,11 @@ module Formalist
         out
       end
 
-      def entity(type, key, data, children,  &render_child)
+      def entity(type, key, data, children)
         valid_types = %w(link video image default)
-        rendered_children = children.map{|child| render_child.call(child)}
+
+        rendered_children = children.map { |child| yield(child) }
+
         if valid_types.include?(type.downcase)
           send(:"entity_#{type.downcase}", data, rendered_children)
         else
@@ -149,14 +153,11 @@ module Formalist
         end
       end
 
-      def html_tag(tag, options = {}, &block)
+      def html_tag(tag, options = {})
         options_string = html_options_string(options)
         out = "<#{tag} #{options_string}".strip
-        if block_given?
-          content = block.call
-        else
-          content = ""
-        end
+
+        content = block_given? ? yield : ""
 
         if content.nil? || content.empty?
           out << "/>"
