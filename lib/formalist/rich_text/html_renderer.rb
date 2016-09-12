@@ -125,7 +125,7 @@ module Formalist
       end
 
       def render_block_element(type, content)
-        elem = BLOCK_ELEMENTS_MAP.fetch(type, DEFAULT_BLOCK_ELEMENT)
+        elem = BLOCK_ELEMENTS_MAP.fetch(type.downcase, DEFAULT_BLOCK_ELEMENT)
 
         html_tag(elem) do
           if content.is_a?(Array)
@@ -137,7 +137,7 @@ module Formalist
       end
 
       def render_inline_element(type, content)
-        elem = INLINE_ELEMENTS_MAP.fetch(type, DEFAULT_INLINE_ELEMENT)
+        elem = INLINE_ELEMENTS_MAP.fetch(type.downcase, DEFAULT_INLINE_ELEMENT)
 
         html_tag(elem) do
           if content.is_a?(Array)
