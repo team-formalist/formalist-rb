@@ -57,7 +57,7 @@ module Formalist
         if type == 'atomic'
           block_atomic(key, rendered_children)
         else
-          render_block_element(type, key, rendered_children)
+          render_block_element(type, rendered_children)
         end
       end
 
@@ -125,11 +125,10 @@ module Formalist
         end
       end
 
-      def render_block_element(type, key, content)
-        result = content
+      def render_block_element(type, content)
         map = ELEMENT_NAME_MAP[:block]
         elem = map[type] || map["default"]
-        html_tag(elem, "data-key" => key) do
+        html_tag(elem) do
           if content.is_a?(Array)
             content.join
           else
@@ -139,7 +138,6 @@ module Formalist
       end
 
       def render_inline_element(type, content)
-        result = content
         map = ELEMENT_NAME_MAP[:inline]
         elem = map[type] || map["default"]
         html_tag(elem) do

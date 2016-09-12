@@ -16,12 +16,12 @@ RSpec.describe Formalist::RichText::HTMLCompiler do
 
       it "compiles to HTML" do
         is_expected.to eq <<-HTML.gsub(/^\s+/, "").gsub("\n", "")
-          <h2 data-key='a34sd'>Heading</h2>
+          <h2>Heading</h2>
           <ul>
-            <li data-key='dodnk'>I am more <a data-entity-key='3' href='http://makenosound.com'>content</a>.</li>
-            <li data-key='dodnk'>I am more <a data-entity-key='3' href='http://makenosound.com'>content</a>.</li>
+            <li>I am more <a data-entity-key='3' href='http://makenosound.com'>content</a>.</li>
+            <li>I am more <a data-entity-key='3' href='http://makenosound.com'>content</a>.</li>
           </ul>
-          <h2 data-key='a34sd'>Heading</h2>
+          <h2>Heading</h2>
         HTML
       end
     end
