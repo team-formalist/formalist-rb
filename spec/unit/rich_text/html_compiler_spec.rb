@@ -18,8 +18,8 @@ RSpec.describe Formalist::RichText::HTMLCompiler do
         is_expected.to eq <<-HTML.gsub(/^\s+/, "").gsub("\n", "")
           <h2>Heading</h2>
           <ul>
-            <li>I am more <a data-entity-key='3' href='http://makenosound.com'>content</a>.</li>
-            <li>I am more <a data-entity-key='3' href='http://makenosound.com'>content</a>.</li>
+            <li>I am more <a href='http://makenosound.com'>content</a>.</li>
+            <li>I am more <a href='http://makenosound.com'>content</a>.</li>
           </ul>
           <h2>Heading</h2>
         HTML

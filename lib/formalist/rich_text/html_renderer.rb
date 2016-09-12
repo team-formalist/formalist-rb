@@ -81,7 +81,7 @@ module Formalist
         valid_types = %w(link video image default)
         rendered_children = children.map{|child| render_child.call(child)}
         if valid_types.include?(type.downcase)
-          send(:"entity_#{type.downcase}", key, data, rendered_children)
+          send(:"entity_#{type.downcase}", data, rendered_children)
         else
           rendered_children
         end
@@ -105,22 +105,22 @@ module Formalist
         end
       end
 
-      def entity_link(key, data, children)
-        html_tag(:a, "data-entity-key" => key, :href => data[:url]) do
+      def entity_link(data, children)
+        html_tag(:a, href: data[:url]) do
           children.join
         end
       end
 
-      def entity_image(key, data, children)
-        html_tag(:img, "data-entity-key" => key, :src => data[:src])
+      def entity_image(data, children)
+        html_tag(:img, src: data[:src])
       end
 
-      def entity_video(key, data, children)
-         html_tag(:video, "data-entity-key" => key, :src => data[:src])
+      def entity_video(data, children)
+         html_tag(:video, src: data[:src])
       end
 
-      def entity_default(key, data, children)
-        html_tag(:div, {"data-entity-key" => key}.merge(data)) do
+      def entity_default(attrs, children)
+        html_tag(:div, attrs) do
           children.join
         end
       end
