@@ -86,7 +86,7 @@ RSpec.describe Formalist::Form do
           ],
           [
             [:field, [:summary, :field, "Great!", [], [:object, []]]],
-            [:field, [:rating, :field, 0, ["must be greater than or equal to 1"], [:object, []]]]
+            [:field, [:rating, :field, 0, ["must be greater than or equal to 1", "must be less than or equal to 10"], [:object, []]]]
           ]
         ]
       ]],
