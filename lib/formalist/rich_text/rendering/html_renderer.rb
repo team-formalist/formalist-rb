@@ -76,12 +76,11 @@ module Formalist
         end
 
         def entity(type, key, data, children)
-          valid_types = %w(link video image default)
-
           rendered_children = children.map { |child| yield(child) }
 
-          if valid_types.include?(type.downcase)
-            send(:"entity_#{type.downcase}", data, rendered_children)
+          handler = :"entity_#{type.downcase}"
+          if respond_to?(handler)
+            send(handler, data, rendered_children)
           else
             rendered_children
           end
