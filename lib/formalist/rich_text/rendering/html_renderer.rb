@@ -79,7 +79,7 @@ module Formalist
           rendered_children = children.map { |child| yield(child) }
 
           handler = :"entity_#{type.downcase}"
-          if respond_to?(handler)
+          if respond_to?(handler, _include_private=true)
             send(handler, data, rendered_children)
           else
             rendered_children
