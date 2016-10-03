@@ -21,6 +21,7 @@ module Formalist
           "unordered-list-item" => "li",
           "ordered-list-item" => "li",
           "blockquote" => "blockquote",
+          "pullquote" => "aside",
           "code-block" => "pre",
         }.freeze
 
