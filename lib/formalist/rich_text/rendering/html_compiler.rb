@@ -2,7 +2,8 @@ module Formalist
   module RichText
     module Rendering
       class HTMLCompiler
-        LIST_ITEM_TYPES = %w(unordered-list-item ordered-list-item)
+        EMBEDDED_FORM_TYPE = "formalist".freeze
+        LIST_ITEM_TYPES = %w[unordered-list-item ordered-list-item].freeze
 
         attr_reader :html_renderer
         attr_reader :embedded_form_renderer
@@ -51,7 +52,7 @@ module Formalist
         def visit_entity(data)
           type, key, _mutability, data, children = data
 
-          if type == "formalist"
+          if type == EMBEDDED_FORM_TYPE
             embedded_form_renderer.(data)
           else
             html_renderer.entity(type, key, data, wrap_lists(children)) do |child|
