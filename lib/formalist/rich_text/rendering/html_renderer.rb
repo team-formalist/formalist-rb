@@ -140,7 +140,7 @@ module Formalist
         def render_inline_element(type, content)
           elem = INLINE_ELEMENTS_MAP.fetch(type.downcase, DEFAULT_INLINE_ELEMENT)
 
-          html_tag(elem) do
+          html_tag(elem, class: "inline--#{type.downcase}") do
             if content.is_a?(Array)
               content.join
             else
