@@ -52,6 +52,11 @@ module Formalist
         def visit_entity(data)
           type, key, _mutability, data, children = data
 
+          # FIXME
+          # Temporary fix to handle data that comes through with keys as
+          # strings instead of symbols
+          data = data.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
+
           if type == EMBEDDED_FORM_TYPE
             embedded_form_renderer.(data)
           else
