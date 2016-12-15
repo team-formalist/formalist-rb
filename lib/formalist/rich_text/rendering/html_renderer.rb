@@ -158,7 +158,7 @@ module Formalist
           if content.nil? || content.empty?
             out << "/>"
           else
-            out << ">#{content}</#{tag}>"
+            out << ">#{replace_soft_newlines(content)}</#{tag}>"
           end
         end
 
@@ -167,6 +167,10 @@ module Formalist
             "#{key}='#{val}'"
           end
           opts.join(" ")
+        end
+
+        def replace_soft_newlines(content)
+          content.gsub(/\n/, '<br/>')
         end
       end
     end
