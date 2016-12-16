@@ -23,6 +23,7 @@ module Formalist
           "blockquote" => "blockquote",
           "pullquote" => "aside",
           "code-block" => "pre",
+          "horizontal-rule" => "hr",
         }.freeze
 
         DEFAULT_BLOCK_ELEMENT = "p".freeze
