@@ -1,13 +1,20 @@
 language: ruby
+dist: trusty
 sudo: false
 cache: bundler
-rvm:
-  - 2.1
-  - 2.2
-  - 2.3.0
-  - jruby-9000
 before_install:
   - gem update bundler
+script:
+  - bundle exec rake
+after_success:
+  # Send coverage report from the job #1 == current MRI release
+- '[ "${TRAVIS_JOB_NUMBER#*.}" = "1" ] && [ "$TRAVIS_BRANCH" = "master" ] && bundle exec codeclimate-test-reporter'
+rvm:
+  - 2.4.0
+  - 2.3.3
+  - 2.2.6
+  - 2.1.10
+  - jruby-9.1.6.0
 addons:
   code_climate:
     repo_token: 2c2c7c253435c02667371778ca886b069d4d24590748fbd7396b9b080016bfa7
