@@ -23,6 +23,7 @@ module Formalist
           "blockquote" => "blockquote",
           "pullquote" => "aside",
           "code-block" => "pre",
+          "horizontal-rule" => "hr",
         }.freeze
 
         DEFAULT_BLOCK_ELEMENT = "p".freeze
@@ -140,7 +141,7 @@ module Formalist
         def render_inline_element(type, content)
           elem = INLINE_ELEMENTS_MAP.fetch(type.downcase, DEFAULT_INLINE_ELEMENT)
 
-          html_tag(elem) do
+          html_tag(elem, class: "inline--#{type.downcase}") do
             if content.is_a?(Array)
               content.join
             else
@@ -158,7 +159,7 @@ module Formalist
           if content.nil? || content.empty?
             out << "/>"
           else
-            out << ">#{content}</#{tag}>"
+            out << ">#{replace_soft_newlines(content)}</#{tag}>"
           end
         end
 
@@ -167,6 +168,10 @@ module Formalist
             "#{key}='#{val}'"
           end
           opts.join(" ")
+        end
+
+        def replace_soft_newlines(content)
+          content.gsub(/\n/, '<br/>')
         end
       end
     end
