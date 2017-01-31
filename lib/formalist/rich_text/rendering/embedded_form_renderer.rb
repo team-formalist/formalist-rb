@@ -3,18 +3,18 @@ module Formalist
     module Rendering
       class EmbeddedFormRenderer
         attr_reader :container
-        attr_reader :render_options
+        attr_reader :options
 
-        def initialize(container: {}, render_options: {})
+        def initialize(container = {}, **options)
           @container = container
-          @render_options = render_options
+          @options = options
         end
 
         def call(form_data)
           type, data = form_data.values_at(:name, :data)
 
           if container.key?(type)
-            container[type].(data, render_options)
+            container[type].(data, options)
           else
             ""
           end
