@@ -13,17 +13,7 @@ module Formalist
 
       # FIXME: it would be tidier to have a reader method for each attribute
       def attributes
-        # Replace the form objects with their AST
         super.merge(embeddable_forms: embeddable_forms_config)
-      end
-
-      def embeddable_forms_config
-        Hash(@attributes[:embeddable_forms].to_h).map { |key, attrs|
-          original_attrs = attrs
-          adjusted_attrs = original_attrs.merge(form: original_attrs[:form].build.to_ast)
-
-          [key, adjusted_attrs]
-        }.to_h
       end
 
       def input
@@ -32,6 +22,14 @@ module Formalist
 
       private
 
+      # Replace the form objects with their AST
+      def embeddable_forms_config
+        @attributes[:embeddable_forms].to_h.map { |key, attrs|
+          [key, attrs.merge(form: attrs[:form].build.to_ast)]
+        }.to_h
+      end
+
+      # TODO: make compiler configurable somehow?
       def input_compiler
         RichText::EmbeddedFormCompiler.new(@attributes[:embeddable_forms])
       end
