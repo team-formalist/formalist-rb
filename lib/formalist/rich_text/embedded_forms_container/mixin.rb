@@ -24,8 +24,8 @@ module Formalist
             super(key.to_s)
           end
 
-          def register(key, label:, form:, schema:)
-            super(key.to_s, Registration.new(label, form, schema))
+          def register(key, **attrs)
+            super(key.to_s, Registration.new(attrs))
           end
 
           def to_h

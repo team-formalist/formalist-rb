@@ -71,9 +71,15 @@ module Formalist
       end
 
       def prepare_form_ast(embedded_form, data)
-        input = embedded_form.schema.(data)
+        # Run the raw data through the validation schema
+        validation = embedded_form.schema.(data)
 
-        embedded_form.form.build(input.to_h, input.messages).to_ast
+        # And then through the embedded form's input processor (which may add
+        # extra system-generated information necessary for the form to render
+        # fully)
+        input = embedded_form.input_processor.(validation.to_h)
+
+        embedded_form.form.build(input, validation.messages).to_ast
       end
     end
   end
