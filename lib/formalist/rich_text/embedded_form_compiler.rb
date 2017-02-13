@@ -3,8 +3,11 @@ require "json"
 module Formalist
   module RichText
 
-    # Our input data looks like this (this is a text line, embedded form data,
-    # then another text line):
+    # Our input data looks like this example, which consists of 3 elements:
+    #
+    # 1. A text line
+    # 2. embedded form data
+    # 3. Another text line
     #
     # [
     #   ["block",["unstyled","b14hd",[["inline",[[],"Before!"]]]]],
@@ -12,8 +15,8 @@ module Formalist
     #   ["block",["unstyled","aivqi",[["inline",[[],"After!"]]]]]
     # ]
     #
-    # We want to intercept the embededed form data and turn them back into
-    # full form ASTs, complete with validation messages.
+    # We want to intercept the embededed form data and transform them into full
+    # form ASTs, complete with validation messages.
 
     class EmbeddedFormCompiler
       attr_reader :embedded_forms
@@ -26,6 +29,7 @@ module Formalist
         return ast if ast.nil?
 
         ast = ast.is_a?(String) ? JSON.parse(ast) : ast
+
         ast.map { |node| visit(node) }
       end
       alias_method :[], :call
