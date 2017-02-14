@@ -3,8 +3,11 @@ require "json"
 module Formalist
   module RichText
 
-    # Our input data looks like this (this is a text line, embedded form data,
-    # then another text line):
+    # Our input data looks like this example, which consists of 3 elements:
+    #
+    # 1. A text line
+    # 2. embedded form data
+    # 3. Another text line
     #
     # [
     #   ["block",["unstyled","b14hd",[["inline",[[],"Before!"]]]]],
@@ -12,8 +15,8 @@ module Formalist
     #   ["block",["unstyled","aivqi",[["inline",[[],"After!"]]]]]
     # ]
     #
-    # We want to intercept the embededed form data and turn them back into
-    # full form ASTs, complete with validation messages.
+    # We want to intercept the embededed form data and transform them into full
+    # form ASTs, complete with validation messages.
 
     class EmbeddedFormCompiler
       attr_reader :embedded_forms
@@ -26,6 +29,7 @@ module Formalist
         return ast if ast.nil?
 
         ast = ast.is_a?(String) ? JSON.parse(ast) : ast
+
         ast.map { |node| visit(node) }
       end
       alias_method :[], :call
@@ -67,9 +71,15 @@ module Formalist
       end
 
       def prepare_form_ast(embedded_form, data)
-        input = embedded_form.schema.(data)
+        # Run the raw data through the validation schema
+        validation = embedded_form.schema.(data)
 
-        embedded_form.form.build(input.to_h, input.messages).to_ast
+        # And then through the embedded form's input processor (which may add
+        # extra system-generated information necessary for the form to render
+        # fully)
+        input = embedded_form.input_processor.(validation.to_h)
+
+        embedded_form.form.build(input, validation.messages).to_ast
       end
     end
   end
