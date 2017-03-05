@@ -107,7 +107,14 @@ module Formalist
         end
 
         def entity_link(data, children)
-          html_tag(:a, href: data[:url]) do
+          link_attrs = {
+            href: data[:url]
+          }
+          link_attrs = link_attrs.merge(
+            target: "_blank",
+            rel: "noopener"
+          ) if data[:newWindow]
+          html_tag(:a, link_attrs) do
             children.join
           end
         end
