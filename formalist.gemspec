@@ -17,9 +17,9 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = ">= 2.1.0"
 
-  spec.add_runtime_dependency "dry-configurable"
-  spec.add_runtime_dependency "dry-container"
-  spec.add_runtime_dependency "dry-types", ">= 0.9.4"
+  spec.add_runtime_dependency "dry-configurable", "~> 0.7"
+  spec.add_runtime_dependency "dry-container", "~> 0.6"
+  spec.add_runtime_dependency "dry-types", "~> 0.12"
   spec.add_runtime_dependency "inflecto"
 
   spec.add_development_dependency "bundler", "~> 1.10"
