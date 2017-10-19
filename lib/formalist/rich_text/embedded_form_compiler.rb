@@ -26,7 +26,7 @@ module Formalist
       end
 
       def call(ast)
-        return ast if ast.nil?
+        return if ast.to_s.empty? # FIXME: why this is an empty str sometimes?
 
         ast = ast.is_a?(String) ? JSON.parse(ast) : ast
 
