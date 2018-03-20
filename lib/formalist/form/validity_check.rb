@@ -17,13 +17,13 @@ module Formalist
       def visit_attr(node)
         name, type, errors, attributes, children = node
 
-        errors.empty? && children.map { |child| visit(child) }.none?
+        errors.empty? && children.map { |child| visit(child) }.all?
       end
 
       def visit_compound_field(node)
         type, attributes, children = node
 
-        children.map { |child| visit(child) }.none?
+        children.map { |child| visit(child) }.all?
       end
 
       def visit_field(node)
@@ -35,19 +35,19 @@ module Formalist
       def visit_group(node)
         type, attributes, children = node
 
-        children.map { |child| visit(child) }.none?
+        children.map { |child| visit(child) }.all?
       end
 
       def visit_many(node)
         name, type, errors, attributes, child_template, children = node
 
-        errors.empty? && children.map { |child| visit(child) }.none?
+        errors.empty? && children.map { |child| visit(child) }.all?
       end
 
       def visit_section(node)
         name, type, attributes, children = node
 
-        children.map { |child| visit(child) }.none?
+        children.map { |child| visit(child) }.all?
       end
     end
   end
