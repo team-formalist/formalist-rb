@@ -4,13 +4,14 @@ require "formalist/types"
 module Formalist
   class Elements
     class Group < Element
-      permitted_children :attr, :compound_field, :field, :many
-
       attribute :label, Types::String
 
-      def initialize(*args, attributes, children, input, errors)
-        super
-        @children = children.map { |definition| definition.(input, errors) }
+      def fill(input: {}, errors: {})
+        children = self.children.map { |child|
+          child.fill(input: input, errors: errors)
+        }
+
+        super(input: input, errors: errors, children: children)
       end
 
       # Converts the group into an abstract syntax tree.

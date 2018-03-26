@@ -4,11 +4,6 @@ require "formalist/types"
 module Formalist
   class Elements
     class Many < Element
-      permitted_children :attr, :compound_field, :group, :field
-
-      # @api private
-      attr_reader :name
-
       attribute :label, Types::String
       attribute :action_label, Types::String
       attribute :placeholder, Types::String
@@ -18,14 +13,35 @@ module Formalist
       attr_reader :child_template
 
       # @api private
-      def initialize(*args, attributes, children, input, errors)
-        super
+      def self.build(children: [], **args)
+        child_template = children.dup
+        super(child_template: child_template, **args)
+      end
 
-        @name = Types::ElementName.(args.first)
-        @input = input.fetch(name, [])
-        @errors = errors[@name]
-        @child_template = build_child_template(children)
-        @children = build_children(children)
+      # @api private
+      def initialize(child_template:, **args)
+        @child_template = child_template
+        super(**args)
+      end
+
+      # @api private
+      def fill(input: {}, errors: {})
+        input = input.fetch(name) { [] }
+        errors = errors.fetch(name) { {} }
+
+        children = input.each_with_index.map { |child_input, index|
+          # Child errors look like this: {0=>{:summary=>["must be filled"]}
+          child_errors = errors.fetch(index) { {} }
+
+          child_template.map { |child| child.fill(input: child_input, errors: child_errors) }
+        }
+
+        super(
+          input: input,
+          errors: errors,
+          children: children,
+          child_template: child_template,
+        )
       end
 
       # Until we can put defaults on `Types::Bool`, supply them here
@@ -102,23 +118,6 @@ module Formalist
           child_template.map(&:to_ast),
           children.map { |el_list| el_list.map(&:to_ast) },
         ]]
-      end
-
-      private
-
-      def build_child_template(definitions)
-        definitions.map { |el| el.({}, {})}
-      end
-
-      def build_children(definitions)
-        # Child errors look like this: {0=>{:summary=>["must be filled"]}
-        child_errors = errors.is_a?(Hash) ? errors : {}
-
-        input.each_with_index.map { |child_input, index|
-          errors = child_errors.fetch(index, {})
-
-          definitions.map { |el| el.(child_input, errors) }
-        }
       end
     end
   end

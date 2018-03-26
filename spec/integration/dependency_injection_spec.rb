@@ -10,33 +10,33 @@ RSpec.describe "Dependency injection" do
 
   subject(:form) {
     Class.new(Formalist::Form) do
-      include Test::HashImport["fetch_options"]
-
       define do
-        select_box :status, options: dep(:status_options)
+        select_box :status, options: status_options
+      end
+
+      attr_reader :status_repo
+
+      def initialize(status_repo:, **args)
+        @status_repo = status_repo
+        super(**args)
       end
 
       def status_options
-        fetch_options.map { |option| [option, option.capitalize] }
+        status_repo.statuses.map { |status| [status, status.capitalize] }
+      end
+    end.new(status_repo: status_repo)
+  }
+
+  let(:status_repo) {
+    Class.new do
+      def statuses
+        %w[draft published]
       end
     end.new
   }
 
-  before do
-    Test::Container = Class.new do
-      extend Dry::Container::Mixin
-    end
-
-    Test::Container.register :fetch_options, -> { %w[draft published] }
-
-    auto_inject = Dry::AutoInject(Test::Container)
-    Test::HashImport = -> *keys do
-      auto_inject.hash[*keys]
-    end
-  end
-
   it "supports dependency injection via the initializer's options hash" do
-    expect(form.build.to_ast).to eql [
+    expect(form.to_ast).to eql [
       [:field, [
         :status,
         :select_box,

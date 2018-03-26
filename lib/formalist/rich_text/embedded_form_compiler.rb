@@ -79,7 +79,7 @@ module Formalist
         # fully)
         input = embedded_form.input_processor.(validation.to_h)
 
-        embedded_form.form.build(input, validation.messages).to_ast
+        embedded_form.form.fill(input: input, errors: validation.messages).to_ast
       end
     end
   end

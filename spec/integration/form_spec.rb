@@ -15,7 +15,7 @@ RSpec.describe Formalist::Form do
     end
   }
 
-  subject(:form) {
+  subject(:form_class) {
     Class.new(Formalist::Form) do
       define do
         compound_field do
@@ -32,11 +32,11 @@ RSpec.describe Formalist::Form do
           field :pages, validate: {filled: true}
         end
       end
-    end.new
+    end
   }
 
-  it "outputs an AST" do
-    input = {
+  let(:input) {
+    {
       title: "Aurora",
       rating: "10",
       reviews: [
@@ -53,10 +53,12 @@ RSpec.describe Formalist::Form do
         pages: 0
       }
     }
+  }
 
-    result = schema.(input)
+  it "outputs an AST" do
+    form = form_class.new.fill(input: input, errors: schema.(input).messages)
 
-    expect(form.build(result.output, result.messages).to_ast).to eq [
+    expect(form.to_ast).to eq [
       [:compound_field, [
         :compound_field,
         [:object, []],

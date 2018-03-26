@@ -4,11 +4,12 @@ require "formalist/types"
 module Formalist
   class Elements
     class CompoundField < Element
-      permitted_children :field
+      def fill(input: {}, errors: {})
+        children = self.children.map { |child|
+          child.fill(input: input, errors: errors)
+        }
 
-      def initialize(*args, attributes, children, input, errors)
-        super
-        @children = children.map { |definition| definition.(input, errors) }
+        super(input: input, errors: errors, children: children)
       end
 
       # Converts the compound field into an abstract syntax tree.
