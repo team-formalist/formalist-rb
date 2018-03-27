@@ -38,20 +38,22 @@ module Formalist
     end
 
     def fill(input: {}, errors: {})
+      return self if input == @input && errors = @errors
+
       self.class.new(
-        elements: elements.map { |element| element.fill(input: input, errors: errors) },
+        elements: @elements.map { |element| element.fill(input: input, errors: errors) },
         input: input,
         errors: errors,
-        **dependencies,
+        **@dependencies,
       )
     end
 
     def with(**new_dependencies)
       self.class.new(
-        elements: elements,
-        input: input,
-        errors: errors,
-        **dependencies.merge(new_dependencies)
+        elements: @elements,
+        input: @input,
+        errors: @errors,
+        **@dependencies.merge(new_dependencies)
       )
     end
 

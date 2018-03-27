@@ -40,12 +40,12 @@ module Formalist
     end
 
     def fill(input: {}, errors: {}, **args)
-      return self if input == self.input && errors == self.errors
+      return self if input == @input && errors == @errors
 
       args = {
-        name: name,
-        attributes: attributes,
-        children: children,
+        name: @name,
+        attributes: @attributes,
+        children: @children,
         input: input,
         errors: errors,
       }.merge(args)
