@@ -7,8 +7,8 @@ module Formalist
       attribute :label, Types::String
 
       def fill(input:, errors:)
-        input = input.fetch(name) { {} }
-        errors = errors.fetch(name) { {} }
+        input = input[name] || {}
+        errors = errors[name] || {}
 
         children = self.children.map { |child|
           child.fill(input: input, errors: errors)
