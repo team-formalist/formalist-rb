@@ -3,17 +3,19 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "formalist/version"
 
 Gem::Specification.new do |spec|
-  spec.name     = "formalist"
-  spec.version  = Formalist::VERSION
-  spec.authors  = ["Tim Riley"]
-  spec.email    = ["tim@icelab.com.au"]
-  spec.license  = "MIT"
+  spec.name           = "formalist"
+  spec.version        = Formalist::VERSION
+  spec.authors        = ["Tim Riley"]
+  spec.email          = ["tim@icelab.com.au"]
+  spec.license        = "MIT"
 
-  spec.summary  = "Flexible form builder"
-  spec.homepage = "https://github.com/icelab/formalist"
+  spec.summary        = "Flexible form builder"
+  spec.homepage       = "https://github.com/icelab/formalist"
 
-  spec.files = Dir["README.md", "LICENSE.md", "Gemfile*", "Rakefile", "lib/**/*", "spec/**/*"]
-  spec.require_paths = ["lib"]
+  spec.files          = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
+  spec.bindir         = 'exe'
+  spec.executables    = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
+  spec.require_paths  = ['lib']
 
   spec.required_ruby_version = ">= 2.2.0"
 
