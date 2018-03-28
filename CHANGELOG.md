@@ -1,3 +1,20 @@
+# 0.4.0 / 2018-03-28
+
+### Added
+
+- `rich_text_area` field type, support for embedding and validating forms within rich text areas, and rendering the rich text from its native draft.js AST format to HTML
+- `search_selection_field` and `multi_search_selection_field` field types
+- Various improvements to the upload fields, including support for passing `presign_options`
+
+### Changed
+
+- [BREAKING] Form definition blocks are now evaluated within the context of the form instance's `self`, which mean dependencies can be injected into the form object and accessed from the form definition block. `#dep` within the definition block has thusly been removed.
+- [BREAKING] `Formalist::Form` should now be instantiated (`form = MyForm.new`) and then filled with `form.fill(input: input_data, errors: error_messages)`. `Form#fill` returns a copy of the form object with all the elements filled with the input data and error messages as required. `Form#call` has been removed, along with `Formalist::Form::Result` (which was the object returned from `#call`).
+
+### Removed
+
+- Form elements no longer have a `permitted_children` config. For now, this should be handled by convention only.
+
 # 0.3.0 / 2016-05-04
 
 Add support for upload and multi upload fields.
