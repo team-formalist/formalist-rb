@@ -1,5 +1,5 @@
 # coding: utf-8
-require "dry-types"
+require "dry/types"
 
 # TODO: Find a way to avoid registering this globally
 Dry::Logic::Predicates.predicate :respond_to? do |method_name, value|
@@ -10,7 +10,7 @@ module Formalist
   module Types
     include Dry::Types.module
 
-    ElementName = Types::Strict::Symbol.constrained(min_size: 1)
+    ElementName = Types::Strict::Symbol.constrained(min_size: 1).optional
     OptionsList = Types::Array.of(Formalist::Types::Array.of(Formalist::Types::Strict::String).constrained(size: 2))
 
     # The SelectionField and MultiSelectionField require a _somewhat_ specific

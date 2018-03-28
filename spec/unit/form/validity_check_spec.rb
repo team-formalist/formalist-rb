@@ -9,7 +9,7 @@ RSpec.describe Formalist::Form::ValidityCheck do
       define do
         text_field :title
       end
-    end.new.build(input, errors).to_ast
+    end.new.fill(input: input, errors: errors).to_ast
   }
 
   describe "#call" do

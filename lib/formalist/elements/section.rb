@@ -4,18 +4,14 @@ require "formalist/types"
 module Formalist
   class Elements
     class Section < Element
-      permitted_children :all
-
-      # @api private
-      attr_reader :name
-
       attribute :label, Types::String
 
-      def initialize(*args, attributes, children, input, errors)
-        super
-
-        @name = Types::ElementName.(args.first)
-        @children = children.map { |definition| definition.(input, errors) }
+      def fill(input: {}, errors: {})
+        super(
+          input: input,
+          errors: errors,
+          children: children.map { |child| child.fill(input: input, errors: errors) },
+        )
       end
 
       # Converts the section into an abstract syntax tree.

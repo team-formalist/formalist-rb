@@ -4,21 +4,17 @@ require "formalist/types"
 module Formalist
   class Elements
     class Attr < Element
-      permitted_children :all
-
-      # @api private
-      attr_reader :name
-
       attribute :label, Types::String
 
-      # @api private
-      def initialize(*args, attributes, children, input, errors)
-        super
+      def fill(input:, errors:)
+        input = input[name] || {}
+        errors = errors[name] || {}
 
-        @name = Types::ElementName.(args.first)
-        @input = input.fetch(@name, {})
-        @errors = errors[@name]
-        @children = build_children(children)
+        children = self.children.map { |child|
+          child.fill(input: input, errors: errors)
+        }
+
+        super(input: input, errors: errors, children: children)
       end
 
       # Converts the attribute into an abstract syntax tree.
@@ -60,14 +56,6 @@ module Formalist
           Element::Attributes.new(attributes).to_ast,
           children.map(&:to_ast),
         ]]
-      end
-
-      private
-
-      def build_children(definitions)
-        child_errors = errors.is_a?(Hash) ? errors : {}
-
-        definitions.map { |definition| definition.(input, child_errors) }
       end
     end
   end

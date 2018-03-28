@@ -4,11 +4,6 @@ require "formalist/types"
 module Formalist
   class Elements
     class Field < Element
-      permitted_children :none
-
-      # @api private
-      attr_reader :name
-
       attribute :label, Types::String
       attribute :hint, Types::String
       attribute :placeholder, Types::String
@@ -18,13 +13,11 @@ module Formalist
       # @api private
       attr_reader :predicates
 
-      # @api private
-      def initialize(*args, attributes, children, input, errors)
-        super
-
-        @name = Types::ElementName.(args.first)
-        @input = input[@name] if input
-        @errors = errors[@name].to_a
+      def fill(input: {}, errors: {})
+        super(
+          input: input[name],
+          errors: errors[name].to_a,
+        )
       end
 
       # Converts the field into an abstract syntax tree.
