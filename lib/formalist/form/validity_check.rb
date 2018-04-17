@@ -41,7 +41,9 @@ module Formalist
       def visit_many(node)
         _name, _type, errors, _attributes, _child_template, children = node
 
-        errors.empty? && children.map { |child| visit(child) }.all?
+        # The `children`` parameter for `many` elements is for some reason
+        # doubly nested right now, so we need to flatten it.
+        errors.empty? && children.flatten(1).map { |child| visit(child) }.all?
       end
 
       def visit_section(node)
