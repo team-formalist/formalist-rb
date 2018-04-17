@@ -1,3 +1,9 @@
+# 0.4.1 / 2018-04-17
+
+### Fixed
+
+- Fixed issue with Form::Validity check crashing while processing `many` elements
+
 # 0.4.0 / 2018-03-28
 
 ### Added
