@@ -7,6 +7,7 @@ module Formalist
     class TextField < Field
       attribute :password, Types::Bool
       attribute :code, Types::Bool
+      attribute :disabled, Types::Bool
     end
 
     register :text_field, TextField
