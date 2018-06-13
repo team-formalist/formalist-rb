@@ -28,11 +28,11 @@ module Formalist
       @errors = errors
 
       @elements =
-      if elements == Undefined
-        Definition.new(self, self.class.config, &self.class.definition).elements
-      else
-        elements
-      end
+        if elements == Undefined
+          Definition.new(self, self.class.config, &self.class.definition).elements
+        else
+          elements
+        end
 
       @dependencies = dependencies
     end
