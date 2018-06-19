@@ -7,6 +7,7 @@ module Formalist
     class SearchSelectionField < Field
       attribute :selector_label, Types::String
       attribute :render_option_as, Types::String
+      attribute :render_option_control_as, Types::String
       attribute :render_selection_as, Types::String
       attribute :search_url, Types::String
       attribute :search_per_page, Types::Int
