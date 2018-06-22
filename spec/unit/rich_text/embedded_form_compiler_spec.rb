@@ -23,7 +23,7 @@ RSpec.describe Formalist::RichText::EmbeddedFormCompiler do
   }
 
   let(:schema) {
-    Dry::Validation.Form do
+    Dry::Validation.Params do
       required(:image_id).filled(:int?)
       required(:caption).filled(:str?)
     end
