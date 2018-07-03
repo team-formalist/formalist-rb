@@ -1,3 +1,13 @@
+# 0.4.2 / 2018-07-03
+
+### Fixed
+
+- Errors passed to `#fill` are now properly stored on the form's elements
+
+### Changed
+
+- Private form methods are accessible from within definition blocks
+
 # 0.4.1 / 2018-04-17
 
 ### Fixed
