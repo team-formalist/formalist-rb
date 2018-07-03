@@ -38,7 +38,7 @@ module Formalist
     end
 
     def fill(input: {}, errors: {})
-      return self if input == @input && errors = @errors
+      return self if input == @input && errors == @errors
 
       self.class.new(
         elements: @elements.map { |element| element.fill(input: input, errors: errors) },
