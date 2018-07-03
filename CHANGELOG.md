@@ -1,3 +1,13 @@
+# 0.5.0 / 2018-07-04
+
+### Added
+
+- Add `render_option_control_as` option to search select fields
+
+### Changed
+
+- dry-types dependency updated to 0.13
+
 # 0.4.2 / 2018-07-03
 
 ### Fixed
