@@ -10,9 +10,6 @@ module Formalist
       attribute :inline, Types::Bool
       attribute :validation, Types::Validation
 
-      # @api private
-      attr_reader :predicates
-
       def fill(input: {}, errors: {})
         super(
           input: input[name],
