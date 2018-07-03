@@ -25,7 +25,7 @@ module Formalist
     def method_missing(name, *args, &block)
       if element_type?(name)
         add_element(name, *args, &block)
-      elsif form.respond_to?(name)
+      elsif form.respond_to?(name, include_private = true)
         form.send(name, *args, &block)
       else
         super
@@ -35,7 +35,7 @@ module Formalist
     private
 
     def respond_to_missing?(name, _include_private = false)
-      element_type?(name) || form.respond_to?(name)
+      element_type?(name) || form.respond_to?(name, _include_private = true) || super
     end
 
     def element_type?(type)
