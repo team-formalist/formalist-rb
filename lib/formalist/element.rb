@@ -25,7 +25,7 @@ module Formalist
 
       # Set supplied attributes or their defaults
       all_attributes = self.class.attributes_schema.each_with_object({}) { |(name, defn), memo|
-        value = attributes[name] || defn[:default]
+        value = attributes.fetch(name) { defn[:default] }
         memo[name] = value unless value.nil?
       }
 
