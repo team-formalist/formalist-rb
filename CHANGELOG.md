@@ -1,3 +1,15 @@
+# 0.5.1 / 2018-07-19
+
+### Added
+
+- Add `disabled` attribute to `TextField`
+- Add `time_format` and `human_time_format` attributes to `DateTimeField`
+- Add `sortable` and `max_height` attributes to `Many`, `MultiSelectionField`, `MultiUploadField`, and `SearchMultiSelectionField`
+
+### Fixed
+
+- Allow falsey attribute values to be passed through in AST
+
 # 0.5.0 / 2018-07-04
 
 ### Added
