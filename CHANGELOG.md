@@ -1,3 +1,9 @@
+# 0.5.2 / 2018-08-06
+
+### Added
+
+- Added `clear_query_on_selection` attribute to `SearchMultiSelectionField`
+
 # 0.5.1 / 2018-07-19
 
 ### Added
