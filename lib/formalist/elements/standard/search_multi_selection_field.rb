@@ -5,6 +5,7 @@ require "formalist/types"
 module Formalist
   class Elements
     class SearchMultiSelectionField < Field
+      attribute :clear_query_on_selection, Types::Bool
       attribute :sortable, Types::Bool
       attribute :max_height, Types::String
       attribute :render_option_as, Types::String
