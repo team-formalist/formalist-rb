@@ -5,6 +5,7 @@ require "formalist/types"
 module Formalist
   class Elements
     class UploadField < Field
+      attribute :initial_attributes_url, Types::String
       attribute :presign_url, Types::String
       attribute :presign_options, Types::Hash
       attribute :render_uploaded_as, Types::String
