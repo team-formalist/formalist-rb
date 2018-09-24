@@ -5,6 +5,7 @@ require "formalist/types"
 module Formalist
   class Elements
     class MultiUploadField < Field
+      attribute :initial_attributes_url, Types::String
       attribute :sortable, Types::Bool
       attribute :max_file_size_message, Types::String
       attribute :max_file_size, Types::String
