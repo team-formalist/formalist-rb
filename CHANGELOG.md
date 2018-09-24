@@ -1,3 +1,9 @@
+# 0.5.3 / 2018-09-25
+
+### Added
+
+- Added `initial_attributes_url` attribute to `UploadField` and `MultiUploadField`
+
 # 0.5.2 / 2018-08-06
 
 ### Added
