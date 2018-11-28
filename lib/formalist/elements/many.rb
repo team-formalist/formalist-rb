@@ -31,9 +31,11 @@ module Formalist
         input = input.fetch(name) { [] }
         errors = errors.fetch(name) { {} }
 
+        # Errors look like this when they are on the array itself: ["size cannot be greater than 2"]
+        # Errors look like this when they are on children: {0=>{:summary=>["must be filled"]}
+
         children = input.each_with_index.map { |child_input, index|
-          # Child errors look like this: {0=>{:summary=>["must be filled"]}
-          child_errors = errors.fetch(index) { {} }
+          child_errors = errors.is_a?(Hash) ? errors.fetch(index) { {} } : {}
 
           child_template.map { |child| child.fill(input: child_input, errors: child_errors) }
         }
