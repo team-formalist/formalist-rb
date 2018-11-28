@@ -1,3 +1,9 @@
+# 0.5.4 / 2018-11-28
+
+### Fixed
+
+- Fixed the rendering of validation errors when validating a `Many` element itself
+
 # 0.5.3 / 2018-09-25
 
 ### Added
