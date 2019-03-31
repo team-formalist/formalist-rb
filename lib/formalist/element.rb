@@ -30,9 +30,9 @@ module Formalist
       }
 
       # Then run them through the schema
-      @attributes = Types::Hash.weak(
-        self.class.attributes_schema.map { |name, defn| [name, defn[:type]] }.to_h
-      )[all_attributes]
+      @attributes = Types::Hash.schema(
+        self.class.attributes_schema.map { |name, defn| [name, defn[:type]] }.to_h,
+      ).safe[all_attributes]
 
       @children = children
       @input = input
