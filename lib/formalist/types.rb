@@ -25,7 +25,7 @@ module Formalist
 
     Validation = Types::Strict::Hash
 
-    Dependency = Types::Object
+    Dependency = Dry::Types['any']
     Function = Dependency.constrained(respond_to: :call)
   end
 end
