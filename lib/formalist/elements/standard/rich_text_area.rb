@@ -9,7 +9,7 @@ module Formalist
       attribute :box_size, Types::String.enum("single", "small", "normal", "large", "xlarge"), default: "normal"
       attribute :inline_formatters, Types::Array
       attribute :block_formatters, Types::Array
-      attribute :embeddable_forms, Types::Dependency.constrained(respond_to: :to_h)
+      attribute :embeddable_forms, Types::Dependency.constrained(case: -> x { x.respond_to?(:call) })
 
       # FIXME: it would be tidier to have a reader method for each attribute
       def attributes

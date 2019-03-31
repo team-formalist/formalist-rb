@@ -1,11 +1,6 @@
 # coding: utf-8
 require "dry/types"
 
-# TODO: Find a way to avoid registering this globally
-Dry::Logic::Predicates.predicate :respond_to? do |method_name, value|
-  value.respond_to?(method_name)
-end
-
 module Formalist
   module Types
     include Dry::Types.module
@@ -26,6 +21,7 @@ module Formalist
     Validation = Types::Strict::Hash
 
     Dependency = Dry::Types['any']
-    Function = Dependency.constrained(respond_to: :call)
+    Function = Dependency.constrained(case: -> x { x.respond_to?(:call) })
   end
 end
+
