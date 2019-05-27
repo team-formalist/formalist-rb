@@ -1,14 +1,13 @@
 require "formalist/element"
 require "formalist/elements"
-require "formalist/types"
 
 module Formalist
   class Elements
     class TagsField < Field
-      attribute :search_url, Types::String
-      attribute :search_per_page, Types::Integer
-      attribute :search_params, Types::Hash
-      attribute :search_threshold, Types::Integer
+      attribute :search_url
+      attribute :search_per_page
+      attribute :search_params
+      attribute :search_threshold
     end
 
     register :tags_field, TagsField

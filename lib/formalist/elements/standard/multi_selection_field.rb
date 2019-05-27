@@ -1,16 +1,15 @@
 require "formalist/element"
 require "formalist/elements"
-require "formalist/types"
 
 module Formalist
   class Elements
     class MultiSelectionField < Field
-      attribute :sortable, Types::Bool
-      attribute :max_height, Types::String
-      attribute :options, Types::SelectionsList
-      attribute :render_option_as, Types::String
-      attribute :render_selection_as, Types::String
-      attribute :selector_label, Types::String
+      attribute :sortable
+      attribute :max_height
+      attribute :options
+      attribute :render_option_as
+      attribute :render_selection_as
+      attribute :selector_label
     end
 
     register :multi_selection_field, MultiSelectionField

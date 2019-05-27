@@ -1,15 +1,14 @@
 require "formalist/element"
-require "formalist/types"
 
 module Formalist
   class Elements
     class Many < Element
-      attribute :action_label, Types::String
-      attribute :sortable, Types::Bool
-      attribute :label, Types::String
-      attribute :max_height, Types::String
-      attribute :placeholder, Types::String
-      attribute :validation, Types::Validation
+      attribute :action_label
+      attribute :sortable
+      attribute :label
+      attribute :max_height
+      attribute :placeholder
+      attribute :validation
 
       # @api private
       attr_reader :child_template

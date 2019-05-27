@@ -1,22 +1,21 @@
 require "formalist/element"
 require "formalist/elements"
-require "formalist/types"
 
 module Formalist
   class Elements
     class MultiUploadField < Field
-      attribute :initial_attributes_url, Types::String
-      attribute :sortable, Types::Bool
-      attribute :max_file_size_message, Types::String
-      attribute :max_file_size, Types::String
-      attribute :max_height, Types::String
-      attribute :permitted_file_type_message, Types::String
-      attribute :permitted_file_type_regex, Types::String
-      attribute :presign_options, Types::Hash
-      attribute :presign_url, Types::String
-      attribute :render_uploaded_as, Types::String
-      attribute :upload_action_label, Types::String
-      attribute :upload_prompt, Types::String
+      attribute :initial_attributes_url
+      attribute :sortable
+      attribute :max_file_size_message
+      attribute :max_file_size
+      attribute :max_height
+      attribute :permitted_file_type_message
+      attribute :permitted_file_type_regex
+      attribute :presign_options
+      attribute :presign_url
+      attribute :render_uploaded_as
+      attribute :upload_action_label
+      attribute :upload_prompt
     end
 
     register :multi_upload_field, MultiUploadField

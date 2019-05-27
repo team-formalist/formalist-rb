@@ -1,5 +1,4 @@
 require "formalist/element"
-require "formalist/types"
 
 module Formalist
   class Elements

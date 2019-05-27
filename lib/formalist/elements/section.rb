@@ -1,10 +1,9 @@
 require "formalist/element"
-require "formalist/types"
 
 module Formalist
   class Elements
     class Section < Element
-      attribute :label, Types::String
+      attribute :label
 
       def fill(input: {}, errors: {})
         super(

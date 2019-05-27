@@ -1,14 +1,13 @@
 require "formalist/element"
-require "formalist/types"
 
 module Formalist
   class Elements
     class Field < Element
-      attribute :label, Types::String
-      attribute :hint, Types::String
-      attribute :placeholder, Types::String
-      attribute :inline, Types::Bool
-      attribute :validation, Types::Validation
+      attribute :label
+      attribute :hint
+      attribute :placeholder
+      attribute :inline
+      attribute :validation
 
       def fill(input: {}, errors: {})
         super(
