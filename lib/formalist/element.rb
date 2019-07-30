@@ -1,6 +1,5 @@
 require "formalist/element/attributes"
 require "formalist/element/class_interface"
-require "formalist/types"
 
 module Formalist
   class Element
@@ -21,18 +20,12 @@ module Formalist
 
     # @api private
     def initialize(name: nil, attributes: {}, children: [], input: nil, errors: [])
-      @name = Types::ElementName[name]
+      @name = name&.to_sym
 
-      # Set supplied attributes or their defaults
-      all_attributes = self.class.attributes_schema.each_with_object({}) { |(name, defn), memo|
+      @attributes = self.class.attributes_schema.each_with_object({}) { |(name, defn), hsh|
         value = attributes.fetch(name) { defn[:default] }
-        memo[name] = value unless value.nil?
+        hsh[name] = value unless value.nil?
       }
-
-      # Then run them through the schema
-      @attributes = Types::Hash.weak(
-        self.class.attributes_schema.map { |name, defn| [name, defn[:type]] }.to_h
-      )[all_attributes]
 
       @children = children
       @input = input

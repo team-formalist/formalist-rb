@@ -1,11 +1,10 @@
 require "formalist/element"
 require "formalist/elements"
-require "formalist/types"
 
 module Formalist
   class Elements
     class RadioButtons < Field
-      attribute :options, Types::OptionsList
+      attribute :options
     end
 
     register :radio_buttons, RadioButtons

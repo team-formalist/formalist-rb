@@ -1,22 +1,21 @@
 require "formalist/element"
 require "formalist/elements"
-require "formalist/types"
 
 module Formalist
   class Elements
     class SearchMultiSelectionField < Field
-      attribute :clear_query_on_selection, Types::Bool
-      attribute :sortable, Types::Bool
-      attribute :max_height, Types::String
-      attribute :render_option_as, Types::String
-      attribute :render_option_control_as, Types::String
-      attribute :render_selection_as, Types::String
-      attribute :search_params, Types::Hash
-      attribute :search_per_page, Types::Integer
-      attribute :search_threshold, Types::Integer
-      attribute :search_url, Types::String
-      attribute :selections, Types::Array
-      attribute :selector_label, Types::String
+      attribute :clear_query_on_selection
+      attribute :sortable
+      attribute :max_height
+      attribute :render_option_as
+      attribute :render_option_control_as
+      attribute :render_selection_as
+      attribute :search_params
+      attribute :search_per_page
+      attribute :search_threshold
+      attribute :search_url
+      attribute :selections
+      attribute :selector_label
     end
 
     register :search_multi_selection_field, SearchMultiSelectionField

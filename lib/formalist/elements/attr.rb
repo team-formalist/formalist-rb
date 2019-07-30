@@ -1,10 +1,9 @@
 require "formalist/element"
-require "formalist/types"
 
 module Formalist
   class Elements
     class Attr < Element
-      attribute :label, Types::String
+      attribute :label
 
       def fill(input:, errors:)
         input = input[name] || {}
