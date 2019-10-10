@@ -56,7 +56,7 @@ RSpec.describe Formalist::Form do
   }
 
   it "outputs an AST" do
-    form = form_class.new.fill(input: input, errors: schema.(input).messages)
+    form = form_class.new.fill(input: input, errors: schema.(input).errors.to_h)
 
     expect(form.to_ast).to eq [
       [:compound_field, [
