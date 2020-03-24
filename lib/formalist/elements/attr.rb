@@ -5,15 +5,15 @@ module Formalist
     class Attr < Element
       attribute :label
 
-      def fill(input:, errors:)
+      def fill(input:, errors:, meta: {})
         input = input[name] || {}
         errors = errors[name] || {}
 
         children = self.children.map { |child|
-          child.fill(input: input, errors: errors)
+          child.fill(input: input, errors: errors, meta: meta)
         }
 
-        super(input: input, errors: errors, children: children)
+        super(input: input, errors: errors, meta: meta, children: children)
       end
 
       # Converts the attribute into an abstract syntax tree.
@@ -52,7 +52,7 @@ module Formalist
           name,
           type,
           local_errors,
-          Element::Attributes.new(attributes).to_ast,
+          Element::Attributes.new(attributes, meta: meta).to_ast,
           children.map(&:to_ast),
         ]]
       end

@@ -2,13 +2,14 @@ module Formalist
   class Element
     class Attributes
       # Returns the attributes hash.
-      attr_reader :attrs
+      attr_reader :attrs, :meta
 
       # Creates an attributes object from the supplied hash.
       #
       # @param attrs [Hash] hash of form element attributes
-      def initialize(attrs = {})
+      def initialize(attrs = {}, meta: {})
         @attrs = attrs
+        @meta = meta
       end
 
       # Returns the attributes as an abstract syntax tree.
@@ -28,6 +29,8 @@ module Formalist
             [:array, value.map { |v| deep_to_ast(v) }]
           when String, Numeric, TrueClass, FalseClass, NilClass
             [:value, [value]]
+          when Proc
+            deep_to_ast(value.call(meta))
           else
             [:value, [value.to_s]]
         end
@@ -41,6 +44,8 @@ module Formalist
             value.map { |v| deep_simplify(v) }
           when String, Numeric, TrueClass, FalseClass, NilClass
             value
+          when Proc
+            deep_simplify(value.call(meta))
           else
             if value.respond_to?(:to_h)
               deep_simplify(value.to_h)

@@ -5,12 +5,12 @@ module Formalist
     class Group < Element
       attribute :label
 
-      def fill(input: {}, errors: {})
+      def fill(input: {}, errors: {}, meta: {})
         children = self.children.map { |child|
-          child.fill(input: input, errors: errors)
+          child.fill(input: input, errors: errors, meta: meta)
         }
 
-        super(input: input, errors: errors, children: children)
+        super(input: input, errors: errors, meta: meta, children: children)
       end
 
       # Converts the group into an abstract syntax tree.
@@ -41,7 +41,7 @@ module Formalist
       def to_ast
         [:group, [
           type,
-          Element::Attributes.new(attributes).to_ast,
+          Element::Attributes.new(attributes, meta: meta).to_ast,
           children.map(&:to_ast),
         ]]
       end

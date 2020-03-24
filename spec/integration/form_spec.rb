@@ -23,7 +23,7 @@ RSpec.describe Formalist::Form do
     Class.new(Formalist::Form) do
       define do
         compound_field do
-          field :title, validate: {filled: true}
+          field :title, validate: {filled: true}, hint: -> (meta) { "In #{meta[:language]}" }
           field :rating, validate: {filled: true}
         end
 
@@ -60,14 +60,14 @@ RSpec.describe Formalist::Form do
   }
 
   it "outputs an AST" do
-    form = form_class.new.fill(input: input, errors: contract.(input).errors)
+    form = form_class.new.fill(input: input, errors: contract.(input).errors, meta: {language: "English"})
 
     expect(form.to_ast).to eq [
       [:compound_field, [
         :compound_field,
         [:object, []],
         [
-          [:field, [:title, :field, "Aurora", [], [:object, []]]],
+          [:field, [:title, :field, "Aurora", [], [:object, [[:hint, [:value, ["In English"]]]]]]],
           [:field, [:rating, :field, "10", ["must be an integer"], [:object, []]]]
         ]
       ]],
