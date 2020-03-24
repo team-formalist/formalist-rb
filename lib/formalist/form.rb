@@ -21,11 +21,13 @@ module Formalist
     attr_reader :elements
     attr_reader :input
     attr_reader :errors
+    attr_reader :meta
     attr_reader :dependencies
 
-    def initialize(elements: Undefined, input: {}, errors: {}, **dependencies)
+    def initialize(elements: Undefined, input: {}, errors: {}, meta: {}, **dependencies)
       @input = input
       @errors = errors
+      @meta = meta
 
       @elements =
         if elements == Undefined
@@ -37,11 +39,11 @@ module Formalist
       @dependencies = dependencies
     end
 
-    def fill(input: {}, errors: {})
-      return self if input == @input && errors == @errors
+    def fill(input: {}, errors: {}, meta: {})
+      return self if input == @input && errors == @errors && meta == @meta
 
       self.class.new(
-        elements: @elements.map { |element| element.fill(input: input, errors: errors) },
+        elements: @elements.map { |element| element.fill(input: input, errors: errors, meta: meta) },
         input: input,
         errors: errors,
         **@dependencies,
@@ -53,6 +55,7 @@ module Formalist
         elements: @elements,
         input: @input,
         errors: @errors,
+        meta: @meta,
         **@dependencies.merge(new_dependencies)
       )
     end

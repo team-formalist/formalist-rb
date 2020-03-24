@@ -26,7 +26,7 @@ module Formalist
       end
 
       # @api private
-      def fill(input: {}, errors: {})
+      def fill(input: {}, errors: {}, meta: {})
         input = input.fetch(name) { [] }
         errors = errors.fetch(name) { {} }
 
@@ -36,12 +36,13 @@ module Formalist
         children = input.each_with_index.map { |child_input, index|
           child_errors = errors.is_a?(Hash) ? errors.fetch(index) { {} } : {}
 
-          child_template.map { |child| child.fill(input: child_input, errors: child_errors) }
+          child_template.map { |child| child.fill(input: child_input, errors: child_errors, meta: meta) }
         }
 
         super(
           input: input,
           errors: errors,
+          meta: meta,
           children: children,
           child_template: child_template,
         )
@@ -117,7 +118,7 @@ module Formalist
           name,
           type,
           local_errors,
-          Element::Attributes.new(attributes).to_ast,
+          Element::Attributes.new(attributes, meta: meta).to_ast,
           child_template.map(&:to_ast),
           children.map { |el_list| el_list.map(&:to_ast) },
         ]]

@@ -6,7 +6,7 @@ module Formalist
     extend ClassInterface
 
     # @api private
-    attr_reader :name, :attributes, :children, :input, :errors
+    attr_reader :name, :attributes, :children, :input, :errors, :meta
 
     # @api private
     def self.build(**args)
@@ -14,12 +14,12 @@ module Formalist
     end
 
     # @api private
-    def self.fill(input: {}, errors: {}, **args)
+    def self.fill(input: {}, errors: {}, meta: {}, **args)
       new(args).fill(input: input, errors: errors)
     end
 
     # @api private
-    def initialize(name: nil, attributes: {}, children: [], input: nil, errors: [])
+    def initialize(name: nil, attributes: {}, children: [], input: nil, errors: [], meta: {})
       @name = name&.to_sym
 
       @attributes = self.class.attributes_schema.each_with_object({}) { |(name, defn), hsh|
@@ -30,10 +30,11 @@ module Formalist
       @children = children
       @input = input
       @errors = errors
+      @meta = meta
     end
 
-    def fill(input: {}, errors: {}, **args)
-      return self if input == @input && errors == @errors
+    def fill(input: {}, errors: {}, meta: {}, **args)
+      return self if input == @input && errors == @errors && @meta == meta
 
       args = {
         name: @name,
@@ -41,6 +42,7 @@ module Formalist
         children: @children,
         input: input,
         errors: errors,
+        meta: meta,
       }.merge(args)
 
       self.class.new(args)

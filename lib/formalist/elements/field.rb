@@ -9,10 +9,11 @@ module Formalist
       attribute :inline
       attribute :validation
 
-      def fill(input: {}, errors: {})
+      def fill(input: {}, errors: {}, meta: {})
         super(
           input: input[name],
           errors: errors[name].to_a,
+          meta: meta,
         )
       end
 
@@ -54,7 +55,7 @@ module Formalist
           type,
           input,
           errors,
-          Element::Attributes.new(attributes).to_ast,
+          Element::Attributes.new(attributes, meta: meta).to_ast,
         ]]
       end
     end
