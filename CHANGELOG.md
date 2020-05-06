@@ -1,3 +1,9 @@
+# 0.6.0 / 2020-05-06
+
+### Changed
+
+- Removed dry-types dependency from core gem
+
 # 0.5.4 / 2018-11-28
 
 ### Fixed

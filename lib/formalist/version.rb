@@ -1,3 +1,3 @@
 module Formalist
-  VERSION = "0.5.4".freeze
+  VERSION = "0.6.0".freeze
 end
