@@ -9,6 +9,10 @@ module Formalist
       attribute :max_height
       attribute :placeholder
       attribute :validation
+      attribute :allow_create, default: true
+      attribute :allow_update, default: true
+      attribute :allow_destroy, default: true
+      attribute :allow_reorder, default: true
 
       # @api private
       attr_reader :child_template
@@ -45,17 +49,6 @@ module Formalist
           children: children,
           child_template: child_template,
         )
-      end
-
-      # Until we can put defaults on `Types::Bool`, supply them here
-      # @api private
-      def attributes
-        {
-          allow_create: true,
-          allow_update: true,
-          allow_destroy: true,
-          allow_reorder: true,
-        }.merge(super)
       end
 
       # Converts a collection of "many" repeating elements into an abstract
