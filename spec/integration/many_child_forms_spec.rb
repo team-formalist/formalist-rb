@@ -64,7 +64,7 @@ RSpec.describe Formalist::Form do
 
   it "outputs an AST" do
     form = form_class.new.fill(input: input, errors: contract.(input).errors.to_h)
-    expect(form.to_ast).to eq([])
+    expect(form.to_ast[0][1][4]).to eq([])
   end
 end
 

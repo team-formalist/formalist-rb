@@ -4,8 +4,8 @@ require "formalist/elements/compound_field"
 require "formalist/elements/field"
 require "formalist/elements/group"
 require "formalist/elements/many"
-require "formalist/elements/many_forms"
 require "formalist/elements/many_child_forms"
+require "formalist/elements/child_form"
 require "formalist/elements/section"
 
 module Formalist
@@ -17,8 +17,8 @@ module Formalist
     register :field, Field
     register :group, Group
     register :many, Many
-    register :many_forms, ManyForms
     register :many_child_forms, ManyChildForms
+    register :child_form, ChildForm
     register :section, Section
   end
 end
