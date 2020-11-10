@@ -5,11 +5,9 @@ module Formalist
   module ChildForms
     class Builder
       attr_reader :embedded_forms
-      attr_reader :child_form_class
 
-      def initialize(embedded_form_collection, child_form_class = Elements::ChildForm)
+      def initialize(embedded_form_collection)
         @embedded_forms = embedded_form_collection
-        @child_form_class = child_form_class
       end
 
       def call(input)
@@ -24,10 +22,15 @@ module Formalist
       private
 
       def visit(node)
-        embedded_form = embedded_forms[node[:name]]
+        name, data = node.values_at(:name, :data)
 
-        child = child_form_class.build(
-          name: node[:name],
+        embedded_form = embedded_forms[name]
+        child_form(name, embedded_form).fill(input: {name => data})
+      end
+
+      def child_form(name, embedded_form)
+        Elements::ChildForm.build(
+          name: name,
           attributes: {
             label: embedded_form.label,
             form: embedded_form.form,
@@ -35,9 +38,6 @@ module Formalist
             input_processor: embedded_form.input_processor,
           }
         )
-
-        child.fill(input: {node[:name] => node[:data]})
-
       end
     end
   end
