@@ -24,8 +24,8 @@ module Formalist
 
        # @api private
        def fill(input: {}, errors: {})
-        input = input.fetch(name) { [] }
-        errors = errors.fetch(name) { {} }
+        input = input[name] || []
+        errors = errors[name].to_a
 
         children = child_form_builder.(input)
 

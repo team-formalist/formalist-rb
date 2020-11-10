@@ -12,8 +12,8 @@ module Formalist
       attribute :input_processor, default: DEFAULT_INPUT_PROCESSOR
 
       def fill(input: {}, errors: {})
-        input = input.fetch(name) { [] }
-        errors = errors.fetch(name) { {} }
+        input = input[name]
+        errors = errors[name].to_a
 
         super(input: form_input_ast(input), errors: errors)
       end
