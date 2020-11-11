@@ -25,7 +25,7 @@ module Formalist
         name, data = node.values_at(:name, :data)
 
         embedded_form = embedded_forms[name]
-        child_form(name, embedded_form).fill(input: {name => data})
+        child_form(name, embedded_form).fill(input: {name.to_sym => data})
       end
 
       def child_form(name, embedded_form)
