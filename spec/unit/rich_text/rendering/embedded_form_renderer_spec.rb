@@ -4,34 +4,32 @@ RSpec.describe Formalist::RichText::Rendering::EmbeddedFormRenderer do
   subject(:renderer) { described_class.new(container, namespace: namespace, paths: paths) }
 
   let(:container) {{
-    "article" => "top_level_article",
-    "embedded_forms.article" => "namespaced_article",
-    "embedded_forms.newsletter.article" => "newsletter_article",
-    "embedded_forms.newsletter.components.article" => "newsletter_components_article",
-    "embedded_forms.general.article" => "general_article",
-   }}
+    "article" => -> (*_) { "top_level_article" },
+    "embedded_forms.article" => -> (*_) { "namespaced_article" },
+    "embedded_forms.newsletter.article" => -> (*_) { "newsletter_article" },
+    "embedded_forms.newsletter.components.article" => -> (*_) { "newsletter_components_article" },
+    "embedded_forms.general.article" => -> (*_) { "general_article" },
+  }}
 
-  context "no namespace or paths configured" do
-    let(:namespace) { nil }
-    let(:paths) { [] }
+  describe "#call" do
+    context "no namespace or paths configured" do
+      let(:namespace) { nil }
+      let(:paths) { [] }
 
-    describe "#resolve_key" do
       it "returns the top level result" do
-        expect(renderer.send(:resolve_key, "article")).to eq "article"
+        expect(renderer.(name: "article")).to eq "top_level_article"
       end
     end
-  end
 
-  context "namespace configured" do
+
+    context "namespace configured" do
     let(:namespace) { "embedded_forms" }
     let(:paths) { [] }
 
-    describe "#resolve_key" do
       it "returns the namespaced result" do
-        expect(renderer.send(:resolve_key, "article")).to eq "embedded_forms.article"
+        expect(renderer.(name: "article")).to eq "namespaced_article"
       end
     end
-  end
 
   context "namespace and paths configured" do
     let(:namespace) { "embedded_forms" }
@@ -39,7 +37,7 @@ RSpec.describe Formalist::RichText::Rendering::EmbeddedFormRenderer do
 
     describe "#resolve_key" do
       it "returns the result in the first path" do
-        expect(renderer.send(:resolve_key, "article")).to eq "embedded_forms.newsletter.components.article"
+        expect(renderer.(name: "article")).to eq "newsletter_components_article"
       end
     end
   end
@@ -50,7 +48,7 @@ RSpec.describe Formalist::RichText::Rendering::EmbeddedFormRenderer do
 
     describe "#resolve_key" do
       it "returns the result in the namespace" do
-        expect(renderer.send(:resolve_key, "article")).to eq "embedded_forms.article"
+        expect(renderer.(name: "article")).to eq "namespaced_article"
       end
     end
   end
@@ -64,7 +62,7 @@ RSpec.describe Formalist::RichText::Rendering::EmbeddedFormRenderer do
 
     describe "#resolve_key" do
       it "does not return the result outside the namespace" do
-        expect(renderer.send(:resolve_key, "article")).to eq nil
+        expect(renderer.(name: "article")).to eq ""
       end
     end
   end

@@ -34,7 +34,8 @@ module Formalist
             key = [namespace, path_key, type].compact.join(".")
             return key if container.key?(key)
           end
-          key =  [namespace, type].compact.join(".")
+
+          key = [namespace, type].compact.join(".")
           return key if container.key?(key)
         end
       end
