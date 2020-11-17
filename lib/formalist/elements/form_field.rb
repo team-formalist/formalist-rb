@@ -2,7 +2,7 @@ require "formalist/element"
 
 module Formalist
   class Elements
-    class ChildForm < Element
+    class FormField < Element
       DEFAULT_INPUT_PROCESSOR = -> input { input }.freeze
 
       attribute :label
@@ -39,7 +39,7 @@ module Formalist
       end
 
       def to_ast
-        [:child_form, [
+        [:form_field, [
           name,
           type,
           input,

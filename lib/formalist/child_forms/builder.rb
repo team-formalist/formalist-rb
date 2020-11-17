@@ -1,5 +1,5 @@
 require "json"
-require "formalist/elements/child_form"
+require_relative "child_form"
 
 module Formalist
   module ChildForms
@@ -29,7 +29,7 @@ module Formalist
       end
 
       def child_form(name, embedded_form)
-        Elements::ChildForm.build(
+        ChildForm.build(
           name: name,
           attributes: {
             label: embedded_form.label,
