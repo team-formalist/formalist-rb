@@ -5,6 +5,7 @@ module Formalist
     class Many < Element
       attribute :action_label
       attribute :sortable
+      attribute :moveable
       attribute :label
       attribute :max_height
       attribute :placeholder
