@@ -1,41 +1,15 @@
-require "formalist/element"
+require "formalist/child_forms/child_form"
 
 module Formalist
   class Elements
-    class FormField < Element
-      DEFAULT_INPUT_PROCESSOR = -> input { input }.freeze
-
-      attribute :label
+    class FormField < ChildForms::ChildForm
       attribute :hint
-      attribute :form
-      attribute :schema
-      attribute :input_processor, default: DEFAULT_INPUT_PROCESSOR
 
       def fill(input: {}, errors: {})
         input = input[name]
         errors = errors[name].to_a
 
-        super(input: form_input_ast(input), errors: errors)
-      end
-
-      def attributes
-        super.merge(form: form_attribute_ast)
-      end
-
-      def form_attribute_ast
-        @attributes[:form].to_ast
-      end
-
-      def form_input_ast(data)
-        # Run the raw data through the validation schema
-        validation = @attributes[:schema].(data)
-
-        # And then through the embedded form's input processor (which may add
-        # extra system-generated information necessary for the form to render
-        # fully)
-        input = @attributes[:input_processor].(validation.to_h)
-
-        @attributes[:form].fill(input: input, errors: validation.errors.to_h).to_ast
+        super(input: input, errors: errors)
       end
 
       def to_ast
