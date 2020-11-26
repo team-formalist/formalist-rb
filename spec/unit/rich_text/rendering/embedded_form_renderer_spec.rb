@@ -23,44 +23,37 @@ RSpec.describe Formalist::RichText::Rendering::EmbeddedFormRenderer do
 
 
     context "namespace configured" do
-    let(:namespace) { "embedded_forms" }
-    let(:paths) { [] }
+      let(:namespace) { "embedded_forms" }
+      let(:paths) { [] }
 
       it "returns the namespaced result" do
         expect(renderer.(name: "article")).to eq "namespaced_article"
       end
     end
 
-  context "namespace and paths configured" do
-    let(:namespace) { "embedded_forms" }
-    let(:paths) { ["newsletter/components", "newsletter", "general"] }
+    context "namespace and paths configured" do
+      let(:namespace) { "embedded_forms" }
+      let(:paths) { ["newsletter/components", "newsletter", "general"] }
 
-    describe "#resolve_key" do
-      it "returns the result in the first path" do
-        expect(renderer.(name: "article")).to eq "newsletter_components_article"
-      end
+        it "returns the result in the first path" do
+          expect(renderer.(name: "article")).to eq "newsletter_components_article"
+        end
     end
-  end
 
-  context "key not in paths" do
-    let(:namespace) { "embedded_forms" }
-    let(:paths) { ["other", "path"] }
+    context "key not in paths" do
+      let(:namespace) { "embedded_forms" }
+      let(:paths) { ["other", "path"] }
 
-    describe "#resolve_key" do
       it "returns the result in the namespace" do
         expect(renderer.(name: "article")).to eq "namespaced_article"
       end
     end
-  end
 
-  context "key not in namespace" do
-    let(:namespace) { "embedded_forms" }
-    let(:paths) { ["other", "path"] }
-    let(:container) {{
-      "article" => "top_level_article"
-     }}
+    context "key not in namespace" do
+      let(:namespace) { "embedded_forms" }
+      let(:paths) { ["other", "path"] }
+      let(:container) { { "article" => "top_level_article" } }
 
-    describe "#resolve_key" do
       it "does not return the result outside the namespace" do
         expect(renderer.(name: "article")).to eq ""
       end
