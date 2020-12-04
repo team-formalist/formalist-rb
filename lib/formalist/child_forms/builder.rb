@@ -36,6 +36,7 @@ module Formalist
             form: embedded_form.form,
             schema: embedded_form.schema,
             input_processor: embedded_form.input_processor,
+            preview_image_url: embedded_form.preview_image_url
           }
         )
       end

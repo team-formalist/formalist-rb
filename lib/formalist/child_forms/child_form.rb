@@ -9,6 +9,7 @@ module Formalist
       attribute :form
       attribute :schema
       attribute :input_processor, default: DEFAULT_INPUT_PROCESSOR
+      attribute :preview_image_url
 
       def fill(input: {}, errors: {})
         super(input: form_input_ast(input), errors: errors.to_a)
