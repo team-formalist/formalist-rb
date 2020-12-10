@@ -1,12 +1,12 @@
 require "spec_helper"
-require "formalist/elements/many_child_forms"
+require "formalist/elements/many_forms"
 require "dry/validation/contract"
 require "formalist/rich_text/embedded_forms_container"
 
 
-RSpec.describe Formalist::Elements::ManyChildForms do
-  subject(:many_child_forms) {
-    Formalist::Elements::ManyChildForms.new(
+RSpec.describe Formalist::Elements::ManyForms do
+  subject(:many_forms) {
+    Formalist::Elements::ManyForms.new(
       name: :components,
       attributes: attributes,
     ).fill(
@@ -61,9 +61,9 @@ RSpec.describe Formalist::Elements::ManyChildForms do
       }
 
       it "converts the input data to valid form AST" do
-        expect(many_child_forms.children.count).to eql 1
+        expect(many_forms.children.count).to eql 1
 
-        expect(many_child_forms.children.first.input).to eql [
+        expect(many_forms.children.first.input).to eql [
           [:field, [:image_id, :field, 1234, [], [:object, []]]],
           [:field, [:caption, :field, "Cute cat", [], [:object, []]]]
         ]
@@ -88,7 +88,7 @@ RSpec.describe Formalist::Elements::ManyChildForms do
       }
 
       it "converts the input data to valid form AST with validation errors" do
-        expect(many_child_forms.children.first.input).to eql [
+        expect(many_forms.children.first.input).to eql [
           [:field, [:image_id, :field, nil, ["must be filled"], [:object, []]]],
           [:field, [:caption, :field, "Cute cat", [], [:object, []]]]
         ]

@@ -3,7 +3,7 @@ require "formalist/child_forms/builder"
 
 module Formalist
   class Elements
-    class ManyChildForms < Element
+    class ManyForms < Element
       attribute :action_label
       attribute :sortable
       attribute :moveable
@@ -99,7 +99,7 @@ module Formalist
       def to_ast
         local_errors = errors.is_a?(Array) ? errors : []
 
-        [:many_child_forms, [
+        [:many_forms, [
           name,
           type,
           local_errors,
