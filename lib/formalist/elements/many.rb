@@ -33,7 +33,7 @@ module Formalist
       # @api private
       def fill(input: {}, errors: {})
         input = input.fetch(name) { [] }
-        errors = errors.fetch(name) { {} }
+        errors = errors[name] || {}
 
         # Errors look like this when they are on the array itself: ["size cannot be greater than 2"]
         # Errors look like this when they are on children: {0=>{:summary=>["must be filled"]}
