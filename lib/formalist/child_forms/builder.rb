@@ -12,9 +12,6 @@ module Formalist
 
       def call(input)
         return input if input.nil?
-
-        input = input.is_a?(String) ? JSON.parse(input) : input
-
         input.map { |node| visit(node) }
       end
       alias_method :[], :call

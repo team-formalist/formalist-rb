@@ -12,9 +12,6 @@ module Formalist
 
       def call(input)
         return input if input.nil?
-
-        input = input.is_a?(String) ? JSON.parse(input) : input
-
         input.inject([]) { |output, node| output.push(process(node)) }
       end
       alias_method :[], :call
