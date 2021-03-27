@@ -19,7 +19,6 @@ module Formalist
       private
 
       def process(node)
-        node = node.dup
         name, data = node.values_at(:name, :data)
 
         validation = embedded_forms[name].schema.(data)
