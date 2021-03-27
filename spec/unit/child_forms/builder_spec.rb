@@ -66,4 +66,17 @@ RSpec.describe Formalist::ChildForms::Builder do
       expect(output.first.input).to eq([[:field, [:image_id, :text_field, "", ["must be filled"], [:object, []]]], [:field, [:caption, :text_field, "Large panda", [], [:object, []]]]])
     end
   end
+
+  describe "missing form definition" do
+    let(:input) {
+      [
+        {:name => "deprecated_form",:label => "Old Image with caption", :data => {"image_url" => "/assets/large-panda", "caption" => "Large panda"}},
+      ]
+    }
+
+    it "raises a missing form definition error" do
+      expect { builder.(input).to raise_error(MissingFormDefinitionError) }
+    end
+s
+  end
 end

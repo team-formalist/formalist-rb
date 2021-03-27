@@ -5,6 +5,7 @@ module Formalist
   module ChildForms
     class Builder
       attr_reader :embedded_forms
+      MissingFormDefinitionError = Class.new(StandardError)
 
       def initialize(embedded_form_collection)
         @embedded_forms = embedded_form_collection
@@ -22,6 +23,9 @@ module Formalist
         name, data = node.values_at(:name, :data)
 
         embedded_form = embedded_forms[name]
+        if embedded_form.nil?
+          raise MissingFormDefinitionError, "Form +#{embedded_forms[name]}+ is missing from the embeddable forms collection"
+        end
         child_form(name, embedded_form).fill(input: data)
       end
 
