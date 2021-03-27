@@ -41,7 +41,7 @@ module Formalist
       def visit_many(node)
         _name, _type, errors, _attributes, _child_template, children = node
 
-        # The `children`` parameter for `many` elements nested since there are
+        # The `children parameter for `many` elements is nested since there are
         # many groups of elements, we need to flatten to traverse them all
         errors.empty? && children.flatten(1).map { |child| visit(child) }.all?
       end

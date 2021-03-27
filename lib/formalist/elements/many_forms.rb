@@ -59,13 +59,13 @@ module Formalist
       # It takes the following format:
       #
       # ```
-      # [:many, [params]]
+      # [:many_forms, [params]]
       # ```
       #
       # With the following parameters:
       #
       # 1. Collection name
-      # 2. Custom form element type (or `:many` otherwise)
+      # 2. Custom form element type (or `:many_forms` otherwise)
       # 3. Collection-level error messages
       # 4. Form element attributes
       # 6. Child elements, one for each of the entries in the input data (or
@@ -74,9 +74,9 @@ module Formalist
       # @see Formalist::Element::Attributes#to_ast "Form element attributes" structure
       #
       # @example "components" collection
-      #   many.to_ast
+      #   many_forms.to_ast
       #   # => [:many_forms, [
-      #     :locations,
+      #     :components,
       #     :many_forms,
       #     ["components size cannot be less than 3"],
       #     [:object, [
