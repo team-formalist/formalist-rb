@@ -39,11 +39,13 @@ module Formalist
       # Replace the form objects with their AST
       def embeddable_forms_ast
         @attributes[:embeddable_forms].to_h.map { |key, attrs|
+          template_attrs = attrs.slice(:label, :preview_image_url)
+
           [
             key,
             attrs.merge(
               form: attrs[:form].to_ast,
-              attributes_template: Element::Attributes.new(attrs).to_ast
+              attributes_template: Element::Attributes.new(template_attrs).to_ast
             )
           ]
         }.to_h
