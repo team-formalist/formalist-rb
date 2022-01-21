@@ -77,6 +77,5 @@ RSpec.describe Formalist::ChildForms::Builder do
     it "raises a missing form definition error" do
       expect { builder.(input).to raise_error(MissingFormDefinitionError) }
     end
-s
   end
 end
