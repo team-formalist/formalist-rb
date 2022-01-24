@@ -6,7 +6,7 @@ module Formalist
     class CheckBox < Field
       attribute :question_text
 
-      def initialize(*)
+      def initialize(**)
         super
 
         # Ensure value is a boolean (also: default to false for nil values)
