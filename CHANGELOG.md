@@ -1,3 +1,11 @@
+# 0.7.0 / 2022-04-07
+
+### Added
+
+- Add support a field with an arbitrary list of forms. Supporting updates in formalist-standard-react@^4.2.0
+- Add namespace and paths options to embedded form renderer
+- Support dry-schema/dry-validation 1.0
+
 # 0.6.0 / 2020-05-06
 
 ### Changed
