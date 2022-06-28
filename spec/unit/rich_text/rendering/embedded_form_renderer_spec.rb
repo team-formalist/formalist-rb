@@ -17,7 +17,7 @@ RSpec.describe Formalist::RichText::Rendering::EmbeddedFormRenderer do
       let(:paths) { [] }
 
       it "returns the top level result" do
-        expect(renderer.(name: "article")).to eq "top_level_article"
+        expect(renderer.({name: "article"})).to eq "top_level_article"
       end
     end
 
@@ -27,7 +27,7 @@ RSpec.describe Formalist::RichText::Rendering::EmbeddedFormRenderer do
       let(:paths) { [] }
 
       it "returns the namespaced result" do
-        expect(renderer.(name: "article")).to eq "namespaced_article"
+        expect(renderer.({name: "article"})).to eq "namespaced_article"
       end
     end
 
@@ -36,7 +36,7 @@ RSpec.describe Formalist::RichText::Rendering::EmbeddedFormRenderer do
       let(:paths) { ["newsletter/components", "newsletter", "general"] }
 
         it "returns the result in the first path" do
-          expect(renderer.(name: "article")).to eq "newsletter_components_article"
+          expect(renderer.({name: "article"})).to eq "newsletter_components_article"
         end
     end
 
@@ -45,7 +45,7 @@ RSpec.describe Formalist::RichText::Rendering::EmbeddedFormRenderer do
       let(:paths) { ["other", "path"] }
 
       it "returns the result in the namespace" do
-        expect(renderer.(name: "article")).to eq "namespaced_article"
+        expect(renderer.({name: "article"})).to eq "namespaced_article"
       end
     end
 
@@ -55,7 +55,7 @@ RSpec.describe Formalist::RichText::Rendering::EmbeddedFormRenderer do
       let(:container) { { "article" => "top_level_article" } }
 
       it "does not return the result outside the namespace" do
-        expect(renderer.(name: "article")).to eq ""
+        expect(renderer.({name: "article"})).to eq ""
       end
     end
   end
