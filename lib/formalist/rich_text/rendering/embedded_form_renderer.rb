@@ -20,7 +20,7 @@ module Formalist
           key = resolve_key(type)
 
           if key
-            container[key].(data, options)
+            container[key].(data, **options)
           else
             ""
           end

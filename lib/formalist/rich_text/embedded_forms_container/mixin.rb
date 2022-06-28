@@ -25,7 +25,7 @@ module Formalist
           end
 
           def register(key, **attrs)
-            super(key.to_s, Registration.new(attrs))
+            super(key.to_s, Registration.new(**attrs))
           end
 
           def to_h

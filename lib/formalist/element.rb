@@ -10,12 +10,12 @@ module Formalist
 
     # @api private
     def self.build(**args)
-      new(args)
+      new(**args)
     end
 
     # @api private
     def self.fill(input: {}, errors: {}, **args)
-      new(args).fill(input: input, errors: errors)
+      new(**args).fill(input: input, errors: errors)
     end
 
     # @api private
@@ -43,7 +43,7 @@ module Formalist
         errors: errors,
       }.merge(args)
 
-      self.class.new(args)
+      self.class.new(**args)
     end
 
     def type

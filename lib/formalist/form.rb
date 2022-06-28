@@ -8,7 +8,7 @@ module Formalist
     extend Dry::Configurable
     include Dry::Core::Constants
 
-    setting :elements_container, Elements
+    setting :elements_container, default: Elements
 
     class << self
       attr_reader :definition
