@@ -1,3 +1,10 @@
+# 0.8.0 / 2022-06-29
+
+### Changed
+
+- Update to ruby to version 3
+- Update dry-configurable to version 0.13
+
 # 0.7.0 / 2022-04-07
 
 ### Added
