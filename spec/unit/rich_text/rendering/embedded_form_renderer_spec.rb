@@ -1,7 +1,7 @@
 require "formalist/rich_text/rendering/embedded_form_renderer"
 
 RSpec.describe Formalist::RichText::Rendering::EmbeddedFormRenderer do
-  subject(:renderer) { described_class.new(container, namespace: namespace, paths: paths) }
+  subject(:renderer) { described_class.new(container, namespace: namespace, paths: paths, **options) }
 
   let(:container) {{
     "article" => -> (*_) { "top_level_article" },
@@ -10,6 +10,12 @@ RSpec.describe Formalist::RichText::Rendering::EmbeddedFormRenderer do
     "embedded_forms.newsletter.components.article" => -> (*_) { "newsletter_components_article" },
     "embedded_forms.general.article" => -> (*_) { "general_article" },
   }}
+
+  let(:options) {
+    { render_context: "general" }
+  }
+  let(:namespace) { nil }
+  let(:paths) { [] }
 
   describe "#call" do
     context "no namespace or paths configured" do
@@ -57,6 +63,12 @@ RSpec.describe Formalist::RichText::Rendering::EmbeddedFormRenderer do
       it "does not return the result outside the namespace" do
         expect(renderer.({name: "article"})).to eq ""
       end
+    end
+  end
+
+  describe "#with" do
+    it "returns an object with options merged" do
+      expect(renderer.with(context: "new").options).to eq({render_context: "general", context: "new"})
     end
   end
 end

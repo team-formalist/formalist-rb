@@ -14,16 +14,25 @@ module Formalist
           @options = options
         end
 
-        def call(form_data, **context_options)
+        def call(form_data)
           type, data = form_data.values_at(:name, :data)
 
           key = resolve_key(type)
 
           if key
-            container[key].(data, **(options.merge(context_options)))
+            container[key].(data, **options)
           else
             ""
           end
+        end
+
+        def with(**context_options)
+          self.class.new(
+            container,
+            namespace: namespace,
+            paths: paths,
+            **options.merge(context_options)
+          )
         end
 
         private
