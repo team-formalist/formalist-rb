@@ -1,3 +1,9 @@
+# 0.9.0 / 2022-06-30
+
+### Added
+
+- Added a `#with` method to `EmbeddedFormRenderer` to support additional call time options
+
 # 0.8.0 / 2022-06-29
 
 ### Changed
