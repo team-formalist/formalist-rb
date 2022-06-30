@@ -26,6 +26,15 @@ module Formalist
           end
         end
 
+        def with(**context_options)
+          self.class.new(
+            container,
+            namespace: namespace,
+            paths: paths,
+            **options.merge(context_options)
+          )
+        end
+
         private
 
         def resolve_key(type)
