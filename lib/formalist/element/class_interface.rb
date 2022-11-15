@@ -1,11 +1,12 @@
-require "inflecto"
+require "dry-inflector"
 
 module Formalist
   class Element
     # Class-level API for form elements.
     module ClassInterface
       def type
-        Inflecto.underscore(Inflecto.demodulize(name)).to_sym
+        inflector = Dry::Inflector.new
+        inflector.underscore(inflector.demodulize(name)).to_sym
       end
 
       def attribute(name, default: nil)
